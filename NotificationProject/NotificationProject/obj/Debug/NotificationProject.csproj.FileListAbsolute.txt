@@ -1,0 +1,1 @@
+c:\users\mzk\documents\visual studio 2015\Projects\NotificationProject\NotificationProject\bin\Debug\NotificationProject.exe.config
