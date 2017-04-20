@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.ComponentModel;
 using NotificationProject.HelperClasses;
-using NotificationProject.ViewModel;
 
 namespace NotificationProject.ViewModel
 {
@@ -24,11 +20,12 @@ namespace NotificationProject.ViewModel
 
         #region constructor
 
-        public MainViewModel()
+        public MainViewModel() 
         {
             //Add the pages
             PageViewModels.Add(new HomeViewModel());
             PageViewModels.Add(new QRCodeViewModel());
+            PageViewModels.Add(new CommunicationViewModel());
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
         }

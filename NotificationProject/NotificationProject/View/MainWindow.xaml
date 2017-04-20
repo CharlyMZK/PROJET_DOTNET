@@ -15,6 +15,9 @@
         <DataTemplate DataType="{x:Type viewModel:QRCodeViewModel}">
             <view:QRCodeView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:CommunicationViewModel}">
+            <view:CommunicationView/> 
+        </DataTemplate>
     </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="0,0,1,0">

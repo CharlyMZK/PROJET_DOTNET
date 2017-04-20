@@ -38,6 +38,7 @@ namespace CommunicationService
             sServer.BeginAccept(aCallback, sServer);
         }
 
+
         private void acceptCallback(IAsyncResult result)
         {
             Console.WriteLine("Something is coming !");
@@ -57,11 +58,15 @@ namespace CommunicationService
                 new AsyncCallback(receiveCallback),
                 obj
             );
+
+
         }
 
-        private void receiveCallback(IAsyncResult result)
+        private void receiveCallback(IAsyncResult result) 
         {
-            Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!!");
+            String message = result.ToString();
+             
+            Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - "+message);
         }
     }
 }
