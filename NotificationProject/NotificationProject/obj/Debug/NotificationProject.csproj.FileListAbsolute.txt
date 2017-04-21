@@ -40,3 +40,7 @@ C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProj
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProject\NotificationProject\bin\Debug\CommunicationService.pdb
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.g.cs
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.baml
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin\Debug\CommunicationService.dll
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin\Debug\CommunicationService.pdb
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.g.cs
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.baml

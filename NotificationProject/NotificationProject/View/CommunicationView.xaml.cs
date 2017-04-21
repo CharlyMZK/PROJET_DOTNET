@@ -26,9 +26,9 @@ namespace NotificationProject.View
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            /*
             CommunicationService.CommunicationService cs = new CommunicationService.CommunicationService();
-            buttonStartServer.Content = "Stop server";
-            
+            buttonStartServer.Content = "Stop server";*/
         }
     }
 }
