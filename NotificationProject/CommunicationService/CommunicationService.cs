@@ -54,6 +54,7 @@ namespace CommunicationService
         private void acceptCallback(IAsyncResult result)
         {
             Console.WriteLine("Something is coming !");
+
             Socket listener = (Socket)result.AsyncState;
             Socket handler = listener.EndAccept(result);
 
