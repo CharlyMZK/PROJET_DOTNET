@@ -29,6 +29,7 @@ namespace NotificationProject.View
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+<<<<<<< HEAD
             if (!serverStarted)
             {
                 serverStarted = true;
@@ -40,6 +41,11 @@ namespace NotificationProject.View
                 communicationServer.disconnect();   
             }
             
+=======
+            /*
+            CommunicationService.CommunicationService cs = new CommunicationService.CommunicationService();
+            buttonStartServer.Content = "Stop server";*/
+>>>>>>> 25696f2a7f5c3cf0a23417c31cc2ab932addb30d
         }
     }
 }

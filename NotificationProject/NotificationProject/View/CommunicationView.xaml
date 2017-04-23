@@ -7,9 +7,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+<<<<<<< HEAD
         <TextBlock Text="Communication view" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6,33,8,196"/>
         <TextBox x:Name="textBoxReceived" HorizontalAlignment="Center" Height="50" Margin="0,0,0,55" TextWrapping="Wrap" Text="TextBox" Width="187" VerticalAlignment="Bottom"/>
         <Button x:Name="buttonStartServer" Content="Start server" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Width="75" Click="button_Click"/>
 
+=======
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Communication view" FontSize="30" Grid.Row="0"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding CommunicationStatus}" Grid.Row="1"/>
+        <Button x:Name="buttonStartServer" Content="Start server" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Command="{Binding Path=StartServerCommand}" Grid.Row="2"/>
+>>>>>>> 25696f2a7f5c3cf0a23417c31cc2ab932addb30d
     </Grid>
 </UserControl>
