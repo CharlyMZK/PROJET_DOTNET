@@ -17,6 +17,9 @@ namespace CommunicationService
         private IPAddress ipAddr;
         private IPEndPoint ipEndPoint;
         private byte[] buffer;
+        private int bytesRec;
+        private string theMessageToReceive;
+        private string response;
 
         public CommunicationService()
         {
@@ -34,8 +37,17 @@ namespace CommunicationService
             sServer.Bind(ipEndPoint);
             sServer.Listen(1);
 
-            AsyncCallback aCallback = new AsyncCallback(acceptCallback);
+            AsyncCallback aCallback = new AsyncCallback(acceptCallback); 
             sServer.BeginAccept(aCallback, sServer);
+
+
+        }
+
+        public void disconnect()
+        {
+            sServer.Shutdown(SocketShutdown.Both);
+            sServer.Close();
+
         }
 
 
@@ -55,18 +67,35 @@ namespace CommunicationService
                 0,
                 buffer.Length,
                 SocketFlags.None,
-                new AsyncCallback(receiveCallback),
+                new AsyncCallback(ReceiveCallback),
                 obj
             );
 
 
         }
 
-        private void receiveCallback(IAsyncResult result) 
+        private void ReceiveCallback(IAsyncResult ar) 
         {
-            String message = result.ToString();
-             
-            Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - "+message);
-        }
-    }
+            int i;
+            byte[] bytes = new byte[256];
+            try
+            {
+                
+                // Get reply from the server.
+                i = sServer.Receive(bytes);
+                Console.WriteLine(Encoding.UTF8.GetString(bytes));
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("{0} Error code: {1}.", e.Message, e.ErrorCode);
+               
+            }
+           
+
+            Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - "+ bytesRec);
+
+        } 
+
+
+    } 
 }

@@ -18,7 +18,10 @@ namespace NotificationProject.View
     /// Logique d'interaction pour CommunicationView.xaml
     /// </summary>
     public partial class CommunicationView : UserControl
-    { 
+    {
+        private bool serverStarted = false;
+        CommunicationService.CommunicationService communicationServer;
+
         public CommunicationView() 
         {
             InitializeComponent();
@@ -26,8 +29,16 @@ namespace NotificationProject.View
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            CommunicationService.CommunicationService cs = new CommunicationService.CommunicationService();
-            buttonStartServer.Content = "Stop server";
+            if (!serverStarted)
+            {
+                serverStarted = true;
+                communicationServer = new CommunicationService.CommunicationService();
+                buttonStartServer.Content = "Stop server";
+            }else
+            {
+                serverStarted = false;
+                communicationServer.disconnect();   
+            }
             
         }
     }
