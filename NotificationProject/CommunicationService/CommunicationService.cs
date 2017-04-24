@@ -36,7 +36,7 @@ namespace CommunicationService
                 SocketType.Stream,
                 ProtocolType.Tcp
             );
-
+            Console.WriteLine("Mon adresse - " + ipAddr);
             sServer.Bind(ipEndPoint);
             sServer.Listen(1);
 

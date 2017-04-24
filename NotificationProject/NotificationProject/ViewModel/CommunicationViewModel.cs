@@ -66,13 +66,13 @@ namespace NotificationProject.ViewModel
         }
 
         public void addDevice(Device device)
-        {
-            ListDevices = new ObservableCollection<Device>();
-            ListDevices.Add(device);
-            OnPropertyChanged("ListDevices");
+        { 
+            ListDevices = new ObservableCollection<Device>(ListDevices);  // -- TODO : Its supposed to work without this line, but it throw an exception.
+            ListDevices.Add(device);                                     // -- Add device on list
+            OnPropertyChanged("ListDevices");                           // -- Notify the changes
         } 
 
-
+         
         public ICommand StartServerCommand
         {
             get
