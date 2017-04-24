@@ -69,7 +69,6 @@ namespace NotificationProject.ViewModel
         {
             ListDevices = new ObservableCollection<Device>();
             ListDevices.Add(device);
-           
             OnPropertyChanged("ListDevices");
         } 
 

@@ -13,8 +13,9 @@ namespace CommunicationService
     public class CommunicationService
     {
         private Socket sServer;
-        private IPHostEntry ipHost;
-        private IPAddress ipAddr;
+        private IPHostEntry ipHost { get; set; }
+        private IPAddress ipAddr { get; set; }
+        private int port { get; set; }
         private IPEndPoint ipEndPoint;
         private byte[] buffer;
         private int bytesRec;
@@ -25,9 +26,10 @@ namespace CommunicationService
 
         public CommunicationService()
         {
+            this.port = 4510;
             this.ipHost = Dns.GetHostEntry("");
             this.ipAddr = ipHost.AddressList[2];
-            this.ipEndPoint = new IPEndPoint(ipAddr, 4510);
+            this.ipEndPoint = new IPEndPoint(ipAddr, this.port);
             this.buffer = new byte[1024];
             this.sServer = new Socket(
                 this.ipAddr.AddressFamily,
