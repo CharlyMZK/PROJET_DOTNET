@@ -7,6 +7,15 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TextBlock Text="QR code page" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="QR code page" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="58,10,53,250"/>
+        <Grid>
+            <Image
+            Name="QRCodeImg"
+            Height="100"
+            Margin="100,100,100,0"
+            VerticalAlignment="Top"
+            Source="{Binding ImageSource}"
+            RenderTransformOrigin="1.204,1.504"/>
+        </Grid>
     </Grid>
 </UserControl>

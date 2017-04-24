@@ -2,7 +2,7 @@
 
 namespace NotificationProject.Model
 {
-    public class Message
+    public class Message : BaseMessage
     {
         public string TypeMessage {get; set;}
         public string Connection { get; set; }

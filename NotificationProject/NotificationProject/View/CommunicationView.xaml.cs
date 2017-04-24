@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace NotificationProject.View
     public partial class CommunicationView : UserControl
     {
         private bool serverStarted = false;
-        CommunicationService.CommunicationService communicationServer;
+        BusinessLayer.CommunicationService communicationServer;
 
         public CommunicationView() 
         {
@@ -33,7 +34,7 @@ namespace NotificationProject.View
             if (!serverStarted)
             {
                 serverStarted = true;
-                communicationServer = new CommunicationService.CommunicationService();
+                communicationServer = new CommunicationService();
                 buttonStartServer.Content = "Stop server";
             }else
             {
