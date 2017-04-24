@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DataAccess.Model;
 using NotificationProject.HelperClasses;
+
 
 namespace NotificationProject.ViewModel
 {
@@ -14,6 +16,7 @@ namespace NotificationProject.ViewModel
 
         private string _communicationStatus;
         private ICommand _startServerCommand;
+      //  private List<>
 
         #endregion
 

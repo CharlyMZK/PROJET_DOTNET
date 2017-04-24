@@ -1,6 +1,6 @@
-﻿using NotificationProject.Model.Base;
+﻿using DataAccess.Model.Base;
 
-namespace NotificationProject.Model
+namespace DataAccess.Model
 {
     public class Message
     {

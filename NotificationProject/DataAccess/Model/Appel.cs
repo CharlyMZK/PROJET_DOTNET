@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NotificationProject.Model
+namespace DataAccess.Model
 {
     public class Appel
     {
