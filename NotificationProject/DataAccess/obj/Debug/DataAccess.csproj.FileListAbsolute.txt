@@ -3,3 +3,8 @@ C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProj
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProject\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProject\DataAccess\obj\Debug\DataAccess.dll
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProject\DataAccess\obj\Debug\DataAccess.pdb
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\DataAccess\obj\Debug\DataAccess.dll
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\DataAccess\obj\Debug\DataAccess.pdb
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\DataAccess\bin\Debug\DataAccess.dll
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\DataAccess\bin\Debug\DataAccess.pdb

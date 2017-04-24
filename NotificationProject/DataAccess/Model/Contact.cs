@@ -1,4 +1,4 @@
-﻿namespace NotificationProject.Model
+﻿namespace DataAccess.Model
 {
     public class Contact
     {
