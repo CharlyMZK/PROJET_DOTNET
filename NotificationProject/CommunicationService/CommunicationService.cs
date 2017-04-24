@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
-namespace CommunicationService
+namespace BusinessLayer
 {
     public class CommunicationService
     {
@@ -118,8 +118,20 @@ namespace CommunicationService
             }
 
             Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - " + bytesRec);
-        } 
+        }
 
+
+        #region getter
+        public IPAddress getIpAddress()
+        {
+            return ipAddr;
+        }
+
+        public int getPort()
+        {
+            return port;
+        }
+        #endregion
 
     } 
 }

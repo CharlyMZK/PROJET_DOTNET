@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationProject", "NotificationProject\NotificationProject.csproj", "{DA8E5ED7-5508-47D0-B8A7-E2FA718D5CFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicationService", "CommunicationService\CommunicationService.csproj", "{70453959-BC46-444F-87BB-9AC8B51B1C98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "CommunicationService\BusinessLayer.csproj", "{70453959-BC46-444F-87BB-9AC8B51B1C98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{75103AD1-4836-4F9C-A77E-F0FCBF9E0E30}"
 EndProject

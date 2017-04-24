@@ -8,6 +8,7 @@ using DataAccess.Model;
 using NotificationProject.HelperClasses;
 using System.Net.Sockets;
 using System.Collections.ObjectModel;
+using BusinessLayer;
 
 namespace NotificationProject.ViewModel
 {
@@ -114,7 +115,7 @@ namespace NotificationProject.ViewModel
 
         private void StartServer()
         {
-            CommunicationService.CommunicationService cs = new CommunicationService.CommunicationService();
+            CommunicationService cs = new CommunicationService();
             cs.callBackAfterConnexion = CallBackAfterConnexion;
             cs.callBackAfterAnalysis = CallBackAfterAnalysis;
             CommunicationStatus = "Server Started"; 
