@@ -69,3 +69,15 @@ C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\Notif
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.pdb
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\DataAccess.dll
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\DataAccess.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\WPFNotification.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\de\System.Windows.Interactivity.resources.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\en\System.Windows.Interactivity.resources.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\es\System.Windows.Interactivity.resources.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\it\System.Windows.Interactivity.resources.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\ru\System.Windows.Interactivity.resources.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
