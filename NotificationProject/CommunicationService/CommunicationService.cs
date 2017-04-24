@@ -20,6 +20,8 @@ namespace CommunicationService
         private int bytesRec;
         private string theMessageToReceive;
         private string response;
+        public Action<String> callBackAfterConnexion { get; set; }
+        public Action<String> callBackAfterAnalysis { get; set; } 
 
         public CommunicationService()
         {
@@ -27,7 +29,6 @@ namespace CommunicationService
             this.ipAddr = ipHost.AddressList[2];
             this.ipEndPoint = new IPEndPoint(ipAddr, 4510);
             this.buffer = new byte[1024];
-
             this.sServer = new Socket(
                 this.ipAddr.AddressFamily,
                 SocketType.Stream,
@@ -67,12 +68,15 @@ namespace CommunicationService
                 buffer,
                 0,
                 buffer.Length,
-                SocketFlags.None,
+                SocketFlags.None, 
                 new AsyncCallback(ReceiveCallback),
                 obj
             );
-
-
+            if(callBackAfterConnexion != null)
+            {
+                callBackAfterConnexion("acceptCallback");
+            }
+            
         }
 
         private void ReceiveCallback(IAsyncResult ar) 
@@ -91,10 +95,9 @@ namespace CommunicationService
                 Console.WriteLine("{0} Error code: {1}.", e.Message, e.ErrorCode);
                
             }
-           
 
-            Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - "+ bytesRec);
 
+            Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - " + bytesRec);
         } 
 
 

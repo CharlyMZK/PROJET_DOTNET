@@ -1,0 +1,6 @@
+c:\users\mzk\documents\visual studio 2015\Projects\CommunicationClient\CommunicationClient\bin\Debug\CommunicationClient.exe.config
+c:\users\mzk\documents\visual studio 2015\Projects\CommunicationClient\CommunicationClient\obj\Debug\CommunicationClient.csprojResolveAssemblyReference.cache
+c:\users\mzk\documents\visual studio 2015\Projects\CommunicationClient\CommunicationClient\bin\Debug\CommunicationClient.exe
+c:\users\mzk\documents\visual studio 2015\Projects\CommunicationClient\CommunicationClient\bin\Debug\CommunicationClient.pdb
+c:\users\mzk\documents\visual studio 2015\Projects\CommunicationClient\CommunicationClient\obj\Debug\CommunicationClient.exe
+c:\users\mzk\documents\visual studio 2015\Projects\CommunicationClient\CommunicationClient\obj\Debug\CommunicationClient.pdb

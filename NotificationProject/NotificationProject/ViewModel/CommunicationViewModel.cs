@@ -66,10 +66,22 @@ namespace NotificationProject.ViewModel
             return (CommunicationStatus != "Server Started");
         }
 
+        public void CallBackAfterAnalysis(String message)
+        {
+            CommunicationStatus = message; 
+        }
+
+        public void CallBackAfterConnexion(String message)
+        {
+            CommunicationStatus = message;
+        }
+
+
         private void StartServer()
         {
             CommunicationService.CommunicationService cs = new CommunicationService.CommunicationService();
-            CommunicationStatus = "Server Started";
+            cs.callBackAfterConnexion = CallBackAfterConnexion; 
+            CommunicationStatus = "Server Started"; 
         }
 
 
