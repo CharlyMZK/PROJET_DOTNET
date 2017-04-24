@@ -16,7 +16,7 @@ namespace NotificationProject.ViewModel
 
         private string _communicationStatus;
         private ICommand _startServerCommand;
-      //  private List<>
+        private List<Device> _listDevices;
 
         #endregion
 
@@ -44,6 +44,23 @@ namespace NotificationProject.ViewModel
                 _communicationStatus = value;
                 // Tell to the view that communicationStatus has changed
                 OnPropertyChanged("CommunicationStatus");
+            }
+        }
+
+        public List<Device> ListDevices
+        {
+            get
+            {
+                if(_listDevices == null)
+                {
+                    _listDevices = new List<Device>();
+                }
+                return _listDevices;
+            }
+            set
+            {
+                _listDevices = value;
+                OnPropertyChanged("ListDevices");
             }
         }
 
