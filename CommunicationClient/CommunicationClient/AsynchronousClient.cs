@@ -75,8 +75,9 @@ namespace CommunicationClient
                 // Begin sending the data to the remote device.
                 client.BeginSend(byteData, 0, byteData.Length, SocketFlags.None,
                     new AsyncCallback(SendCallback), client);*/
+
                 String theMessageToSend = "test"; 
-                byte[] msg = Encoding.Unicode.GetBytes(theMessageToSend + "<Client Quit>");
+                byte[] msg = Encoding.Unicode.GetBytes(theMessageToSend); 
                 // Blocks until send returns.
                 int i = client.Send(msg);
                 Console.WriteLine("Sent {0} bytes.", i); 

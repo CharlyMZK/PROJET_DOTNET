@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="CommunicationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StateObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">

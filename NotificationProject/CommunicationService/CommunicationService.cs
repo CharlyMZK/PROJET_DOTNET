@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.Sockets;
 
 namespace BusinessLayer
-{ 
+{
     public class CommunicationService
     {
         private Socket sServer;                                                // -- Server
