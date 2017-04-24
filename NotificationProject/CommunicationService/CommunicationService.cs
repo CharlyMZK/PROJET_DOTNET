@@ -9,43 +9,49 @@ using System.Net;
 using System.Net.Sockets;
 
 namespace BusinessLayer
-{
+{ 
     public class CommunicationService
     {
-        private Socket sServer;
-        private IPHostEntry ipHost { get; set; }
-        private IPAddress ipAddr { get; set; }
-        private int port { get; set; }
-        private IPEndPoint ipEndPoint;
-        private byte[] buffer;
-        private int bytesRec;
-        private string theMessageToReceive;
-        private string response;
-        public Action<String,Socket> callBackAfterConnexion { get; set; }
-        public Action<String,String> callBackAfterAnalysis { get; set; } 
+        private Socket sServer;                                                // -- Server
+        private IPHostEntry ipHost { get; set; }                               // -- Server host ip
+        private IPAddress ipAddr { get; set; }                                 // -- Server ip adress
+        private IPEndPoint ipEndPoint { get; set; }                            // -- Server ip endpoint
+        private int port { get; set; }                                         // -- Server port
+        private byte[] buffer;                                                 // -- Buffer who contains
+        public Action<String, Socket> callBackAfterConnexion { get; set; }      // -- Callback called when connexion happens
+        public Action<String, String> callBackAfterAnalysis { get; set; }       // -- Callback called when a message income
 
+
+        // -- 
+        // -- Constructor
+        // --
         public CommunicationService()
         {
-            this.port = 4510;
-            this.ipHost = Dns.GetHostEntry("");
-            this.ipAddr = ipHost.AddressList[2];
-            this.ipEndPoint = new IPEndPoint(ipAddr, this.port);
-            this.buffer = new byte[1024];
-            this.sServer = new Socket(
-                this.ipAddr.AddressFamily,
-                SocketType.Stream,
-                ProtocolType.Tcp
-            );
-            Console.WriteLine("Mon adresse - " + ipAddr);
-            sServer.Bind(ipEndPoint);
-            sServer.Listen(1);
+            this.port = 4510;                                               // -- Server port
 
-            AsyncCallback aCallback = new AsyncCallback(acceptCallback); 
-            sServer.BeginAccept(aCallback, sServer);
+            this.ipHost = Dns.GetHostEntry("");                             // -- 
+            this.ipAddr = ipHost.AddressList[2];                            // -- Server IP configuration
+            this.ipEndPoint = new IPEndPoint(ipAddr, this.port);            // -- 
+
+            this.buffer = new byte[1024];                                   // -- Buffer containing bits
+
+            this.sServer = new Socket(                                      // -- 
+                this.ipAddr.AddressFamily,                                  // -- Server instanciation
+                SocketType.Stream,                                          // --
+                ProtocolType.Tcp                                            // --
+            );
+            sServer.Bind(ipEndPoint);                                       // -- Server bind
+            sServer.Listen(1);                                              // -- Server listen
+
+            AsyncCallback aCallback = new AsyncCallback(acceptCallback);    // -- Launch callback
+            sServer.BeginAccept(aCallback, sServer);                        // -- Launch accepts
 
 
         }
 
+        // -- 
+        // -- Close server
+        // --
         public void disconnect()
         {
             sServer.Shutdown(SocketShutdown.Both);
@@ -53,55 +59,47 @@ namespace BusinessLayer
 
         }
 
-
+        // -- 
+        // -- Accept connexion callback - Happens when a connexion is instanciated
+        // --
         private void acceptCallback(IAsyncResult result)
         {
-            
+            Socket listener = (Socket)result.AsyncState;                    // -- Client listener
+            Socket handler = listener.EndAccept(result);                    // -- Client handler
 
-            Socket listener = (Socket)result.AsyncState;
-            Socket handler = listener.EndAccept(result);
-            Object[] obj = new Object[2]; 
+            Object[] obj = new Object[2];                                   // --
+            obj[0] = buffer;                                                // -- Listener & Handler container
+            obj[1] = handler;                                               // --
 
-            obj[0] = buffer;
-            obj[1] = handler;
+            var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];    // -- 
+            IPAddress rIp = IPAddress.Parse(sIp);                           // -- Get & parse client IP
+            string clientIp = rIp.ToString();                               // --
 
-            var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];
-            IPAddress rIp = IPAddress.Parse(sIp);
-            string clientIp = rIp.ToString();
-             
-            Console.WriteLine("Something is coming ! - " +clientIp);
-
-           
-
-
-
-            handler.BeginReceive(
-                buffer, 
-                0,
-                buffer.Length,
-                SocketFlags.None, 
-                new AsyncCallback(ReceiveCallback),
-                obj 
+            handler.BeginReceive(                                           // -- 
+                buffer,                                                     // --  Handler begin receive
+                0,                                                          // --  ReceiveCallback will be triggered if a message arrive
+                buffer.Length,                                              // -- 
+                SocketFlags.None,                                           // -- 
+                new AsyncCallback(ReceiveCallback),                         // -- 
+                obj                                                         // -- 
             );
 
-  
-            if (callBackAfterConnexion != null)
-            {
-                callBackAfterConnexion(clientIp, handler);
+
+            if (callBackAfterConnexion != null)                             
+            {           
+                callBackAfterConnexion(clientIp, handler);                  // -- Callback if a connexion is set
             }
-            
+
         }
-         
+
         private void ReceiveCallback(IAsyncResult ar) 
         { 
             int i;
             
             try
             {
-                // Get reply from the server.
-                i = sServer.Receive(buffer); 
-                /*Console.WriteLine(Encoding.UTF8.GetString(buffer));
-                Console.WriteLine("RECEIVE BUFFER : " + System.Text.Encoding.Unicode.GetString(buffer));*/
+
+                i = sServer.Receive(buffer);    // -- Receive message from client
             }
             catch (SocketException e) 
             {
@@ -109,15 +107,11 @@ namespace BusinessLayer
                
             }
 
-            Console.WriteLine("------ >" + System.Text.Encoding.Unicode.GetString(buffer));
-
-
             if (callBackAfterAnalysis != null)
-            {
-                callBackAfterAnalysis("Device1", System.Text.Encoding.Unicode.GetString(buffer)); 
+            { 
+                callBackAfterAnalysis("Device1", System.Text.Encoding.Unicode.GetString(buffer));   // -- Launch callback 
             }
 
-            Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - " + bytesRec);
         }
 
 
