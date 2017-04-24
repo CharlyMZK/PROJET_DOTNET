@@ -46,3 +46,6 @@ C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\obj
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.baml
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin\Debug\DataAccess.dll
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin\Debug\DataAccess.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\NotificationProject.exe.config
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.exe
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.pdb
