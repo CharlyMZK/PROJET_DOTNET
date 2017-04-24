@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DataAccess.Model;
 using NotificationProject.HelperClasses;
-
+using System.Net.Sockets;
 
 namespace NotificationProject.ViewModel
 {
@@ -64,6 +64,13 @@ namespace NotificationProject.ViewModel
             }
         }
 
+        public void addDevice(Device device)
+        {
+            ListDevices.Add(device);
+            OnPropertyChanged("ListDevices");
+        } 
+
+
         public ICommand StartServerCommand
         {
             get
@@ -86,14 +93,19 @@ namespace NotificationProject.ViewModel
             return (CommunicationStatus != "Server Started");
         }
 
-        public void CallBackAfterAnalysis(String message)
+        public void CallBackAfterAnalysis(String name,String message)
         {
-            CommunicationStatus = message; 
+           Device device = ListDevices.First(d => d.name == name);
+            device.listMessages.Add(null);
+           CommunicationStatus = message; 
         }
 
-        public void CallBackAfterConnexion(String message)
+        public void CallBackAfterConnexion(String name, Socket clientDevice)
         {
-            CommunicationStatus = message;
+            Device newDevice = new Device(name, clientDevice);
+            addDevice(newDevice); 
+            CommunicationStatus = "Device connecté";
+
         }
 
 

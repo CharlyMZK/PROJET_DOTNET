@@ -8,3 +8,7 @@ C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\DataAccess\obj\Debug\Da
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\DataAccess\obj\Debug\DataAccess.pdb
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\DataAccess\bin\Debug\DataAccess.dll
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\DataAccess\bin\Debug\DataAccess.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\DataAccess\bin\Debug\DataAccess.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\DataAccess\bin\Debug\DataAccess.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\DataAccess\obj\Debug\DataAccess.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\DataAccess\obj\Debug\DataAccess.pdb

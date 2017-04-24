@@ -67,3 +67,5 @@ C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\Notif
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.csproj.GenerateResource.Cache
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.exe
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\DataAccess.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\DataAccess.pdb
