@@ -44,6 +44,10 @@
     <Compile Include="Model\Appel.cs" />
     <Compile Include="Model\Base\BaseMessage.cs" />
     <Compile Include="Model\Contact.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="Model\Device.cs" />
+>>>>>>> 626db12b05f1f631444de9051943871cb77d2722
     <Compile Include="Model\Message.cs" />
     <Compile Include="Model\Sms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
