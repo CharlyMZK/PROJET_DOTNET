@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DataAccess.Model;
 using NotificationProject.HelperClasses;
+using System.Collections.ObjectModel;
 
 
 namespace NotificationProject.ViewModel
@@ -16,7 +17,7 @@ namespace NotificationProject.ViewModel
 
         private string _communicationStatus;
         private ICommand _startServerCommand;
-        private List<Device> _listDevices;
+        private ObservableCollection<Device> _listDevices;
 
         #endregion
 
@@ -47,13 +48,13 @@ namespace NotificationProject.ViewModel
             }
         }
 
-        public List<Device> ListDevices
+        public ObservableCollection<Device> ListDevices
         {
             get
             {
                 if(_listDevices == null)
                 {
-                    _listDevices = new List<Device>();
+                    _listDevices = new ObservableCollection<Device>();
                 }
                 return _listDevices;
             }
@@ -101,7 +102,10 @@ namespace NotificationProject.ViewModel
         {
             CommunicationService.CommunicationService cs = new CommunicationService.CommunicationService();
             cs.callBackAfterConnexion = CallBackAfterConnexion; 
-            CommunicationStatus = "Server Started"; 
+            CommunicationStatus = "Server Started";
+            var test = new Device();
+            test.Name = "test";
+            ListDevices.Add(test);
         }
 
 

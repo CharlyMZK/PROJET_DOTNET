@@ -44,3 +44,5 @@ C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin\Debug\CommunicationService.pdb
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.g.cs
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.baml
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin\Debug\DataAccess.dll
+C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin\Debug\DataAccess.pdb
