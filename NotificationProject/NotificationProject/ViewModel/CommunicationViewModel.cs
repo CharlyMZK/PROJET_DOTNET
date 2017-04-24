@@ -67,7 +67,9 @@ namespace NotificationProject.ViewModel
 
         public void addDevice(Device device)
         {
+            ListDevices = new ObservableCollection<Device>();
             ListDevices.Add(device);
+           
             OnPropertyChanged("ListDevices");
         } 
 
@@ -85,7 +87,7 @@ namespace NotificationProject.ViewModel
                 }
                 return _startServerCommand;
             }
-        }
+        } 
 
         // Determine if the StartServer command should or should not be used
         private bool CanStartServer()
@@ -96,7 +98,8 @@ namespace NotificationProject.ViewModel
 
         public void CallBackAfterAnalysis(String name,String message)
         {
-            Device device = ListDevices.First(d => d.Name == name);
+            // Device device = ListDevices.First(d => d.Name == name);
+            Device device = ListDevices.First();
             device.ListMessages.Add(new Notification("", message));
             CommunicationStatus = message;    
         }

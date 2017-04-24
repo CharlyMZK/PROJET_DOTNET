@@ -54,7 +54,7 @@ namespace CommunicationService
 
         private void acceptCallback(IAsyncResult result)
         {
-            Console.WriteLine("Something is coming !");
+            
 
             Socket listener = (Socket)result.AsyncState;
             Socket handler = listener.EndAccept(result);
@@ -63,10 +63,18 @@ namespace CommunicationService
             obj[0] = buffer;
             obj[1] = handler;
 
+            var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];
+            IPAddress rIp = IPAddress.Parse(sIp);
+            string clientIp = rIp.ToString();
+             
+            Console.WriteLine("Something is coming ! - " +clientIp);
+
+           
+
 
 
             handler.BeginReceive(
-                buffer,
+                buffer, 
                 0,
                 buffer.Length,
                 SocketFlags.None, 
@@ -77,7 +85,7 @@ namespace CommunicationService
   
             if (callBackAfterConnexion != null)
             {
-                callBackAfterConnexion("Device1",handler);
+                callBackAfterConnexion(clientIp, handler);
             }
             
         }
