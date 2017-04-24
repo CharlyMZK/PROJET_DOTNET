@@ -92,8 +92,14 @@ namespace NotificationProject.ViewModel
         // Determine if the StartServer command should or should not be used
         private bool CanStartServer()
         {
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(@"log.txt", true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + "Server started");
+            }
             //Should use a bool and not the value of CommunicationStatus, but work for the moment
             return (CommunicationStatus != "Server Started");
+
         }
 
         public void CallBackAfterAnalysis(String name,String message)
@@ -101,13 +107,24 @@ namespace NotificationProject.ViewModel
             // Device device = ListDevices.First(d => d.Name == name);
             Device device = ListDevices.First();
             device.ListMessages.Add(new Notification("", message));
+            
+            using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@"log.txt", true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
+            }
             CommunicationStatus = message;    
         }
 
         public void CallBackAfterConnexion(String name, Socket clientDevice)
         {
             Device newDevice = new Device(name, clientDevice);
-            addDevice(newDevice); 
+            addDevice(newDevice);
+            using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@"log.txt", true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + "- Device connecté : " + newDevice.Name);
+            }
             CommunicationStatus = "Device connecté";
 
         }
