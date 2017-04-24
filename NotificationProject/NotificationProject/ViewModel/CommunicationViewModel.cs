@@ -98,7 +98,7 @@ namespace NotificationProject.ViewModel
         {
            Device device = ListDevices.First(d => d.Name == name); 
            device.ListMessages.Add(new Notification("", message))
-            CommunicationStatus = message;   
+            CommunicationStatus = message;    
         }
 
         public void CallBackAfterConnexion(String name, Socket clientDevice)
