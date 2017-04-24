@@ -3,3 +3,7 @@ C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProj
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProject\CommunicationService\obj\Debug\CommunicationService.dll
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProject\CommunicationService\obj\Debug\CommunicationService.pdb
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJETDOTNET\NotificationProject\CommunicationService\obj\Debug\CommunicationService.csprojResolveAssemblyReference.cache
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\CommunicationService\bin\Debug\CommunicationService.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\CommunicationService\bin\Debug\CommunicationService.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\CommunicationService\obj\Debug\CommunicationService.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\CommunicationService\obj\Debug\CommunicationService.pdb

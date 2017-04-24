@@ -44,3 +44,26 @@ C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\bin\Debug\CommunicationService.pdb
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.g.cs
 C:\Users\Bob\Documents\Cours\alcatel\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.baml
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\NotificationProject.exe.config
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.csprojResolveAssemblyReference.cache
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.g.cs
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\View\HomeView.g.cs
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\View\MainWindow.g.cs
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\View\QRCodeView.g.cs
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\App.g.cs
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject_MarkupCompile.cache
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject_MarkupCompile.lref
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\NotificationProject.exe
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\NotificationProject.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\CommunicationService.dll
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\bin\Debug\CommunicationService.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\View\CommunicationView.baml
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\View\HomeView.baml
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\View\MainWindow.baml
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\View\QRCodeView.baml
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.g.resources
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.Properties.Resources.resources
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.csproj.GenerateResource.Cache
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.exe
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\NotificationProject\NotificationProject\obj\Debug\NotificationProject.pdb

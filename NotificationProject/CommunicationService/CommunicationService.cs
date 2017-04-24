@@ -96,7 +96,10 @@ namespace CommunicationService
                
             }
 
-
+            if (callBackAfterAnalysis != null)
+            {
+                callBackAfterAnalysis("acceptCallback");
+            }
             Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - " + bytesRec);
         } 
 
