@@ -96,8 +96,8 @@ namespace NotificationProject.ViewModel
 
         public void CallBackAfterAnalysis(String name,String message)
         {
-           Device device = ListDevices.First(d => d.Name == name); 
-           device.ListMessages.Add(new Notification("", message))
+            Device device = ListDevices.First(d => d.Name == name);
+            device.ListMessages.Add(new Notification("", message));
             CommunicationStatus = message;    
         }
 
