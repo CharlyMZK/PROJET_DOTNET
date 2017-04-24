@@ -54,52 +54,67 @@ namespace CommunicationService
 
         private void acceptCallback(IAsyncResult result)
         {
-            Console.WriteLine("Something is coming !");
+            
 
             Socket listener = (Socket)result.AsyncState;
             Socket handler = listener.EndAccept(result);
+            Object[] obj = new Object[2]; 
 
-            byte[] buffer = new byte[1024];
-            Object[] obj = new Object[2];
             obj[0] = buffer;
             obj[1] = handler;
 
+            var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];
+            IPAddress rIp = IPAddress.Parse(sIp);
+            string clientIp = rIp.ToString();
+             
+            Console.WriteLine("Something is coming ! - " +clientIp);
+
+           
+
+
+
             handler.BeginReceive(
-                buffer,
+                buffer, 
                 0,
                 buffer.Length,
                 SocketFlags.None, 
                 new AsyncCallback(ReceiveCallback),
-                obj
+                obj 
             );
-            if(callBackAfterConnexion != null)
+
+  
+            if (callBackAfterConnexion != null)
             {
-                callBackAfterConnexion("Device1",handler);
+                callBackAfterConnexion(clientIp, handler);
             }
             
         }
-
+         
         private void ReceiveCallback(IAsyncResult ar) 
-        {
+        { 
             int i;
-            byte[] bytes = new byte[256];
+            
             try
             {
-                
                 // Get reply from the server.
-                i = sServer.Receive(bytes);
-                Console.WriteLine(Encoding.UTF8.GetString(bytes));
+                i = sServer.Receive(buffer); 
+                /*Console.WriteLine(Encoding.UTF8.GetString(buffer));
+                Console.WriteLine("RECEIVE BUFFER : " + System.Text.Encoding.Unicode.GetString(buffer));*/
             }
-            catch (SocketException e)
+            catch (SocketException e) 
             {
                 Console.WriteLine("{0} Error code: {1}.", e.Message, e.ErrorCode);
                
             }
 
+            Console.WriteLine("------ >" + System.Text.Encoding.Unicode.GetString(buffer));
+
+
             if (callBackAfterAnalysis != null)
             {
-                callBackAfterAnalysis("Device1","acceptCallback"); 
+                callBackAfterAnalysis("Device1", System.Text.Encoding.Unicode.GetString(buffer)); 
             }
+
             Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - " + bytesRec);
         } 
 

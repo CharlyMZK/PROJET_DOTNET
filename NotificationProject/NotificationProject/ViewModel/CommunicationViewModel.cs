@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DataAccess.Model;
 using NotificationProject.HelperClasses;
+using System.Net.Sockets;
 using System.Collections.ObjectModel;
-
 
 namespace NotificationProject.ViewModel
 {
@@ -65,6 +65,15 @@ namespace NotificationProject.ViewModel
             }
         }
 
+        public void addDevice(Device device)
+        {
+            ListDevices = new ObservableCollection<Device>();
+            ListDevices.Add(device);
+           
+            OnPropertyChanged("ListDevices");
+        } 
+
+
         public ICommand StartServerCommand
         {
             get
@@ -78,7 +87,7 @@ namespace NotificationProject.ViewModel
                 }
                 return _startServerCommand;
             }
-        }
+        } 
 
         // Determine if the StartServer command should or should not be used
         private bool CanStartServer()
@@ -87,25 +96,29 @@ namespace NotificationProject.ViewModel
             return (CommunicationStatus != "Server Started");
         }
 
-        public void CallBackAfterAnalysis(String message)
+        public void CallBackAfterAnalysis(String name,String message)
         {
-            CommunicationStatus = message; 
+            // Device device = ListDevices.First(d => d.Name == name);
+            Device device = ListDevices.First();
+            device.ListMessages.Add(new Notification("", message));
+            CommunicationStatus = message;    
         }
 
-        public void CallBackAfterConnexion(String message)
+        public void CallBackAfterConnexion(String name, Socket clientDevice)
         {
-            CommunicationStatus = message;
+            Device newDevice = new Device(name, clientDevice);
+            addDevice(newDevice); 
+            CommunicationStatus = "Device connecté";
+
         }
 
 
         private void StartServer()
         {
             CommunicationService.CommunicationService cs = new CommunicationService.CommunicationService();
-            cs.callBackAfterConnexion = CallBackAfterConnexion; 
-            CommunicationStatus = "Server Started";
-            var test = new Device();
-            test.Name = "test";
-            ListDevices.Add(test);
+            cs.callBackAfterConnexion = CallBackAfterConnexion;
+            cs.callBackAfterAnalysis = CallBackAfterAnalysis;
+            CommunicationStatus = "Server Started"; 
         }
 
 
