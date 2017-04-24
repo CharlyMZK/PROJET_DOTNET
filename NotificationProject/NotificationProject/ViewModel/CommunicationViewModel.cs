@@ -97,7 +97,7 @@ namespace NotificationProject.ViewModel
         {
            Device device = ListDevices.First(d => d.name == name);
            device.listMessages.Add(new Notification("",message)); 
-           CommunicationStatus = message; 
+           CommunicationStatus = message;  
         }
 
         public void CallBackAfterConnexion(String name, Socket clientDevice)
@@ -112,7 +112,8 @@ namespace NotificationProject.ViewModel
         private void StartServer()
         {
             CommunicationService.CommunicationService cs = new CommunicationService.CommunicationService();
-            cs.callBackAfterConnexion = CallBackAfterConnexion; 
+            cs.callBackAfterConnexion = CallBackAfterConnexion;
+            cs.callBackAfterAnalysis = CallBackAfterAnalysis;
             CommunicationStatus = "Server Started"; 
         }
 
