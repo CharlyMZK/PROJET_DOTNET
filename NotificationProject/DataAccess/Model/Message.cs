@@ -1,6 +1,6 @@
 ﻿using DataAccess.Model.Base;
 
-namespace DataAccess.Model
+namespace NotificationProject.Model
 {
     public class Message
     {

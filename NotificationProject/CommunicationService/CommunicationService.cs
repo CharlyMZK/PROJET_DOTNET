@@ -20,8 +20,8 @@ namespace CommunicationService
         private int bytesRec;
         private string theMessageToReceive;
         private string response;
-        public Action<String> callBackAfterConnexion { get; set; }
-        public Action<String> callBackAfterAnalysis { get; set; } 
+        public Action<String,Socket> callBackAfterConnexion { get; set; }
+        public Action<String,String> callBackAfterAnalysis { get; set; } 
 
         public CommunicationService()
         {
@@ -74,7 +74,7 @@ namespace CommunicationService
             );
             if(callBackAfterConnexion != null)
             {
-                callBackAfterConnexion("acceptCallback");
+                callBackAfterConnexion("Device1",handler);
             }
             
         }
@@ -96,7 +96,10 @@ namespace CommunicationService
                
             }
 
-
+            if (callBackAfterAnalysis != null)
+            {
+                callBackAfterAnalysis("Device1","acceptCallback"); 
+            }
             Console.WriteLine("OMG UN RESULTAT, VITE CONVERTIR DE BYTE EN STRING !!! - " + bytesRec);
         } 
 
