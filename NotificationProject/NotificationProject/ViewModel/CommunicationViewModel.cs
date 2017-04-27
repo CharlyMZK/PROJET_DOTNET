@@ -105,8 +105,8 @@ namespace NotificationProject.ViewModel
         public void CallBackAfterAnalysis(String name,String message)
         {
             // Device device = ListDevices.First(d => d.Name == name);
-            Device device = ListDevices.First();
-            device.ListMessages.Add(new Notification("", message));
+            /*Device device = ListDevices.First();
+            device.ListMessages.Add(new Notification("", message));*/
             
             using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
@@ -120,11 +120,11 @@ namespace NotificationProject.ViewModel
         {
             Device newDevice = new Device(name, clientDevice);
             addDevice(newDevice);
-            using (System.IO.StreamWriter file =
+            /*using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
                 file.WriteLine(DateTime.Now.ToString() + "- Device connecté : " + newDevice.Name);
-            }
+            }*/
             CommunicationStatus = "Device connecté";
 
         }
