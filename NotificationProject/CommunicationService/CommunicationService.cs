@@ -18,9 +18,9 @@ namespace BusinessLayer
         private IPEndPoint ipEndPoint { get; set; }                            // -- Server ip endpoint
         private int port { get; set; }                                         // -- Server port
         private byte[] buffer;                                                 // -- Buffer who contains
-        public Action<String, Socket> callBackAfterConnexion { get; set; }      // -- Callback called when connexion happens
-        public Action<String, String> callBackAfterAnalysis { get; set; }       // -- Callback called when a message income
-
+        public Action<String, Socket> callBackAfterConnexion { get; set; }     // -- Callback called when connexion happens
+        public Action<String, String> callBackAfterAnalysis { get; set; }      // -- Callback called when a message income
+        public int nbDevices = 10;                                             // -- Max device number
 
         // -- 
         // -- Constructor
@@ -41,7 +41,7 @@ namespace BusinessLayer
                 ProtocolType.Tcp                                            // --
             );
             sServer.Bind(ipEndPoint);                                       // -- Server bind
-            sServer.Listen(1);                                              // -- Server listen
+            sServer.Listen(nbDevices);                                      // -- Server listen
 
             AsyncCallback aCallback = new AsyncCallback(acceptCallback);    // -- Launch callback
             sServer.BeginAccept(aCallback, sServer);                        // -- Launch accepts
@@ -103,13 +103,19 @@ namespace BusinessLayer
             }
             catch (SocketException e) 
             {
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@"log.txt", true))
+                {
+                    file.WriteLine("{0} Error code: {1}.", e.Message, e.ErrorCode);
+                }
                 Console.WriteLine("{0} Error code: {1}.", e.Message, e.ErrorCode);
                
             }
 
             if (callBackAfterAnalysis != null)
-            { 
-                callBackAfterAnalysis("Device1", System.Text.Encoding.Unicode.GetString(buffer));   // -- Launch callback 
+            {  
+                callBackAfterAnalysis("Device1", System.Text.Encoding.UTF8.GetString(buffer));   // -- Launch callback 
+
             }
 
         }

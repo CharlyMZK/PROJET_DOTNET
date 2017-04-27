@@ -9,3 +9,4 @@ C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\Commu
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\CommunicationClient\CommunicationClient\bin\Debug\CommunicationClient.pdb
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\CommunicationClient\CommunicationClient\obj\Debug\CommunicationClient.exe
 C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\CommunicationClient\CommunicationClient\obj\Debug\CommunicationClient.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\GITDOTNET\PROJET_DOTNET\CommunicationClient\CommunicationClient\obj\Debug\CommunicationClient.csprojResolveAssemblyReference.cache
