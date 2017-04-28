@@ -17,8 +17,24 @@ namespace NotificationProject.ViewModel
         #region Fields
 
         private string _communicationStatus;
-        private ICommand _startServerCommand;
         private ObservableCollection<Device> _listDevices;
+        private ICommand _startServerCommand;
+        public ObservableCollection<Device> ListDevices
+        {
+            get
+            {
+                if (_listDevices == null)
+                {
+                    _listDevices = new ObservableCollection<Device>();
+                }
+                return _listDevices;
+            }
+            set
+            {
+                _listDevices = value;
+                OnPropertyChanged("ListDevices");
+            }
+        }
 
         #endregion
 
@@ -29,6 +45,13 @@ namespace NotificationProject.ViewModel
             {
                 return "Communication";
             }
+        }
+
+        public void addDevice(Device device)
+        {
+            ListDevices = new ObservableCollection<Device>(ListDevices);  // -- TODO : Its supposed to work without this line, but it throw an exception.
+            ListDevices.Add(device);                                      // -- Add device on list
+            OnPropertyChanged("ListDevices");                             // -- Notify the changes
         }
 
         public String CommunicationStatus
@@ -48,96 +71,6 @@ namespace NotificationProject.ViewModel
                 OnPropertyChanged("CommunicationStatus");
             }
         }
-
-        public ObservableCollection<Device> ListDevices
-        {
-            get
-            {
-                if(_listDevices == null)
-                {
-                    _listDevices = new ObservableCollection<Device>();
-                }
-                return _listDevices;
-            }
-            set
-            {
-                _listDevices = value;
-                OnPropertyChanged("ListDevices");
-            }
-        }
-
-        public void addDevice(Device device)
-        { 
-            ListDevices = new ObservableCollection<Device>(ListDevices);  // -- TODO : Its supposed to work without this line, but it throw an exception.
-            ListDevices.Add(device);                                      // -- Add device on list
-            OnPropertyChanged("ListDevices");                             // -- Notify the changes
-        } 
-
-         
-        public ICommand StartServerCommand
-        {
-            get
-            {
-                if(_startServerCommand == null)
-                {
-                    _startServerCommand = new RelayCommand(
-                        param => this.StartServer(),
-                        param =>this.CanStartServer()
-                        );
-                }
-                return _startServerCommand;
-            }
-        } 
-
-        // Determine if the StartServer command should or should not be used
-        private bool CanStartServer()
-        {
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(@"log.txt", true))
-            {
-                file.WriteLine(DateTime.Now.ToString() + "Server started");
-            }
-            //Should use a bool and not the value of CommunicationStatus, but work for the moment
-            return (CommunicationStatus != "Server Started");
-
-        }
-
-        public void CallBackAfterAnalysis(String name,String message)
-        {
-            // Device device = ListDevices.First(d => d.Name == name);
-            /*Device device = ListDevices.First();
-            device.ListMessages.Add(new Notification("", message));*/
-            
-            /*using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(@"log.txt", true))
-            {
-                file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
-            }*/
-            CommunicationStatus = message;    
-        }
-
-        public void CallBackAfterConnexion(String name, Socket clientDevice)
-        {
-            Device newDevice = new Device(name, clientDevice);
-            addDevice(newDevice);
-            /*using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(@"log.txt", true))
-            {
-                file.WriteLine(DateTime.Now.ToString() + "- Device connecté : " + newDevice.Name);
-            }*/
-            CommunicationStatus = "Device connecté";
-
-        }
-
-
-        private void StartServer()
-        {
-            CommunicationService cs = new CommunicationService();
-            cs.callBackAfterConnexion = CallBackAfterConnexion;
-            cs.callBackAfterAnalysis = CallBackAfterAnalysis;
-            CommunicationStatus = "Server Started"; 
-        }
-
 
         #endregion
     }

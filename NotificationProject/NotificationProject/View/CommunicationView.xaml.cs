@@ -28,21 +28,6 @@ namespace NotificationProject.View
             InitializeComponent();
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-
-            if (!serverStarted)
-            {
-                serverStarted = true;
-                communicationServer = new CommunicationService();
-                buttonStartServer.Content = "Stop server";
-            }else
-            {
-                serverStarted = false;
-                communicationServer.disconnect();   
-            }
-            
-        }
     }
 }
  

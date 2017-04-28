@@ -3,6 +3,12 @@ using System.Linq;
 using System.Windows.Input;
 using System.ComponentModel;
 using NotificationProject.HelperClasses;
+using BusinessLayer;
+using System;
+using System.Net.Sockets;
+using NotificationProject.View;
+using DataAccess.Model;
+using System.Collections.ObjectModel;
 
 namespace NotificationProject.ViewModel
 {
@@ -13,9 +19,10 @@ namespace NotificationProject.ViewModel
         private ICommand _changePageCommand;
         private IPageViewModel _currentPageViewModel;
         private List<IPageViewModel> _pageViewModels;
-
+       
         public event PropertyChangedEventHandler PropertyChanged;
 
+     
         #endregion Fields
 
         #region constructor
@@ -28,6 +35,7 @@ namespace NotificationProject.ViewModel
             PageViewModels.Add(new CommunicationViewModel());
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
+            this.StartServer();
         }
 
         #endregion
@@ -97,5 +105,51 @@ namespace NotificationProject.ViewModel
 
         #endregion
 
+
+
+        public void CallBackAfterAnalysis(String name, String message)
+        {
+            // Device device = ListDevices.First(d => d.Name == name);
+            /*Device device = ListDevices.First();
+            device.ListMessages.Add(new Notification("", message));*/
+
+            /*using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@"log.txt", true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
+            }*/
+
+
+            CommunicationViewModel communicationViewModel = (CommunicationViewModel) PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+            communicationViewModel.CommunicationStatus = message;
+
+        }
+
+        public void CallBackAfterConnexion(String name, Socket clientDevice)
+        {
+            Device newDevice = new Device(name, clientDevice);
+            
+            /*using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@"log.txt", true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + "- Device connecté : " + newDevice.Name);
+            }*/
+            CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+            communicationViewModel.CommunicationStatus = "Device connecté";
+            communicationViewModel.addDevice(newDevice);
+
+        }
+
+
+        private void StartServer()
+        {
+            CommunicationService cs = new CommunicationService();
+            cs.callBackAfterConnexion = CallBackAfterConnexion;
+            cs.callBackAfterAnalysis = CallBackAfterAnalysis;
+            CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+            communicationViewModel.CommunicationStatus = "Server Started";
+        }
+
     }
 }
+ 
