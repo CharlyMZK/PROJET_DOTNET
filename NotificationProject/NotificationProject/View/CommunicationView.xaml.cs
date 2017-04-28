@@ -34,7 +34,7 @@ namespace NotificationProject.View
             if (!serverStarted)
             {
                 serverStarted = true;
-                communicationServer = CommunicationService.getInstance();
+                communicationServer = new CommunicationService();
                 buttonStartServer.Content = "Stop server";
             }else
             {

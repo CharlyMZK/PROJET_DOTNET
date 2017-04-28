@@ -76,7 +76,7 @@ namespace CommunicationClient
                 client.BeginSend(byteData, 0, byteData.Length, SocketFlags.None,
                     new AsyncCallback(SendCallback), client);*/
 
-                String theMessageToSend = "test<Client Quit>";   
+                String theMessageToSend = "test<Client Quit>";  
                 byte[] msg = Encoding.UTF8.GetBytes(theMessageToSend); 
                 // Blocks until send returns.
                 int i = client.Send(msg);

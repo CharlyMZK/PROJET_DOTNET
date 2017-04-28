@@ -21,7 +21,7 @@ namespace NotificationProject.ViewModel
         #region fields
         public QRCodeViewModel()
         {
-            var _communicationService = CommunicationService.getInstance();
+           /* var _communicationService = CommunicationService.getInstance();
             var qrValue = _communicationService.getIpAddress().ToString() + " : " + _communicationService.getPort().ToString();
             var barcodeWriter = loadQRCode();
             using (var bitmap = barcodeWriter.Write(qrValue))
@@ -29,7 +29,7 @@ namespace NotificationProject.ViewModel
                 var hbmp = bitmap.GetHbitmap();
                 var source = Imaging.CreateBitmapSourceFromHBitmap(hbmp, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
                 ImageSource = source;
-            }
+            }*/
         }
         private BitmapSource _imageSource;
 

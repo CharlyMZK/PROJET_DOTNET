@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 // Usings for Sockets
 using System.Net;
 using System.Net.Sockets;
-using Newtonsoft.Json.Linq;
 
 namespace BusinessLayer
 {
@@ -203,8 +202,7 @@ namespace BusinessLayer
                     {
                         // Convert byte array to string
                         str = content.Substring(0, content.LastIndexOf("<Client Quit>"));
-                        JObject jsonMessage = JSONHandler.stringToJson(str);
-                        JSONHandler.interpretation(jsonMessage); 
+                           
                     
                     }
                     else
