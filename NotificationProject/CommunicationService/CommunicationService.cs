@@ -22,7 +22,21 @@ namespace BusinessLayer
         public Action<String, Socket> callBackAfterConnexion { get; set; }     // -- Callback called when connexion happens
         public Action<String, String> callBackAfterAnalysis { get; set; }      // -- Callback called when a message income
         public int nbDevices = 10;                                             // -- Max device 
-        public CommunicationService instance;
+        public static CommunicationService uniqueInstance;
+
+        public static CommunicationService getInstance()
+        {
+            if (uniqueInstance == null)
+            {
+               
+                if (uniqueInstance == null)
+                {
+                    uniqueInstance = new CommunicationService();
+                }
+                
+            }
+            return uniqueInstance;
+        }
 
 
 
@@ -51,17 +65,17 @@ namespace BusinessLayer
                 IPHostEntry ipHost = Dns.GetHostEntry("");
 
                 // Gets first IP address associated with a localhost 
-                IPAddress ipAddr = ipHost.AddressList[2];
+                this.ipAddr = ipHost.AddressList[2];
 
                 // Sets port
                 this.port = 4510;
 
                 // Creates a network endpoint 
-                ipEndPoint = new IPEndPoint(ipAddr, port);
+                ipEndPoint = new IPEndPoint(this.ipAddr, port);
 
                 // Create one Socket object to listen the incoming connection 
                 sListener = new Socket(
-                    ipAddr.AddressFamily,
+                    this.ipAddr.AddressFamily,
                     SocketType.Stream,
                     ProtocolType.Tcp
                     );
