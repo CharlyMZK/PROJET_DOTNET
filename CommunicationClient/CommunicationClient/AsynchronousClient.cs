@@ -58,7 +58,8 @@ namespace CommunicationClient
                     SocketType.Stream, ProtocolType.Tcp);
 
                 // Connect to the remote endpoint.  
-                client.BeginConnect(remoteEP,new AsyncCallback(ConnectCallback), client);
+                client.BeginConnect(remoteEP,
+                    new AsyncCallback(ConnectCallback), client);
 
                 connectDone.WaitOne();
 
@@ -75,8 +76,8 @@ namespace CommunicationClient
                 client.BeginSend(byteData, 0, byteData.Length, SocketFlags.None,
                     new AsyncCallback(SendCallback), client);*/
 
-                String theMessageToSend = "aaa<Client Quit>";  
-                byte[] msg = Encoding.Unicode.GetBytes(theMessageToSend); 
+                String theMessageToSend = "test<Client Quit>";   
+                byte[] msg = Encoding.UTF8.GetBytes(theMessageToSend); 
                 // Blocks until send returns.
                 int i = client.Send(msg);
                 Console.WriteLine("Sent {0} bytes.", i); 

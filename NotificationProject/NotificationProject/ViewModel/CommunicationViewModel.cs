@@ -108,11 +108,11 @@ namespace NotificationProject.ViewModel
             /*Device device = ListDevices.First();
             device.ListMessages.Add(new Notification("", message));*/
             
-            using (System.IO.StreamWriter file =
+            /*using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
                 file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
-            }
+            }*/
             CommunicationStatus = message;    
         }
 

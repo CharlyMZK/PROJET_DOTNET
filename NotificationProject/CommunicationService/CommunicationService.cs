@@ -22,9 +22,12 @@ namespace BusinessLayer
         public Action<String, Socket> callBackAfterConnexion { get; set; }     // -- Callback called when connexion happens
         public Action<String, String> callBackAfterAnalysis { get; set; }      // -- Callback called when a message income
         public int nbDevices = 10;                                             // -- Max device 
+        public CommunicationService instance;
+
+
 
         // --  
-        // -- Constructor
+        // -- Constructor 
         // --
         public CommunicationService()
         {
@@ -177,7 +180,7 @@ namespace BusinessLayer
 
                 if (bytesRead > 0)
                 {
-                    content += Encoding.Unicode.GetString(buffer, 0,
+                    content += Encoding.UTF8.GetString(buffer, 0,
                         bytesRead);
 
                     // If message contains "<Client Quit>", finish receiving
