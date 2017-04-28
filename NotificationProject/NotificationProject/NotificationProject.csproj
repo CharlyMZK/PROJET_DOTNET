@@ -175,7 +175,7 @@
       <Name>BusinessLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{75103AD1-4836-4F9C-A77E-F0FCBF9E0E30}</Project>
+      <Project>{75103ad1-4836-4f9c-a77e-f0fcbf9e0e30}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
