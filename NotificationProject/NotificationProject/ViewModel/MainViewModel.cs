@@ -8,7 +8,7 @@ using System;
 using System.Net.Sockets;
 using NotificationProject.View;
 using DataAccess.Model;
-using System.Collections.ObjectModel;
+
 
 namespace NotificationProject.ViewModel
 {
@@ -19,6 +19,7 @@ namespace NotificationProject.ViewModel
         private ICommand _changePageCommand;
         private IPageViewModel _currentPageViewModel;
         private List<IPageViewModel> _pageViewModels;
+        private DevicesController _devicesController;
        
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -32,7 +33,7 @@ namespace NotificationProject.ViewModel
             //Add the pages
             PageViewModels.Add(new HomeViewModel());
             PageViewModels.Add(new QRCodeViewModel());
-            PageViewModels.Add(new CommunicationViewModel());
+            PageViewModels.Add(new CommunicationViewModel(Devices));
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
             this.StartServer();
@@ -64,6 +65,20 @@ namespace NotificationProject.ViewModel
                     _currentPageViewModel = value;
                     OnPropertyChanged("CurrentPageViewModel");
                 }
+            }
+        }
+
+        public DevicesController Devices
+        {
+            get
+            {
+                if (_devicesController == null)
+                    _devicesController = new DevicesController();
+                return _devicesController;
+            }
+            set
+            {
+                _devicesController = value;
             }
         }
         #endregion
@@ -136,8 +151,8 @@ namespace NotificationProject.ViewModel
             }*/
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Device connecté";
-            communicationViewModel.addDevice(newDevice);
-
+            Devices.addDevice(newDevice);
+            OnPropertyChanged("Devices");
         }
 
 
@@ -149,6 +164,7 @@ namespace NotificationProject.ViewModel
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Server Started";
         }
+
 
     }
 }

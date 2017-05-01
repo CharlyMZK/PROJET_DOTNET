@@ -44,6 +44,7 @@
     <Compile Include="Model\Base\BaseMessage.cs" />
     <Compile Include="Model\Contact.cs" />
     <Compile Include="Model\Device.cs" />
+    <Compile Include="Model\DevicesController.cs" />
     <Compile Include="Model\Message.cs" />
     <Compile Include="Model\Notification.cs" />
     <Compile Include="Model\Sms.cs" />

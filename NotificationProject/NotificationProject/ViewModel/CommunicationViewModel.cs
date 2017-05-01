@@ -17,41 +17,40 @@ namespace NotificationProject.ViewModel
         #region Fields
 
         private string _communicationStatus;
-        private ObservableCollection<Device> _listDevices;
+        private DevicesController _devicesController;
         private ICommand _startServerCommand;
+
+        #endregion
+
+       public CommunicationViewModel(DevicesController devicesController)
+        {
+            _devicesController = devicesController;
+        }
+
+        #region Properties
         public ObservableCollection<Device> ListDevices
         {
             get
             {
-                if (_listDevices == null)
+                if (_devicesController == null)
                 {
-                    _listDevices = new ObservableCollection<Device>();
+                    _devicesController = new DevicesController();
                 }
-                return _listDevices;
+                return _devicesController.Devices;
             }
             set
             {
-                _listDevices = value;
+                _devicesController.Devices = value;
                 OnPropertyChanged("ListDevices");
             }
         }
 
-        #endregion
-
-        #region Properties
         public String Name
         {
             get
             {
                 return "Communication";
             }
-        }
-
-        public void addDevice(Device device)
-        {
-            ListDevices = new ObservableCollection<Device>(ListDevices);  // -- TODO : Its supposed to work without this line, but it throw an exception.
-            ListDevices.Add(device);                                      // -- Add device on list
-            OnPropertyChanged("ListDevices");                             // -- Notify the changes
         }
 
         public String CommunicationStatus
@@ -71,6 +70,9 @@ namespace NotificationProject.ViewModel
                 OnPropertyChanged("CommunicationStatus");
             }
         }
+
+        #endregion
+        #region method
 
         #endregion
     }
