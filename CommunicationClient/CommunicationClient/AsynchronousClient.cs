@@ -50,7 +50,7 @@ namespace CommunicationClient
                 // The name of the   
                 // remote device is "host.contoso.com".  
                 IPHostEntry ipHost = Dns.GetHostEntry(""); 
-                IPAddress ipAddress = ipHost.AddressList[2];
+                IPAddress ipAddress = ipHost.AddressList[1];
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, 4510);
 
                 // Create a TCP/IP socket.  
