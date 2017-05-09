@@ -8,7 +8,7 @@ using System;
 using System.Net.Sockets;
 using NotificationProject.View;
 using DataAccess.Model;
-
+using Newtonsoft.Json.Linq;
 
 namespace NotificationProject.ViewModel
 {
@@ -124,31 +124,45 @@ namespace NotificationProject.ViewModel
 
         public void CallBackAfterAnalysis(String name, String message)
         {
-            // Device device = ListDevices.First(d => d.Name == name);
-            /*Device device = ListDevices.First();
-            device.ListMessages.Add(new Notification("", message));*/
 
-            /*using (System.IO.StreamWriter file =
+            using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
                 file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
-            }*/
+            }
 
+            JObject jsonMessage = JSONHandler.stringToJson(message);
+            Notification notification = JSONHandler.interpretation(jsonMessage);
+            Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+            device.ListMessages.Add(notification);
+
+            // -- TODO : Remove its a test
+            foreach (Device d in Devices.Devices)
+            {
+                Console.WriteLine("Nom du device : " + d.Name);
+                foreach (Notification n in d.ListMessages)
+                {
+                    Console.WriteLine("Message : " + n.Message);
+
+                }
+            }
+            // -- 
 
             CommunicationViewModel communicationViewModel = (CommunicationViewModel) PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = message;
+
 
         }
 
         public void CallBackAfterConnexion(String name, Socket clientDevice)
         {
             Device newDevice = new Device(name, clientDevice);
-            
-            /*using (System.IO.StreamWriter file =
+           
+            using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
                 file.WriteLine(DateTime.Now.ToString() + "- Device connecté : " + newDevice.Name);
-            }*/
+            }
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Device connecté";
             Devices.addDevice(newDevice);

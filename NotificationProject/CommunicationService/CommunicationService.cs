@@ -65,7 +65,7 @@ namespace BusinessLayer
                 IPHostEntry ipHost = Dns.GetHostEntry("");
 
                 // Gets first IP address associated with a localhost 
-                this.ipAddr = ipHost.AddressList[2];
+                this.ipAddr = ipHost.AddressList[1];
 
                 // Sets port
                 this.port = 4510;
@@ -173,6 +173,7 @@ namespace BusinessLayer
         private void ReceiveCallback(IAsyncResult ar) 
         {
             String str = "";
+            string clientIp = "";
             try
             {
                 // Fetch a user-defined object that contains information 
@@ -188,6 +189,10 @@ namespace BusinessLayer
                 // Received message 
                 string content = string.Empty;
 
+                // -- Client ip
+                var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];    // -- 
+                IPAddress rIp = IPAddress.Parse(sIp);                           // -- Get & parse client IP
+                clientIp = rIp.ToString();
 
                 // The number of bytes received. 
                 int bytesRead = handler.EndReceive(ar);
@@ -224,7 +229,7 @@ namespace BusinessLayer
             Console.WriteLine("STR : " + str); 
             if (callBackAfterAnalysis != null)
             {
-                callBackAfterAnalysis("Device1", str);   // -- Launch callback 
+                callBackAfterAnalysis(clientIp, str);   // -- Launch callback 
             }
         }
 

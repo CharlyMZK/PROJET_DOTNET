@@ -49,8 +49,8 @@ namespace CommunicationClient
                 // Establish the remote endpoint for the socket.  
                 // The name of the   
                 // remote device is "host.contoso.com".  
-                IPHostEntry ipHost = Dns.GetHostEntry(""); 
-                IPAddress ipAddress = ipHost.AddressList[2];
+                IPHostEntry ipHost = Dns.GetHostEntry("");
+                IPAddress ipAddress = ipHost.AddressList[1];
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, 4510);
 
                 // Create a TCP/IP socket.  
@@ -76,12 +76,16 @@ namespace CommunicationClient
                 client.BeginSend(byteData, 0, byteData.Length, SocketFlags.None,
                     new AsyncCallback(SendCallback), client);*/
 
-                String theMessageToSend = "test<Client Quit>";  
-                byte[] msg = Encoding.UTF8.GetBytes(theMessageToSend); 
+                //String theMessageToSend = "test<Client Quit>";  
+
+                String theMessageToSend = "{type: 'Notification',conn: '192.168.42.1@4552',author: 'MOMO-LG',object: {application: 'Messenger',Message: 'Send nudes',heureDate: '2017-04-28 09:06:34'}}<Client Quit>";
+
+
+                byte[] msg = Encoding.UTF8.GetBytes(theMessageToSend);
                 // Blocks until send returns.
                 int i = client.Send(msg);
-                Console.WriteLine("Sent {0} bytes.", i); 
-                
+                Console.WriteLine("Sent {0} bytes.", i);
+
 
                 // Receive the response from the remote device.  
                 Receive(client);
