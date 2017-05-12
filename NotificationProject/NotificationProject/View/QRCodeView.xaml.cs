@@ -25,7 +25,5 @@ namespace NotificationProject.View
         {
             InitializeComponent();
         }
-
-       
     }
 }

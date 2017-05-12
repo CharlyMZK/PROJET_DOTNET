@@ -131,10 +131,10 @@ namespace NotificationProject.ViewModel
                 file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
             }
 
-            JObject jsonMessage = JSONHandler.stringToJson(message);
-            Notification notification = JSONHandler.interpretation(jsonMessage);
-            Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
-            device.ListMessages.Add(notification);
+            //JObject jsonMessage = JSONHandler.stringToJson(message);
+            //Notification notification = JSONHandler.interpretation(jsonMessage);
+            //Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+            //device.ListMessages.Add(notification);
 
             // -- TODO : Remove its a test
             foreach (Device d in Devices.Devices)

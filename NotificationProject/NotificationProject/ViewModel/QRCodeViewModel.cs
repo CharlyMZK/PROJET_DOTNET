@@ -12,6 +12,8 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Drawing;
 using BusinessLayer;
+using System.Threading;
+using System.Windows.Input;
 
 namespace NotificationProject.ViewModel
 {
@@ -21,19 +23,16 @@ namespace NotificationProject.ViewModel
         #region fields
         public QRCodeViewModel()
         {
-           /* var _communicationService = CommunicationService.getInstance();
-            var qrValue = _communicationService.getIpAddress().ToString() + " : " + _communicationService.getPort().ToString();
-            var barcodeWriter = loadQRCode();
-            using (var bitmap = barcodeWriter.Write(qrValue))
-            {
-                var hbmp = bitmap.GetHbitmap();
-                var source = Imaging.CreateBitmapSourceFromHBitmap(hbmp, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-                ImageSource = source;
-            }*/
+            ButtonCommand = new RelayCommand(o => QRCodeButtonClick("QRCodeButton"));
+            this.IsEnabled = false;
+            loadQRCode();
         }
         private BitmapSource _imageSource;
-
-
+        private int randomNumberLimitedInTime { get; set; }
+        private static readonly Random getrandom = new Random();
+        private static readonly object syncLock = new object();
+        public ICommand ButtonCommand { get; set; }
+        private bool IsEnabled { get; set; }
         #endregion
         #region methods
         public String Name
@@ -44,6 +43,12 @@ namespace NotificationProject.ViewModel
             }
         }
 
+        private void QRCodeButtonClick(object sender)
+        {
+            Console.WriteLine("Regénération du QRCode...");
+            this.IsEnabled = false;
+            loadQRCode();
+        }
         public BitmapSource ImageSource
         {
             get
@@ -61,8 +66,12 @@ namespace NotificationProject.ViewModel
             }
         }
 
+        public bool CanClick()
+        {
+            return this.IsEnabled;
+        }
 
-        public BarcodeWriter loadQRCode()
+        public BarcodeWriter createQRCode()
         {
             var qrcode = new QRCodeWriter();
 
@@ -79,6 +88,44 @@ namespace NotificationProject.ViewModel
             return barcodeWriter;
         }
 
-    #endregion
+        public void loadQRCode()
+        {
+            var _communicationService = CommunicationService.getInstance();
+            var getRandomNumber = GetRandomNumber(100000, 999999);
+            this.randomNumberLimitedInTime = getRandomNumber;
+            deleteNumberAfterXTime(10000);
+            var qrValue = _communicationService.getIpAddress().ToString() + " : " + _communicationService.getPort().ToString() + " : " + getRandomNumber.ToString();
+            var barcodeWriter = createQRCode();
+            using (var bitmap = barcodeWriter.Write(qrValue))
+            {
+                var hbmp = bitmap.GetHbitmap();
+                var source = Imaging.CreateBitmapSourceFromHBitmap(hbmp, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                ImageSource = source;
+            }
+        }
+
+        public int GetRandomNumber(int min, int max)
+        {
+            lock (syncLock)
+            { // synchronize
+                return getrandom.Next(min, max);
+            }
+        }
+
+        public void deleteNumberAfterXTime(int XTime)
+        {
+            Console.WriteLine("QR Code Random access number : " + this.randomNumberLimitedInTime.ToString());
+            Console.WriteLine("Application thread ID: {0}", Thread.CurrentThread.ManagedThreadId);
+            var t = Task.Run(async () =>
+            {
+                await Task.Delay(XTime);
+                Console.WriteLine("Task thread ID: {0}", Thread.CurrentThread.ManagedThreadId);
+                this.randomNumberLimitedInTime = GetRandomNumber(100000, 999999);
+                this.IsEnabled = true;
+                Console.WriteLine("QR Code Random access number : " + this.randomNumberLimitedInTime.ToString());
+            });
+        }
+        #endregion
+
     }
 }

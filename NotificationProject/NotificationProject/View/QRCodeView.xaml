@@ -11,11 +11,14 @@
         <Grid>
             <Image
             Name="QRCodeImg"
-            Height="100"
-            Margin="100,100,100,0"
+            Height="147"
+            Margin="78,82,78,0"
             VerticalAlignment="Top"
             Source="{Binding ImageSource}"
             RenderTransformOrigin="1.204,1.504"/>
+            <Button x:Name="QRCodeButton" Content="Générer QRCode" IsEnabled="{Binding Path=CanClick}" HorizontalAlignment="Left" Margin="78,234,0,0" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding ButtonCommand}"/>
+       
         </Grid>
+
     </Grid>
 </UserControl>
