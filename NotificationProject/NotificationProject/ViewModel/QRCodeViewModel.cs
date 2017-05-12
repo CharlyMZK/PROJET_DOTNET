@@ -23,6 +23,7 @@ namespace NotificationProject.ViewModel
         #region fields
         public QRCodeViewModel()
         {
+            _communicationService = CommunicationService.getInstance();
             ButtonCommand = new RelayCommand(o => QRCodeButtonClick("QRCodeButton"), n => CanClick());
             this.IsEnabled = false;
             loadQRCode();
@@ -33,7 +34,9 @@ namespace NotificationProject.ViewModel
         private static readonly object syncLock = new object();
         public ICommand ButtonCommand { get; set; }
         private bool IsEnabled { get; set; }
+        public CommunicationService _communicationService {get; set;}
         #endregion
+
         #region methods
         public String Name
         {
@@ -90,10 +93,10 @@ namespace NotificationProject.ViewModel
 
         public void loadQRCode()
         {
-            var _communicationService = CommunicationService.getInstance();
+            
             var getRandomNumber = GetRandomNumber(100000, 999999);
-            this.randomNumberLimitedInTime = getRandomNumber;
-            deleteNumberAfterXTime(10000);
+            _communicationService.randomSecretNumberAccess = getRandomNumber;
+            deleteNumberAfterXTime(30000);
             var qrValue = _communicationService.getIpAddress().ToString() + " : " + _communicationService.getPort().ToString() + " : " + getRandomNumber.ToString();
             var barcodeWriter = createQRCode();
             using (var bitmap = barcodeWriter.Write(qrValue))
@@ -114,15 +117,15 @@ namespace NotificationProject.ViewModel
 
         public void deleteNumberAfterXTime(int XTime)
         {
-            Console.WriteLine("QR Code Random access number : " + this.randomNumberLimitedInTime.ToString());
+            Console.WriteLine("QR Code Random access number : " + _communicationService.randomSecretNumberAccess.ToString());
             Console.WriteLine("Application thread ID: {0}", Thread.CurrentThread.ManagedThreadId);
             var t = Task.Run(async () =>
             {
                 await Task.Delay(XTime);
                 Console.WriteLine("Task thread ID: {0}", Thread.CurrentThread.ManagedThreadId);
-                this.randomNumberLimitedInTime = GetRandomNumber(100000, 999999);
+                _communicationService.randomSecretNumberAccess = GetRandomNumber(100000, 999999);
                 this.IsEnabled = true;
-                Console.WriteLine("QR Code Random access number : " + this.randomNumberLimitedInTime.ToString());
+                Console.WriteLine("QR Code Random access number : " + _communicationService.randomSecretNumberAccess.ToString());
             });
         }
         #endregion
