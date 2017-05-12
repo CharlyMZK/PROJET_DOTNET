@@ -172,7 +172,7 @@ namespace NotificationProject.ViewModel
 
         private void StartServer()
         {
-            CommunicationService cs = new CommunicationService();
+            CommunicationService cs = CommunicationService.getInstance();
             cs.callBackAfterConnexion = CallBackAfterConnexion;
             cs.callBackAfterAnalysis = CallBackAfterAnalysis;
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
