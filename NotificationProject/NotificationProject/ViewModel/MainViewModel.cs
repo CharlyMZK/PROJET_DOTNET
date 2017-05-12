@@ -125,18 +125,19 @@ namespace NotificationProject.ViewModel
         public void CallBackAfterAnalysis(String name, String message)
         {
 
-            using (System.IO.StreamWriter file =
+            /*using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
                 file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
-            }
+            }*/
 
-            //JObject jsonMessage = JSONHandler.stringToJson(message);
-            //Notification notification = JSONHandler.interpretation(jsonMessage);
-            //Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
-            //device.ListMessages.Add(notification);
+            JObject jsonMessage = JSONHandler.stringToJson(message);
+            Notification notification = JSONHandler.interpretation(jsonMessage);
+            Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+            device.ListMessages.Add(notification);
 
             // -- TODO : Remove its a test
+            Console.WriteLine("Affichage des devices : "); 
             foreach (Device d in Devices.Devices)
             {
                 Console.WriteLine("Nom du device : " + d.Name);
@@ -169,7 +170,7 @@ namespace NotificationProject.ViewModel
             OnPropertyChanged("Devices");
         }
 
-
+         
         private void StartServer()
         {
             CommunicationService cs = CommunicationService.getInstance();
