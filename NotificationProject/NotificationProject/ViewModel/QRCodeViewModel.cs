@@ -23,7 +23,7 @@ namespace NotificationProject.ViewModel
         #region fields
         public QRCodeViewModel()
         {
-            ButtonCommand = new RelayCommand(o => QRCodeButtonClick("QRCodeButton"));
+            ButtonCommand = new RelayCommand(o => QRCodeButtonClick("QRCodeButton"), n => CanClick());
             this.IsEnabled = false;
             loadQRCode();
         }
