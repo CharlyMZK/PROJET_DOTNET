@@ -91,7 +91,7 @@ namespace BusinessLayer
             {
                 // Places a Socket in a listening state and specifies the maximum 
                 // Length of the pending connections queue 
-                sListener.Listen(10);
+                sListener.Listen(nbDevices);
 
                 // Begins an asynchronous operation to accept an attempt 
                 AsyncCallback aCallback = new AsyncCallback(AcceptCallback);

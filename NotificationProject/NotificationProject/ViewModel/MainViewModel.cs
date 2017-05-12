@@ -124,6 +124,9 @@ namespace NotificationProject.ViewModel
 
         public void CallBackAfterAnalysis(String name, String message)
         {
+            //Création des objets vides
+            Notification notification = new Notification("", "");
+            ConnectionRequest connectionReq = new ConnectionRequest("", "");
 
             using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
@@ -131,8 +134,35 @@ namespace NotificationProject.ViewModel
                 file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
             }
 
+            //Conversion et traitement et parsing d'un JSON
             JObject jsonMessage = JSONHandler.stringToJson(message);
-            Notification notification = JSONHandler.interpretation(jsonMessage);
+            string[] parsedJson = JSONHandler.interpretation(jsonMessage);  
+
+            //Interprétation du JSON parsé
+                //Demande de connexion
+            if(parsedJson[0].ToLower() == "connection")
+            {
+                connectionReq.Appareil = parsedJson[1];
+                connectionReq.Autor = parsedJson[2];
+                //--Demande d'acceptation de connexion--
+                //TODO: créer une méthode qui gère le choix de l'utilisateur JObject messageToDevice = JSONHandler.messageRetour("connected", connectionReq.Appareil, connectionReq.Autor);
+            }
+                //Demande de deconnexion
+            else if(parsedJson[0].ToLower() == "disconnection")
+            {
+                JObject messageToDevice = JSONHandler.messageRetour("disconnected", parsedJson[1], parsedJson[2]);
+                //--Envoi du message
+                
+                //--Deconnexion de l'appareil--
+
+            }
+                //Reception d'un message
+            else if (parsedJson[0].ToLower() == "notification")
+            {
+                notification.Application = parsedJson[1];
+                notification.Message = parsedJson[2];
+            }
+           
             Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
             device.ListMessages.Add(notification);
 
@@ -172,7 +202,7 @@ namespace NotificationProject.ViewModel
 
         private void StartServer()
         {
-            CommunicationService cs = new CommunicationService();
+            CommunicationService cs = CommunicationService.getInstance();
             cs.callBackAfterConnexion = CallBackAfterConnexion;
             cs.callBackAfterAnalysis = CallBackAfterAnalysis;
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
