@@ -65,8 +65,8 @@ namespace BusinessLayer
                 IPHostEntry ipHost = Dns.GetHostEntry("");
 
                 // Gets first IP address associated with a localhost 
-                this.ipAddr = ipHost.AddressList[1];
-
+                this.ipAddr = ipHost.AddressList[2];
+                 
                 // Sets port
                 this.port = 4510;
 
