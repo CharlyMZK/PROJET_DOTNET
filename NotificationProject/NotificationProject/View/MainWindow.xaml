@@ -18,6 +18,9 @@
         <DataTemplate DataType="{x:Type viewModel:CommunicationViewModel}">
             <view:CommunicationView/> 
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:SmsViewModel}">
+            <view:SmsView/>
+        </DataTemplate>
     </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="0,0,1,0">

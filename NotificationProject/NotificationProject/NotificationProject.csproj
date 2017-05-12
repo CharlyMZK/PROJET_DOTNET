@@ -91,11 +91,15 @@
     <Compile Include="ViewModel\CommunicationViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\QRCodeViewModel.cs" />
+    <Compile Include="ViewModel\SmsViewModel.cs" />
     <Compile Include="View\CommunicationView.xaml.cs">
       <DependentUpon>CommunicationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\QRCodeView.xaml.cs">
       <DependentUpon>QRCodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SmsView.xaml.cs">
+      <DependentUpon>SmsView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\CommunicationView.xaml">
       <SubType>Designer</SubType>
@@ -125,6 +129,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\QRCodeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SmsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
