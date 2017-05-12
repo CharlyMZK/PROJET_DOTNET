@@ -138,7 +138,7 @@ namespace NotificationProject.ViewModel
             device.ListMessages.Add(notification);
 
             // -- TODO : Remove its a test
-            Console.WriteLine("Affichage des devices : "); 
+            /*Console.WriteLine("Affichage des devices : "); 
             foreach (Device d in Devices.Devices)
             {
                 Console.WriteLine("Nom du device : " + d.Name);
@@ -147,7 +147,7 @@ namespace NotificationProject.ViewModel
                     Console.WriteLine("Message : " + n.Message);
 
                 }
-            }
+            }*/
             // -- 
 
             CommunicationViewModel communicationViewModel = (CommunicationViewModel) PageViewModels.FirstOrDefault(o => o.Name == "Communication");
