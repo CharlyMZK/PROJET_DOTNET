@@ -169,6 +169,15 @@ namespace NotificationProject.ViewModel
             communicationViewModel.CommunicationStatus = "Device connecté";
             Devices.addDevice(newDevice);
             OnPropertyChanged("Devices");
+            foreach(var view in PageViewModels.Where(o => o.Name== "Communication"))
+            {
+                if (view is ObservableObject)
+                {
+                    ObservableObject test = (ObservableObject)view;
+                    test.OnPropertyChanged("ListDevices");
+                }
+                   
+            }
         }
 
          
