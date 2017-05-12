@@ -23,6 +23,7 @@ namespace BusinessLayer
         public Action<String, String> callBackAfterAnalysis { get; set; }      // -- Callback called when a message income
         public int nbDevices = 10;                                             // -- Max device 
         public static CommunicationService uniqueInstance;
+        public int randomSecretNumberAccess { get; set; }
 
         public static CommunicationService getInstance()
         {
