@@ -12,18 +12,18 @@ namespace DataAccess.Model
     public class Device
     {
         public String Name { get; set; }
-        public List<BaseMessage> ListMessages { get; set; }
+        public List<Notification> ListMessages { get; set; }
         public Socket Handler { get; set; }
 
         public Device()
         {
-            ListMessages = new List<BaseMessage>();
+            ListMessages = new List<Notification>();
         }
 
         public Device(String name, Socket handler)
         {
             this.Name = name;
-            this.ListMessages = new List<BaseMessage>();
+            this.ListMessages = new List<Notification>();
             this.Handler = handler;
         }
     }

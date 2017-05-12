@@ -23,6 +23,7 @@ namespace BusinessLayer
         public Action<String, String> callBackAfterAnalysis { get; set; }      // -- Callback called when a message income
         public int nbDevices = 10;                                             // -- Max device 
         public static CommunicationService uniqueInstance;
+        public int randomSecretNumberAccess { get; set; }
 
         public static CommunicationService getInstance()
         {
@@ -65,8 +66,8 @@ namespace BusinessLayer
                 IPHostEntry ipHost = Dns.GetHostEntry("");
 
                 // Gets first IP address associated with a localhost 
-                this.ipAddr = ipHost.AddressList[1];
-
+                this.ipAddr = ipHost.AddressList[2];
+                Console.WriteLine(this.ipAddr);
                 // Sets port
                 this.port = 4510;
 

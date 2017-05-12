@@ -9,13 +9,14 @@ using NotificationProject.HelperClasses;
 using System.Net.Sockets;
 using System.Collections.ObjectModel;
 using BusinessLayer;
+using DataAccess.Model.Base;
 
 namespace NotificationProject.ViewModel
 {
     class CommunicationViewModel : ObservableObject, IPageViewModel
     {
         #region Fields
-
+        private Device _selectedDevice;
         private string _communicationStatus;
         private DevicesController _devicesController;
         private ICommand _startServerCommand;
@@ -68,6 +69,33 @@ namespace NotificationProject.ViewModel
                 _communicationStatus = value;
                 // Tell to the view that communicationStatus has changed
                 OnPropertyChanged("CommunicationStatus");
+            }
+        }
+
+        public Device SelectedDevice
+        {
+            get
+            {
+                return _selectedDevice;
+            }
+            set
+            {
+                _selectedDevice = value;
+                // Tell to the view that SelectedDevice has changed
+                OnPropertyChanged("Messages");
+            }
+        }
+
+        public ObservableCollection<Notification> Messages
+        {
+            get
+            {
+                if (SelectedDevice != null)
+                {
+                    return new ObservableCollection<Notification>(SelectedDevice.ListMessages);
+                }
+                return null;
+               
             }
         }
 

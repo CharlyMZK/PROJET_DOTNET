@@ -34,6 +34,7 @@ namespace NotificationProject.ViewModel
             PageViewModels.Add(new HomeViewModel());
             PageViewModels.Add(new QRCodeViewModel());
             PageViewModels.Add(new CommunicationViewModel(Devices));
+            PageViewModels.Add(new SmsViewModel());
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
             this.StartServer();
@@ -128,11 +129,11 @@ namespace NotificationProject.ViewModel
             Notification notification = new Notification("", "");
             ConnectionRequest connectionReq = new ConnectionRequest("", "");
 
-            using (System.IO.StreamWriter file =
+            /*using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
                 file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
-            }
+            }*/
 
             //Conversion et traitement et parsing d'un JSON
             JObject jsonMessage = JSONHandler.stringToJson(message);
@@ -167,6 +168,7 @@ namespace NotificationProject.ViewModel
             device.ListMessages.Add(notification);
 
             // -- TODO : Remove its a test
+            /*Console.WriteLine("Affichage des devices : "); 
             foreach (Device d in Devices.Devices)
             {
                 Console.WriteLine("Nom du device : " + d.Name);
@@ -175,7 +177,7 @@ namespace NotificationProject.ViewModel
                     Console.WriteLine("Message : " + n.Message);
 
                 }
-            }
+            }*/
             // -- 
 
             CommunicationViewModel communicationViewModel = (CommunicationViewModel) PageViewModels.FirstOrDefault(o => o.Name == "Communication");
@@ -197,9 +199,18 @@ namespace NotificationProject.ViewModel
             communicationViewModel.CommunicationStatus = "Device connecté";
             Devices.addDevice(newDevice);
             OnPropertyChanged("Devices");
+            foreach(var view in PageViewModels.Where(o => o.Name== "Communication"))
+            {
+                if (view is ObservableObject)
+                {
+                    ObservableObject test = (ObservableObject)view;
+                    test.OnPropertyChanged("ListDevices");
+                }
+                   
+            }
         }
 
-
+         
         private void StartServer()
         {
             CommunicationService cs = CommunicationService.getInstance();
