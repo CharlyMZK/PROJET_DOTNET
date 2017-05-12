@@ -104,7 +104,7 @@ namespace NotificationProject.ViewModel
                 var hbmp = bitmap.GetHbitmap();
                 var source = Imaging.CreateBitmapSourceFromHBitmap(hbmp, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
                 ImageSource = source;
-            }
+            } 
         }
 
         public int GetRandomNumber(int min, int max)
