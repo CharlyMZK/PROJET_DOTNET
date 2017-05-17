@@ -59,6 +59,7 @@ namespace NotificationProject.View
             popOut.To = this.desktopWorkingArea.Right + this.Width;
             popOut.Duration = new Duration(TimeSpan.FromSeconds(1));
             popOut.BeginTime = TimeSpan.FromSeconds(5);
+            popOut.Completed += (sender, eArgs) => this.Close();
             Storyboard.SetTarget(popOut, this.myNotificationWindow);
             Storyboard.SetTargetProperty(popOut, new PropertyPath(LeftProperty));
 
