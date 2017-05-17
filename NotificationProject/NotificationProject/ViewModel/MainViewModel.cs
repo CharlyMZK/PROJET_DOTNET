@@ -34,6 +34,7 @@ namespace NotificationProject.ViewModel
             PageViewModels.Add(new HomeViewModel());
             PageViewModels.Add(new QRCodeViewModel());
             PageViewModels.Add(new CommunicationViewModel(Devices));
+            NotificationViewModel truc = new NotificationViewModel();
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
             this.StartServer();

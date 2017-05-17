@@ -16,7 +16,7 @@
             <view:QRCodeView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:CommunicationViewModel}">
-            <view:CommunicationView/> 
+            <view:CommunicationView/>
         </DataTemplate>
     </Window.Resources>
     <DockPanel>
