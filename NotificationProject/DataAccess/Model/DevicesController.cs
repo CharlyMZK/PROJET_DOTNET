@@ -10,8 +10,15 @@ namespace DataAccess.Model
     public class DevicesController
     {
         public ObservableCollection<Device> Devices { get; set; }
+        private static DevicesController _instance;
 
-        public DevicesController()
+        public static DevicesController getInstance()
+        {
+            if (_instance == null)
+                _instance = new DevicesController();
+            return _instance;
+        }
+        private DevicesController()
         {
             Devices = new ObservableCollection<Device>();
         }

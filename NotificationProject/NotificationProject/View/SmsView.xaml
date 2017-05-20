@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500"/>
@@ -20,6 +21,14 @@
         <TextBox Text="{Binding  PhoneNumber}" Grid.Row="0" Grid.Column="1" />
         <Label Content="Message" Grid.Row="1" Grid.Column="0"></Label>
         <TextBox Text="{Binding SmsText}" Grid.Row="1" Grid.Column="1"/>
-        <Button x:Name="SmsButton" Content="Envoyer Sms" HorizontalAlignment="Left" Margin="78,234,0,0" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding ButtonCommand}"  Grid.Row="2"/>
+        <ListView Margin="10" Name="listDevices" ItemsSource="{Binding ListDevices}" SelectedItem="{Binding SelectedDevice}" Grid.Row="2" Height="100">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="SmsButton" Content="Envoyer Sms" HorizontalAlignment="Left" Margin="78,234,0,0" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding ButtonCommand}"  Grid.Row="3"/>
+
     </Grid>
 </UserControl>

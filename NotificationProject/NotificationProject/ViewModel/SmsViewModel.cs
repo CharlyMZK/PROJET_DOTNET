@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NotificationProject.HelperClasses;
 using System.Windows.Input;
+using DataAccess.Model;
+using System.Collections.ObjectModel;
 
 namespace NotificationProject.ViewModel
 {
@@ -15,12 +17,15 @@ namespace NotificationProject.ViewModel
         public SmsViewModel()
         {
             ButtonCommand = new RelayCommand(o => SendMessage(), n => CanSend());
+            _devicesController = DevicesController.getInstance();
         }
         #endregion
 
         #region Fields
         private string _phoneNumber;
         private string _smsText;
+        public Device _selectedDevice;
+        private DevicesController _devicesController;
         public ICommand ButtonCommand { get; set; }
         #endregion
 
@@ -57,7 +62,33 @@ namespace NotificationProject.ViewModel
                 _smsText = value;
             }
         }
+
+        public ObservableCollection<Device> ListDevices
+        {
+            get
+            {
+                return _devicesController.Devices;
+            }
+            set
+            {
+                _devicesController.Devices = value;
+                OnPropertyChanged("ListDevices");
+            }
+        }
         #endregion
+        public Device SelectedDevice
+        {
+            get
+            {
+                return _selectedDevice;
+            }
+            set
+            {
+                _selectedDevice = value;
+                // Tell to the view that SelectedDevice has changed
+                OnPropertyChanged("Messages");
+            }
+        }
 
         #region Command
         private void SendMessage()
@@ -67,7 +98,7 @@ namespace NotificationProject.ViewModel
 
         private bool CanSend()
         {
-            return !String.IsNullOrEmpty(SmsText) && !String.IsNullOrEmpty(PhoneNumber);
+            return !String.IsNullOrEmpty(SmsText) && !String.IsNullOrEmpty(PhoneNumber) && SelectedDevice!=null;
         }
         #endregion
 

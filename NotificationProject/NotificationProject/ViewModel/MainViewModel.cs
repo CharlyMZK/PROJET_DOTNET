@@ -7,6 +7,7 @@ using BusinessLayer;
 using System;
 using System.Net.Sockets;
 using NotificationProject.View;
+using DataAccess;
 using DataAccess.Model;
 using Newtonsoft.Json.Linq;
 
@@ -33,10 +34,11 @@ namespace NotificationProject.ViewModel
             //Add the pages
             PageViewModels.Add(new HomeViewModel());
             PageViewModels.Add(new QRCodeViewModel());
-            PageViewModels.Add(new CommunicationViewModel(Devices));
+            PageViewModels.Add(new CommunicationViewModel());
             PageViewModels.Add(new SmsViewModel());
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
+            _devicesController = DevicesController.getInstance();
             this.StartServer();
         }
 
@@ -73,8 +75,6 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                if (_devicesController == null)
-                    _devicesController = new DevicesController();
                 return _devicesController;
             }
             set
@@ -189,7 +189,6 @@ namespace NotificationProject.ViewModel
         public void CallBackAfterConnexion(String name, Socket clientDevice)
         {
             Device newDevice = new Device(name, clientDevice);
-           
             using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
@@ -199,15 +198,9 @@ namespace NotificationProject.ViewModel
             communicationViewModel.CommunicationStatus = "Device connecté";
             Devices.addDevice(newDevice);
             OnPropertyChanged("Devices");
-            foreach(var view in PageViewModels.Where(o => o.Name== "Communication"))
-            {
-                if (view is ObservableObject)
-                {
-                    ObservableObject test = (ObservableObject)view;
-                    test.OnPropertyChanged("ListDevices");
-                }
-                   
-            }
+
+            var dataAccess = new XmlAccess("./data.xml");
+            dataAccess.saveDevice(newDevice);
         }
 
          

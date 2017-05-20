@@ -23,9 +23,9 @@ namespace NotificationProject.ViewModel
 
         #endregion
 
-       public CommunicationViewModel(DevicesController devicesController)
+       public CommunicationViewModel()
         {
-            _devicesController = devicesController;
+            _devicesController = DevicesController.getInstance();
         }
 
         #region Properties
@@ -33,10 +33,6 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                if (_devicesController == null)
-                {
-                    _devicesController = new DevicesController();
-                }
                 return _devicesController.Devices;
             }
             set
