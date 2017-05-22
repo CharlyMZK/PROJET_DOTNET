@@ -26,5 +26,14 @@ namespace DataAccess.Model
             this.ListMessages = new List<Notification>();
             this.Handler = handler;
         }
+
+        public void sendMessage(String message)
+        {
+            if(Handler != null)
+            {
+                Handler.Send(Encoding.ASCII.GetBytes(message));
+            }
+            
+        }
     }
 }

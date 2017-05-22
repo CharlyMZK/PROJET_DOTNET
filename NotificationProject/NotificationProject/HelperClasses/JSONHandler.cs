@@ -89,5 +89,11 @@ namespace NotificationProject.HelperClasses
             json = stringToJson(sms);
             return json;
         }
+
+        public static string creationSMSString(string author, string receiver, string appareil, string message)
+        {
+            var dt = DateTime.Now;
+            return @"{type: 'SMS', conn: '" + appareil + "',author: '" + author + "', receiver: '" + receiver + "',object: {application: 'SMS App',Message: '" + message + "',heureDate: '" + dt + "'}}";
+        }
     }
 }
