@@ -234,6 +234,23 @@ namespace BusinessLayer
             }
         }
 
+        // -- 
+        // -- Accept connexion callback - Happens when the server want to send a message to the client
+        // --
+        public void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // A Socket which has sent the data to remote host 
+                Socket handler = (Socket)ar.AsyncState;
+
+                // The number of bytes sent to the Socket 
+                int bytesSend = handler.EndSend(ar);
+                Console.WriteLine(
+                    "Sent {0} bytes to Client", bytesSend);
+            }
+            catch (Exception exc) { Console.WriteLine("SendCallback: "+exc.ToString()); }
+        }
 
         #region getter
         public IPAddress getIpAddress()

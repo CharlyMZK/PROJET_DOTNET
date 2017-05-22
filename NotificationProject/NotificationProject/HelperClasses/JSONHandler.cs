@@ -20,10 +20,12 @@ namespace NotificationProject.HelperClasses
         {
             string[] res = new string[3] { "", "", "" }; 
             string type = (string)json["type"];
+            string conn = (string)(json["conn"]);
             if (type != "")
             {
                 int port;
-                string[] adressBuffer = ((string)(json["conn"])).Split(':');
+                string[] adressBuffer = conn.Split('@');
+                //ip@port
                 IPAddress ipAddress = IPAddress.Parse(adressBuffer[0]);
                 port = Int32.Parse(adressBuffer[1]);
                 string author = (string)json["author"];
