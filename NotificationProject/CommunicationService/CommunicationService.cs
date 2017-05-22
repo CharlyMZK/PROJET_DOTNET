@@ -23,6 +23,7 @@ namespace BusinessLayer
         public Action<String, String> callBackAfterAnalysis { get; set; }      // -- Callback called when a message income
         public int nbDevices = 10;                                             // -- Max device 
         public static CommunicationService uniqueInstance;
+        public int randomSecretNumberAccess { get; set; }
 
         public static CommunicationService getInstance()
         {
@@ -65,8 +66,8 @@ namespace BusinessLayer
                 IPHostEntry ipHost = Dns.GetHostEntry("");
 
                 // Gets first IP address associated with a localhost 
-                this.ipAddr = ipHost.AddressList[1];
-
+                this.ipAddr = ipHost.AddressList[2];
+                Console.WriteLine(this.ipAddr);
                 // Sets port
                 this.port = 4510;
 
@@ -91,7 +92,7 @@ namespace BusinessLayer
             {
                 // Places a Socket in a listening state and specifies the maximum 
                 // Length of the pending connections queue 
-                sListener.Listen(10);
+                sListener.Listen(nbDevices);
 
                 // Begins an asynchronous operation to accept an attempt 
                 AsyncCallback aCallback = new AsyncCallback(AcceptCallback);
@@ -233,6 +234,23 @@ namespace BusinessLayer
             }
         }
 
+        // -- 
+        // -- Accept connexion callback - Happens when the server want to send a message to the client
+        // --
+        public void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // A Socket which has sent the data to remote host 
+                Socket handler = (Socket)ar.AsyncState;
+
+                // The number of bytes sent to the Socket 
+                int bytesSend = handler.EndSend(ar);
+                Console.WriteLine(
+                    "Sent {0} bytes to Client", bytesSend);
+            }
+            catch (Exception exc) { Console.WriteLine("SendCallback: "+exc.ToString()); }
+        }
 
         #region getter
         public IPAddress getIpAddress()

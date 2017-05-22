@@ -23,6 +23,9 @@ namespace NotificationProject.View
     {
         private Storyboard myStoryboard;
         private Rect desktopWorkingArea;
+        public string title { get; set; }
+        public string content { get; set; }
+
         public NotificationView()
         {
             InitializeComponent();
@@ -35,7 +38,6 @@ namespace NotificationProject.View
             this.myStoryboard = new Storyboard();
             this.setSlideInAnimation();
             this.setSlideOutAnimation();
-
             this.Show();
         }
 
@@ -66,8 +68,10 @@ namespace NotificationProject.View
             this.myStoryboard.Children.Add(popOut);
         }
 
-        public void displayMessage()
+        public void displayMessage(string title, string content)
         {
+            this.title = "test";
+            this.content = content;
             this.myStoryboard.Begin(this);
         }
     }

@@ -16,12 +16,12 @@ namespace NotificationProject.ViewModel
         public NotificationViewModel()
         {
             this.myView = new NotificationView();
-            this.displayMessage("Message", "Salut c'est Thierry Lafronde !");
+            this.createNotification("Message", "Salut c'est Thierry Lafronde !");
         }
 
-        public void displayMessage(String title, String content)
+        public void createNotification(String title, String content)
         {
-            this.myView.displayMessage();
+            this.myView.displayMessage(title, content);
         }
     }
 }

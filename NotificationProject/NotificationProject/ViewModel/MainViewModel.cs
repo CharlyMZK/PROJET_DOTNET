@@ -7,6 +7,7 @@ using BusinessLayer;
 using System;
 using System.Net.Sockets;
 using NotificationProject.View;
+using DataAccess;
 using DataAccess.Model;
 using Newtonsoft.Json.Linq;
 
@@ -33,10 +34,12 @@ namespace NotificationProject.ViewModel
             //Add the pages
             PageViewModels.Add(new HomeViewModel());
             PageViewModels.Add(new QRCodeViewModel());
-            PageViewModels.Add(new CommunicationViewModel(Devices));
-            NotificationViewModel truc = new NotificationViewModel();
+            PageViewModels.Add(new CommunicationViewModel());
+            PageViewModels.Add(new SmsViewModel());
+            NotificationViewModel notif = new NotificationViewModel();
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
+            _devicesController = DevicesController.getInstance();
             this.StartServer();
         }
 
@@ -73,8 +76,6 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                if (_devicesController == null)
-                    _devicesController = new DevicesController();
                 return _devicesController;
             }
             set
@@ -125,19 +126,60 @@ namespace NotificationProject.ViewModel
 
         public void CallBackAfterAnalysis(String name, String message)
         {
+            //Création des objets vides
+            Notification notification = new Notification("", "");
+            ConnectionRequest connectionReq = new ConnectionRequest("", "");
 
-            using (System.IO.StreamWriter file =
+            /*using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
                 file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
-            }
+            }*/
 
+            //Conversion et traitement et parsing d'un JSON
             JObject jsonMessage = JSONHandler.stringToJson(message);
-            Notification notification = JSONHandler.interpretation(jsonMessage);
-            Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
-            device.ListMessages.Add(notification);
+            string[] parsedJson = JSONHandler.interpretation(jsonMessage);  
+
+            //Interprétation du JSON parsé
+                //Demande de connexion
+            if(parsedJson[0].ToLower() == "connection")
+            {
+                connectionReq.Appareil = parsedJson[1];
+                connectionReq.Autor = parsedJson[2];
+                var pairaineKey = parsedJson[2].Split(':');
+                //--Demande d'acceptation de connexion--
+                //TODO: créer une méthode qui gère le choix de l'utilisateur JObject messageToDevice = JSONHandler.messageRetour("connected", connectionReq.Appareil, connectionReq.Autor);
+                if(int.Parse(pairaineKey[2]) == CommunicationService.getInstance().randomSecretNumberAccess)
+                {
+                    Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+                    device.ListMessages.Add(notification);
+                    Console.WriteLine("Successfuly connexion !");
+                } else
+                {
+                    throw new Exception("Wrong PairaineKey");
+                }
+
+            }
+                //Demande de deconnexion
+            else if(parsedJson[0].ToLower() == "disconnection")
+            {
+                JObject messageToDevice = JSONHandler.messageRetour("disconnected", parsedJson[1], parsedJson[2]);
+                //--Envoi du message
+                
+                //--Deconnexion de l'appareil--
+
+            }
+                //Reception d'un message
+            else if (parsedJson[0].ToLower() == "notification")
+            {
+                notification.Application = parsedJson[1];
+                notification.Message = parsedJson[2];
+            }
+           
+
 
             // -- TODO : Remove its a test
+            /*Console.WriteLine("Affichage des devices : "); 
             foreach (Device d in Devices.Devices)
             {
                 Console.WriteLine("Nom du device : " + d.Name);
@@ -146,7 +188,7 @@ namespace NotificationProject.ViewModel
                     Console.WriteLine("Message : " + n.Message);
 
                 }
-            }
+            }*/
             // -- 
 
             CommunicationViewModel communicationViewModel = (CommunicationViewModel) PageViewModels.FirstOrDefault(o => o.Name == "Communication");
@@ -158,7 +200,6 @@ namespace NotificationProject.ViewModel
         public void CallBackAfterConnexion(String name, Socket clientDevice)
         {
             Device newDevice = new Device(name, clientDevice);
-           
             using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
@@ -168,12 +209,15 @@ namespace NotificationProject.ViewModel
             communicationViewModel.CommunicationStatus = "Device connecté";
             Devices.addDevice(newDevice);
             OnPropertyChanged("Devices");
+
+            var dataAccess = new XmlAccess("./data.xml");
+            dataAccess.saveDevice(newDevice);
         }
 
-
+         
         private void StartServer()
         {
-            CommunicationService cs = new CommunicationService();
+            CommunicationService cs = CommunicationService.getInstance();
             cs.callBackAfterConnexion = CallBackAfterConnexion;
             cs.callBackAfterAnalysis = CallBackAfterAnalysis;
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");

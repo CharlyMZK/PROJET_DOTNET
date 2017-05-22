@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DataAccess.Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,12 @@ namespace BusinessLayer
             return message;
         }
 
-        public static void interpretation(JObject json)
+
+        // -- TODO : a la base return void, a voir si le fait qu'un appareil est connecté peut etre une notification, et donc return notification meme qd il y a une connexion
+        // -- + voir si les objet sms et message sont des notif pour faire une switch
+        public static Notification interpretation(JObject json)
         {
+            Notification notification = null;
             string type = (string)json["type"];
             if (type != "")
             {
@@ -48,12 +53,18 @@ namespace BusinessLayer
                     DateTime dateNotif = DateTime.Parse(allObject[2]);
 
                     //Démonstration utilisation des objets obtenus depuis le JSON
-                    Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + dateNotif + ".");
+                    Console.WriteLine(ipAddress.ToString()+" : L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + dateNotif + ".");
+                    notification = new Notification(application, message);
+
                 }
+
             }
             else
                 Console.WriteLine("Message invalide.");
 
+
+            return notification;
+  
         }
     }
 }

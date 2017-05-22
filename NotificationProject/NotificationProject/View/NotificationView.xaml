@@ -8,13 +8,14 @@
         mc:Ignorable="d"
         Title="NotificationView" Height="100" Width="300"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
-        Name="myNotificationWindow">
+        Name="myNotificationWindow"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid RenderTransformOrigin="0,1" Margin="0,0,0,0" Name="myNotificationGrid">
 
         <!-- Notification area -->
         <Border BorderThickness="1" Background="White" BorderBrush="Black" CornerRadius="10" Margin="0,0,0,0">
             <StackPanel Margin="5">
-                <TextBlock TextWrapping="Wrap" Margin="5,5,5,5" RenderTransformOrigin="0.502,0.39" Height="64"><Bold><Run Text="Notification data"/></Bold><LineBreak /><LineBreak /><Run Text="Something just happened and you are being notified of it."/></TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,5,5,5" RenderTransformOrigin="0.502,0.39" Height="64"><Bold><Run Text="{Binding title}"/></Bold><LineBreak /><LineBreak /><Run Text="Something just happened and you are being notified of it."/></TextBlock>
             </StackPanel>
         </Border>
 
