@@ -137,11 +137,11 @@ namespace NotificationProject.ViewModel
 
             //Conversion et traitement et parsing d'un JSON
             JObject jsonMessage = JSONHandler.stringToJson(message);
-            string[] parsedJson = JSONHandler.interpretation(jsonMessage);  
-
+            string[] parsedJson = JSONHandler.interpretation(jsonMessage);
+            Device device = new Device();
             //Interprétation du JSON parsé
-                //Demande de connexion
-            if(parsedJson[0].ToLower() == "connection")
+            //Demande de connexion
+            if (parsedJson[0].ToLower() == "connection")
             {
                 connectionReq.Appareil = parsedJson[1];
                 connectionReq.Autor = parsedJson[2];
@@ -150,9 +150,10 @@ namespace NotificationProject.ViewModel
                 //TODO: créer une méthode qui gère le choix de l'utilisateur JObject messageToDevice = JSONHandler.messageRetour("connected", connectionReq.Appareil, connectionReq.Autor);
                 if(int.Parse(pairaineKey[2]) == CommunicationService.getInstance().randomSecretNumberAccess)
                 {
-                    Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
-                    device.ListMessages.Add(notification);
-                    Console.WriteLine("Successfuly connexion !");
+                    device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+                    notification.Application = parsedJson[1];
+                    notification.Message ="demande de connexion"; 
+                    Console.WriteLine("Successfuly connexion !");  
                 } else
                 {
                     throw new Exception("Wrong PairaineKey");
@@ -174,7 +175,7 @@ namespace NotificationProject.ViewModel
                 notification.Application = parsedJson[1];
                 notification.Message = parsedJson[2];
             }
-           
+
 
 
             // -- TODO : Remove its a test
@@ -189,7 +190,8 @@ namespace NotificationProject.ViewModel
                 }
             }*/
             // -- 
-
+            device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+            device.ListMessages.Add(notification);
             CommunicationViewModel communicationViewModel = (CommunicationViewModel) PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = message;
 

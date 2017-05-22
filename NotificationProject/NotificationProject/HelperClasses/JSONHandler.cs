@@ -18,7 +18,7 @@ namespace NotificationProject.HelperClasses
 
         public static string[] interpretation(JObject json)
         {
-            string[] res = new string[3] { "", "", "" }; 
+            string[] res = new string[3] { "", "", ""}; 
             string type = (string)json["type"];
             string conn = (string)(json["conn"]);
             if (type != "")
@@ -32,9 +32,12 @@ namespace NotificationProject.HelperClasses
                 string author = (string)json["author"];
                 if (type.ToLower() == "connect") //1.Type 2.Author 3.IPaddress@Port
                 {
+               
+                   
                     res[0] = "Connection";
                     res[1] = author;
                     res[2] = ipAddress.ToString() + ":" + port.ToString() + ":" + pairaineKey[1];
+            
                     Console.WriteLine("Demande Connection");
                     Console.WriteLine("L'appareil " + author + "(" + ipAddress.ToString() + ":" + port.ToString() + ") souhaite se connecter.");
                 }
@@ -56,7 +59,7 @@ namespace NotificationProject.HelperClasses
                     string message = allObject[1];
                     DateTime dateNotif = DateTime.Parse(allObject[2]);
                     res[1] = application;
-                    res[2] = message;
+                    
                     //Démonstration utilisation des objets obtenus depuis le JSON
                     Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + dateNotif + ".");
                 }

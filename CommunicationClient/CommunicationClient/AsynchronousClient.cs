@@ -73,13 +73,13 @@ namespace CommunicationClient
                 // Convert the string data to byte data using ASCII encoding.
                 /*byte[] byteData = Encoding.ASCII.GetBytes("test");
                  
-                // Begin sending the data to the remote device.
+                // Begin sending the data to the remote device. 
                 client.BeginSend(byteData, 0, byteData.Length, SocketFlags.None,
                     new AsyncCallback(SendCallback), client);*/
 
                 //String theMessageToSend = "test<Client Quit>";  
 
-                String theMessageToSend = "{type: 'Notification',conn: '192.168.42.1@4552',author: 'MOMO-LG',object: {application: 'Messenger',Message: 'Message sent',heureDate: '2017-04-28 09:06:34'}}<Client Quit>";
+                String theMessageToSend = "{type: 'connect',conn: '192.168.43.110:4552@417647',author: 'MOMO-LG',object: {application: 'Messenger',Message: 'Message sent',heureDate: '2017-04-28 09:06:34'}}<Client Quit>";
 
 
                 byte[] msg = Encoding.UTF8.GetBytes(theMessageToSend);
