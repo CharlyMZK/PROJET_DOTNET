@@ -24,16 +24,17 @@ namespace NotificationProject.HelperClasses
             if (type != "")
             {
                 int port;
-                string[] adressBuffer = conn.Split('@');
+                string[] adressBuffer = conn.Split(':');
+                string[] pairaineKey = adressBuffer[1].Split('@');
                 //ip@port
                 IPAddress ipAddress = IPAddress.Parse(adressBuffer[0]);
-                port = Int32.Parse(adressBuffer[1]);
+                port = Int32.Parse(pairaineKey[0]);
                 string author = (string)json["author"];
                 if (type.ToLower() == "connect") //1.Type 2.Author 3.IPaddress@Port
                 {
                     res[0] = "Connection";
                     res[1] = author;
-                    res[2] = ipAddress.ToString() + ":" + port.ToString();
+                    res[2] = ipAddress.ToString() + ":" + port.ToString() + ":" + pairaineKey[1];
                     Console.WriteLine("Demande Connection");
                     Console.WriteLine("L'appareil " + author + "(" + ipAddress.ToString() + ":" + port.ToString() + ") souhaite se connecter.");
                 }
