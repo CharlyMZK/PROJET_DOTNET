@@ -22,20 +22,11 @@ namespace BusinessLayer
         public Action<String, Socket> callBackAfterConnexion { get; set; }     // -- Callback called when connexion happens
         public Action<String, String> callBackAfterAnalysis { get; set; }      // -- Callback called when a message income
         public int nbDevices = 10;                                             // -- Max device 
-        public static CommunicationService uniqueInstance;
+        public static readonly CommunicationService uniqueInstance = new CommunicationService();
         public int randomSecretNumberAccess { get; set; }
 
         public static CommunicationService getInstance()
         {
-            if (uniqueInstance == null)
-            {
-               
-                if (uniqueInstance == null)
-                {
-                    uniqueInstance = new CommunicationService();
-                }
-                
-            }
             return uniqueInstance;
         }
 
@@ -66,7 +57,12 @@ namespace BusinessLayer
                 IPHostEntry ipHost = Dns.GetHostEntry("");
 
                 // Gets first IP address associated with a localhost 
-                this.ipAddr = ipHost.AddressList[2];
+                // FIXME the localhost ip adress is not alway in this place in the array
+                for(int i = 0;i < ipHost.AddressList.Length;i++)
+                {
+                    if (ipHost.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                        this.ipAddr = ipHost.AddressList[i];
+                }
                 Console.WriteLine(this.ipAddr);
                 // Sets port
                 this.port = 4510;
@@ -232,6 +228,11 @@ namespace BusinessLayer
             {
                 callBackAfterAnalysis(clientIp, str);   // -- Launch callback 
             }
+        }
+
+        public void sendMessage(String message)
+        {
+
         }
 
 
