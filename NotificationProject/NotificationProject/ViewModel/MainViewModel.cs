@@ -36,11 +36,11 @@ namespace NotificationProject.ViewModel
             PageViewModels.Add(new QRCodeViewModel());
             PageViewModels.Add(new CommunicationViewModel());
             PageViewModels.Add(new SmsViewModel());
-            NotificationViewModel notif = new NotificationViewModel();
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
             this.StartServer();
+            // this.DisplayNotif("Messenger", "Hey ! Send nudes plz", "Message"); // Decommenter pour avoir un apercu d'une notif
         }
 
         #endregion
@@ -214,6 +214,21 @@ namespace NotificationProject.ViewModel
 
             var dataAccess = new XmlAccess("./data.xml");
             dataAccess.saveDevice(newDevice);
+        }
+
+        public void DisplayNotif(string title, string content, string type)
+        {
+            NotificationView notif = new NotificationView();
+            NotificationViewModel notifContext = new NotificationViewModel(title, content);
+            notif.DataContext = notifContext;
+
+            int slideOutTimer = 5;
+
+            if (type == "appel?")
+            {
+                slideOutTimer = 30;
+            }
+            notif.displayNotif(slideOutTimer);
         }
 
          

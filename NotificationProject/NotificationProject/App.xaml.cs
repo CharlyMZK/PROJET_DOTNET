@@ -22,11 +22,7 @@ namespace NotificationProject
             MainWindow main = new MainWindow();
             MainViewModel context = new MainViewModel();
             main.DataContext = context;
-            //main.Show();
-
-            NotificationView notif = new NotificationView();
-            NotificationViewModel notif_context = new NotificationViewModel();
-            notif.DataContext = notif_context;
+            main.Show();
         }
     }
 }

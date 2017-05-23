@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace NotificationProject.ViewModel
 {
-    class NotificationViewModel : ObservableObject
+    public class NotificationViewModel : ObservableObject
     {
-
-        private NotificationView myView;
         private string _title;
         public string TitleNotif
         {
@@ -37,17 +35,10 @@ namespace NotificationProject.ViewModel
             }
         }
 
-        public NotificationViewModel()
-        {
-            this.myView = new NotificationView();
-            this.createNotification("Message", "Salut c'est Thierry Lafronde !");
-        }
-
-        public void createNotification(String t, String c)
+        public NotificationViewModel(string t, string c)
         {
             this.TitleNotif = t;
             this.ContentNotif = c;
-            this.myView.displayNotif();
         }
     }
 }

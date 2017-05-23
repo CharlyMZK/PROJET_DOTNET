@@ -63,10 +63,10 @@ namespace NotificationProject.View
             this.myStoryboard.Children.Add(popOut);
         }
 
-        public void displayNotif(int slideOutTime = 50)
+        public void displayNotif(int slideOutTimer)
         {
             this.setSlideInAnimation();
-            this.setSlideOutAnimation(slideOutTime);
+            this.setSlideOutAnimation(slideOutTimer);
             this.Show();
             this.myStoryboard.Begin(this);
         }
