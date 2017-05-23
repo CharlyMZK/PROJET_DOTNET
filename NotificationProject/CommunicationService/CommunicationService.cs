@@ -22,20 +22,11 @@ namespace BusinessLayer
         public Action<String, Socket> callBackAfterConnexion { get; set; }     // -- Callback called when connexion happens
         public Action<String, String> callBackAfterAnalysis { get; set; }      // -- Callback called when a message income
         public int nbDevices = 10;                                             // -- Max device 
-        public static CommunicationService uniqueInstance;
+        public static readonly CommunicationService uniqueInstance = new CommunicationService();
         public int randomSecretNumberAccess { get; set; }
 
         public static CommunicationService getInstance()
         {
-            if (uniqueInstance == null)
-            {
-               
-                if (uniqueInstance == null)
-                {
-                    uniqueInstance = new CommunicationService();
-                }
-                
-            }
             return uniqueInstance;
         }
 
@@ -66,7 +57,12 @@ namespace BusinessLayer
                 IPHostEntry ipHost = Dns.GetHostEntry("");
 
                 // Gets first IP address associated with a localhost 
-                this.ipAddr = ipHost.AddressList[2];
+                // FIXME the localhost ip adress is not alway in this place in the array
+                for(int i = 0;i < ipHost.AddressList.Length;i++)
+                {
+                    if (ipHost.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                        this.ipAddr = ipHost.AddressList[i];
+                }
                 Console.WriteLine(this.ipAddr);
                 // Sets port
                 this.port = 4510;
@@ -234,23 +230,11 @@ namespace BusinessLayer
             }
         }
 
-        // -- 
-        // -- Accept connexion callback - Happens when the server want to send a message to the client
-        // --
-        public void SendCallback(IAsyncResult ar)
+        public void sendMessage(String message)
         {
-            try
-            {
-                // A Socket which has sent the data to remote host 
-                Socket handler = (Socket)ar.AsyncState;
 
-                // The number of bytes sent to the Socket 
-                int bytesSend = handler.EndSend(ar);
-                Console.WriteLine(
-                    "Sent {0} bytes to Client", bytesSend);
-            }
-            catch (Exception exc) { Console.WriteLine("SendCallback: "+exc.ToString()); }
         }
+
 
         #region getter
         public IPAddress getIpAddress()

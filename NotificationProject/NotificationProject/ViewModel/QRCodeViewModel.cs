@@ -98,6 +98,7 @@ namespace NotificationProject.ViewModel
             _communicationService.randomSecretNumberAccess = getRandomNumber;
             deleteNumberAfterXTime(30000);
             var qrValue = _communicationService.getIpAddress().ToString() + ":" + _communicationService.getPort().ToString() + ":" + getRandomNumber.ToString();
+
             var barcodeWriter = createQRCode();
             using (var bitmap = barcodeWriter.Write(qrValue))
             {

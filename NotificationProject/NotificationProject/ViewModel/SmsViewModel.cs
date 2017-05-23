@@ -93,7 +93,7 @@ namespace NotificationProject.ViewModel
         #region Command
         private void SendMessage()
         {
-
+            SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob","test",SelectedDevice.Name,"Test de message"));
         }
 
         private bool CanSend()

@@ -20,3 +20,4 @@ C:\Users\Victor\Documents\CNAM 1A\Alcatel\PROJET\CommunicationClient\Communicati
 C:\Users\Bob\Documents\Cours\alcatel\CommunicationClient\CommunicationClient\bin\Debug\CommunicationClient.exe.config
 C:\Users\Bob\Documents\Cours\alcatel\CommunicationClient\CommunicationClient\obj\Debug\CommunicationClient.exe
 C:\Users\Bob\Documents\Cours\alcatel\CommunicationClient\CommunicationClient\obj\Debug\CommunicationClient.pdb
+C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJET_DOTNET\CommunicationClient\CommunicationClient\obj\Debug\CommunicationClient.csprojResolveAssemblyReference.cache
