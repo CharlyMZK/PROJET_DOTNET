@@ -6,17 +6,30 @@
         xmlns:viewModel="clr-namespace:NotificationProject.ViewModel"
         xmlns:local="clr-namespace:NotificationProject.View"
         mc:Ignorable="d"
-        Title="NotificationView" Height="100" Width="300"
+        Title="NotificationView" Height="100" Width="380"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Name="myNotificationWindow"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid RenderTransformOrigin="0,1" Margin="0,0,0,0" Name="myNotificationGrid">
 
         <!-- Notification area -->
-        <Border BorderThickness="1" Background="White" BorderBrush="Black" CornerRadius="10" Margin="0,0,0,0">
-            <StackPanel Margin="5">
-                <TextBlock TextWrapping="Wrap" Margin="5,5,5,5" RenderTransformOrigin="0.502,0.39" Height="64"><Bold><Run Text="{Binding title}"/></Bold><LineBreak /><LineBreak /><Run Text="Something just happened and you are being notified of it."/></TextBlock>
-            </StackPanel>
+        <Border BorderThickness="1" Background="White" BorderBrush="Black" CornerRadius="0" Margin="0,0,0,0">
+            <DockPanel Margin="5">
+                <TextBlock TextWrapping="Wrap" Margin="80,0,0,0" Width="260">
+                    <Bold>
+                        <Run Text="{Binding TitleNotif}"/>
+                    </Bold>
+                    
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="{Binding ContentNotif}"/>
+                </TextBlock>
+                <Button Width="20" Height="20" Margin="0,0,0,0" Background="White" BorderBrush="White" HorizontalAlignment="Right" VerticalAlignment="Top" Command="{Binding Path=onCloseNotif}">
+                    <Canvas x:Name="canvas" Height="10"  Width="10">
+                        <Path Stroke="Red" StrokeThickness="2" Data="M0,0 L10,10 M0,10 L10,0"/>
+                    </Canvas>
+                </Button>
+            </DockPanel>
         </Border>
 
         <Grid.RenderTransform>

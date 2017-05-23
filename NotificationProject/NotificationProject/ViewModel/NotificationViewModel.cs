@@ -12,6 +12,30 @@ namespace NotificationProject.ViewModel
     {
 
         private NotificationView myView;
+        private string _title;
+        public string TitleNotif
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                _title = value;
+            }
+        }
+        private string _content;
+        public string ContentNotif
+        {
+            get
+            {
+                return _content;
+            }
+            set
+            {
+                _content = value;
+            }
+        }
 
         public NotificationViewModel()
         {
@@ -19,9 +43,11 @@ namespace NotificationProject.ViewModel
             this.createNotification("Message", "Salut c'est Thierry Lafronde !");
         }
 
-        public void createNotification(String title, String content)
+        public void createNotification(String t, String c)
         {
-            this.myView.displayMessage(title, content);
+            this.TitleNotif = t;
+            this.ContentNotif = c;
+            this.myView.displayNotif();
         }
     }
 }

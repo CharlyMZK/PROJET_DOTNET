@@ -23,8 +23,6 @@ namespace NotificationProject.View
     {
         private Storyboard myStoryboard;
         private Rect desktopWorkingArea;
-        public string title { get; set; }
-        public string content { get; set; }
 
         public NotificationView()
         {
@@ -36,9 +34,6 @@ namespace NotificationProject.View
 
             // Animation settings
             this.myStoryboard = new Storyboard();
-            this.setSlideInAnimation();
-            this.setSlideOutAnimation();
-            this.Show();
         }
 
         private void setSlideInAnimation()
@@ -54,25 +49,32 @@ namespace NotificationProject.View
             this.myStoryboard.Children.Add(popIn);
         }
 
-        private void setSlideOutAnimation()
+        private void setSlideOutAnimation(int slideOutTime)
         {
             DoubleAnimation popOut = new DoubleAnimation();
             popOut.From = this.desktopWorkingArea.Right - (this.Width + 10);
             popOut.To = this.desktopWorkingArea.Right + this.Width;
             popOut.Duration = new Duration(TimeSpan.FromSeconds(1));
-            popOut.BeginTime = TimeSpan.FromSeconds(5);
-            popOut.Completed += (sender, eArgs) => this.Close();
+            popOut.BeginTime = TimeSpan.FromSeconds(slideOutTime);
+            popOut.Completed += (sender, eArgs) => this.closeNotif();
             Storyboard.SetTarget(popOut, this.myNotificationWindow);
             Storyboard.SetTargetProperty(popOut, new PropertyPath(LeftProperty));
 
             this.myStoryboard.Children.Add(popOut);
         }
 
-        public void displayMessage(string title, string content)
+        public void displayNotif(int slideOutTime = 50)
         {
-            this.title = "test";
-            this.content = content;
+            this.setSlideInAnimation();
+            this.setSlideOutAnimation(slideOutTime);
+            this.Show();
             this.myStoryboard.Begin(this);
+        }
+
+        public void closeNotif()
+        {
+            this.Close();
+            this.myStoryboard = new Storyboard();
         }
     }
 }
