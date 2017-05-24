@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using NotificationProject.ViewModel;
+using NotificationProject.View;
 
 namespace NotificationProject
 {
