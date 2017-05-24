@@ -210,22 +210,16 @@ namespace BusinessLayer
                     content += Encoding.UTF8.GetString(buffer, 0,
                         bytesRead);
 
-                    // If message contains "<Client Quit>", finish receiving
-                  
-                        // Convert byte array to string
-                        str = content.Substring(0, content.LastIndexOf("<Client Quit>"));
-                           
-              
-                        // Continues to asynchronously receive data
-                        byte[] buffernew = new byte[1024];
-                        obj[0] = buffernew;
-                        obj[1] = handler;
-                        handler.BeginReceive(buffernew, 0, buffernew.Length,
-                            SocketFlags.None,
-                            new AsyncCallback(ReceiveCallback), obj);
-                     
+                    // Convert byte array to string
+                    str = content.Substring(0, content.LastIndexOf("<Client Quit>"));
+                    // Continues to asynchronously receive data
+                    byte[] buffernew = new byte[1024];
+                    obj[0] = buffernew;
+                    obj[1] = handler;
+                    handler.BeginReceive(buffernew, 0, buffernew.Length,
+                        SocketFlags.None,
+                        new AsyncCallback(ReceiveCallback), obj);
 
-                
                 }
             }
             catch (Exception exc) { Console.WriteLine("Receivecallback : " + exc); }

@@ -56,12 +56,12 @@ namespace NotificationProject.HelperClasses
                     Console.WriteLine("Notification");
                     IList<string> allObject = json["object"].Select(t => (string)t).ToList();
                     string application = allObject[0];
-                    string message = allObject[1];
-                    DateTime dateNotif = DateTime.Parse(allObject[2]);
+                    string date = allObject[1]; 
+                    string message = allObject[2];
                     res[1] = application;
-                    res[2] = message;
+                    res[2] = message;  
                     //Démonstration utilisation des objets obtenus depuis le JSON
-                    Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + dateNotif + ".");
+                    Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + date + ".");
                 }
             }
             else
