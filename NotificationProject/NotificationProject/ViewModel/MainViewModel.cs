@@ -201,18 +201,18 @@ namespace NotificationProject.ViewModel
         public void CallBackAfterConnexion(String name, Socket clientDevice)
         {
             Device newDevice = new Device(name, clientDevice);
-            using (System.IO.StreamWriter file =
+            /*using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(@"log.txt", true))
             {
                 file.WriteLine(DateTime.Now.ToString() + "- Device connecté : " + newDevice.Name);
-            }
+            }*/
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Device connecté";
             Devices.addDevice(newDevice);
             OnPropertyChanged("Devices");
 
-            var dataAccess = new XmlAccess("./data.xml");
-            dataAccess.saveDevice(newDevice);
+            //var dataAccess = new XmlAccess("./data.xml");
+            //dataAccess.saveDevice(newDevice);
         }
 
          

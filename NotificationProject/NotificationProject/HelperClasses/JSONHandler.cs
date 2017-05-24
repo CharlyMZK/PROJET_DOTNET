@@ -59,7 +59,7 @@ namespace NotificationProject.HelperClasses
                     string message = allObject[1];
                     DateTime dateNotif = DateTime.Parse(allObject[2]);
                     res[1] = application;
-                    
+                    res[2] = message;
                     //Démonstration utilisation des objets obtenus depuis le JSON
                     Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + dateNotif + ".");
                 }
