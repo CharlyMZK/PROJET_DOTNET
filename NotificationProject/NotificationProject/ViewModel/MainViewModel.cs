@@ -140,6 +140,7 @@ namespace NotificationProject.ViewModel
             JObject jsonMessage = JSONHandler.stringToJson(message);
             string[] parsedJson = JSONHandler.interpretation(jsonMessage);
             Device device = new Device();
+            Boolean addMessage = false;
             //Interprétation du JSON parsé
             //Demande de connexion
             if (parsedJson[0].ToLower() == "connection")
@@ -159,14 +160,16 @@ namespace NotificationProject.ViewModel
                 {
                     throw new Exception("Wrong PairaineKey");
                 }
-
+                addMessage = true;
             }
                 //Demande de deconnexion
             else if(parsedJson[0].ToLower() == "disconnection")
             {
-                JObject messageToDevice = JSONHandler.messageRetour("disconnected", parsedJson[1], parsedJson[2]);
+                //JObject messageToDevice = JSONHandler.messageRetour("disconnected", parsedJson[1], parsedJson[2]);
+                device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+                CallBackAfterDeconnexion(device);
                 //--Envoi du message
-                
+
                 //--Deconnexion de l'appareil--
 
             }
@@ -175,6 +178,7 @@ namespace NotificationProject.ViewModel
             {
                 notification.Application = parsedJson[1];
                 notification.Message = parsedJson[2];
+                addMessage = true;
             }
 
 
@@ -191,12 +195,29 @@ namespace NotificationProject.ViewModel
                 }
             }*/
             // -- 
-            device = Devices.Devices.FirstOrDefault(o => o.Name == name);
-            device.ListMessages.Add(notification);
-            CommunicationViewModel communicationViewModel = (CommunicationViewModel) PageViewModels.FirstOrDefault(o => o.Name == "Communication");
-            communicationViewModel.CommunicationStatus = message;
+            if (addMessage)
+            {
 
+                device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+                device.ListMessages.Add(notification);
+                CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+                communicationViewModel.CommunicationStatus = message;
+            }
+             
+        }
 
+        public void CallBackAfterDeconnexion(Device clientDevice)
+        {
+            CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+            communicationViewModel.CommunicationStatus = "Device déconnecté";
+            Devices.deleteDevice(clientDevice); 
+           /* CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+            communicationViewModel.CommunicationStatus = "Device connecté";
+            Devices.addDevice(newDevice);
+            OnPropertyChanged("Devices");*/
+
+            //var dataAccess = new XmlAccess("./data.xml");
+            //dataAccess.saveDevice(newDevice);
         }
 
         public void CallBackAfterConnexion(String name, Socket clientDevice)
