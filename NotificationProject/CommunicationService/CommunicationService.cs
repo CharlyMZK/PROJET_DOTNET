@@ -211,7 +211,9 @@ namespace BusinessLayer
                         bytesRead);
 
                     // Convert byte array to string
-                    str = content.Substring(0, content.LastIndexOf("<Client Quit>"));
+                    str = content.Substring(0, content.LastIndexOf("}"));
+                    // -- After converting it delete the last }
+                    str += "}"; // -- TODO : Better management ?
                     // Continues to asynchronously receive data
                     byte[] buffernew = new byte[1024];
                     obj[0] = buffernew;

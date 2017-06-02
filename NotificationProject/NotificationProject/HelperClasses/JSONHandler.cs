@@ -12,6 +12,7 @@ namespace NotificationProject.HelperClasses
     {
         public static JObject stringToJson(string chaine)
         {
+            Console.WriteLine(chaine);
             JObject message = JObject.Parse(chaine);
             return message;
         }
