@@ -10,6 +10,11 @@ using NotificationProject.View;
 using DataAccess;
 using DataAccess.Model;
 using Newtonsoft.Json.Linq;
+using NotificationProjet.Controller;
+using BusinessLayer.Model;
+using System.Threading;
+using System.Windows.Threading;
+using System.Windows;
 
 namespace NotificationProject.ViewModel
 {
@@ -40,7 +45,7 @@ namespace NotificationProject.ViewModel
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
             this.StartServer();
-            // this.DisplayNotif("Messenger", "Hey ! Send nudes plz", "Message"); // Decommenter pour avoir un apercu d'une notif
+            //this.DisplayNotif("Messenger", "Hey ! Send nudes plz", "Message"); // Decommenter pour avoir un apercu d'une notif
         }
 
         #endregion
@@ -155,10 +160,11 @@ namespace NotificationProject.ViewModel
                     device = Devices.Devices.FirstOrDefault(o => o.Name == name);
                     notification.Application = parsedJson[1];
                     notification.Message ="demande de connexion"; 
-                    Console.WriteLine("Successfuly connexion !");  
+                    Console.WriteLine("Successfuly connexion !");
+                    this.DisplayNotif("Connexion", "Vous êtes désormais connecté avec l'appareil " + connectionReq.Autor, "Connection");
                 } else
                 {
-                    throw new Exception("Wrong PairaineKey");
+                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Autor + ". La clé temporaire n'est plus correcte, veuillez réessayer.","Message");
                 }
                 addMessage = true;
             }
@@ -179,6 +185,7 @@ namespace NotificationProject.ViewModel
                 notification.Application = parsedJson[1];
                 notification.Message = parsedJson[2];
                 addMessage = true;
+                this.DisplayNotif("Message", notification.Message, "Notification");
             }
 
 
@@ -239,17 +246,20 @@ namespace NotificationProject.ViewModel
 
         public void DisplayNotif(string title, string content, string type)
         {
-            NotificationView notif = new NotificationView();
-            NotificationViewModel notifContext = new NotificationViewModel(title, content);
-            notif.DataContext = notifContext;
-
-            int slideOutTimer = 5;
-
-            if (type == "appel?")
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, (ThreadStart)delegate
             {
-                slideOutTimer = 30;
-            }
-            notif.displayNotif(slideOutTimer);
+                NotificationView notif = new NotificationView();
+                NotificationViewModel notifContext = new NotificationViewModel(title, content);
+                notif.DataContext = notifContext;
+
+                int slideOutTimer = 5;
+
+                if (type == "appel?")
+                {
+                    slideOutTimer = 30;
+                }
+                notif.displayNotif(slideOutTimer);
+            });
         }
 
          

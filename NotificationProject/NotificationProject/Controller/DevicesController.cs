@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using DataAccess.Model;
 
-namespace DataAccess.Model
+namespace NotificationProjet.Controller
 {
     public class DevicesController
     {
