@@ -58,6 +58,22 @@ namespace NotificationProject.ViewModel
                 _affiche_boutons = value;
             }
         }
+        private string _accepter;
+        public string Accepter
+        {
+            get
+            {
+                return "ok";
+            }
+        }
+        private string _refuser;
+        public string Refuser
+        {
+            get
+            {
+                return "ok";
+            }
+        }
         public NotificationViewModel(string t, string c, string type)
         {
             this.TitleNotif = t;

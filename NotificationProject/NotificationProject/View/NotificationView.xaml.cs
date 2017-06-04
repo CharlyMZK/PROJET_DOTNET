@@ -56,7 +56,8 @@ namespace NotificationProject.View
             popOut.To = this.desktopWorkingArea.Right + this.Width;
             popOut.Duration = new Duration(TimeSpan.FromSeconds(1));
             popOut.BeginTime = TimeSpan.FromSeconds(slideOutTime);
-            popOut.Completed += (sender, eArgs) => this.closeNotif();
+            //popOut.Completed += (sender, eArgs) => this.closeNotif();
+            popOut.Completed += new EventHandler(this.closeNotif);
             Storyboard.SetTarget(popOut, this.myNotificationWindow);
             Storyboard.SetTargetProperty(popOut, new PropertyPath(LeftProperty));
 
@@ -71,7 +72,7 @@ namespace NotificationProject.View
             this.myStoryboard.Begin(this);
         }
 
-        public void closeNotif()
+        public void closeNotif(object sender, EventArgs e)
         {
             this.Close();
             this.myStoryboard = new Storyboard();

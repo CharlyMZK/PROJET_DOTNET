@@ -49,7 +49,7 @@
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
             </TextBlock>
-            <Button Grid.Column="3" Width="20" Height="20" Margin="0,5,5,0" Background="White" BorderBrush="White" VerticalAlignment="Top" Command="{Binding untest}">
+            <Button Grid.Column="3" Width="20" Height="20" Margin="0,5,5,0" Background="White" BorderBrush="White" VerticalAlignment="Top" Click="closeNotif">
                 <Canvas x:Name="canvas" Height="10"  Width="10">
                     <Path Stroke="Red" StrokeThickness="2" Data="M0,0 L10,10 M0,10 L10,0"/>
                 </Canvas>
