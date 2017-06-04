@@ -40,7 +40,7 @@ namespace NotificationProject.ViewModel
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
             this.StartServer();
-            // this.DisplayNotif("Messenger", "Hey ! Send nudes plz", "Message"); // Decommenter pour avoir un apercu d'une notif
+            //this.DisplayNotif("Messenger", "Hey ! Send nudes plz", "Message"); // Decommenter pour avoir un apercu d'une notif
         }
 
         #endregion
@@ -227,6 +227,10 @@ namespace NotificationProject.ViewModel
             if (type == "appel?")
             {
                 slideOutTimer = 30;
+                // Ajouts boutons décrocher/racrocher
+            } else if (type == "demande_connexion")
+            {
+                // Ajouts boutons accepter/refuser
             }
             notif.displayNotif(slideOutTimer);
         }
