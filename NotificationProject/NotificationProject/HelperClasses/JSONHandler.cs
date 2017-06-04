@@ -13,7 +13,15 @@ namespace NotificationProject.HelperClasses
         public static JObject stringToJson(string chaine)
         {
             Console.WriteLine(chaine);
-            JObject message = JObject.Parse(chaine);
+            JObject message;
+            try
+            {
+                message  = JObject.Parse(chaine);
+            }
+            catch(Exception ex)
+            {
+                message = new JObject();
+            }
             return message;
         }
 
@@ -22,7 +30,7 @@ namespace NotificationProject.HelperClasses
             string[] res = new string[3] { "", "", ""}; 
             string type = (string)json["type"];
             string conn = (string)(json["conn"]);
-            if (type != "")
+            if (!String.IsNullOrEmpty(type))
             {
                 int port;
                 string[] adressBuffer = conn.Split(':');
@@ -89,10 +97,17 @@ namespace NotificationProject.HelperClasses
             return json;
         }
 
-        public static string creationSMSString(string author, string receiver, string appareil, string message)
+        public static string creationSMSString(string author, string appareil, string message, string number)
         {
             var dt = DateTime.Now;
-            return @"{type: 'SMS', conn: '" + appareil + "',author: '" + author + "', receiver: '" + receiver + "',object: {application: 'SMS App',Message: '" + message + "',heureDate: '" + dt + "'}}";
+            return "{\"type\": \"smsToSend\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
+                 "\",\"application\": \"com.google.android.apps.messaging\",\"message\": \"" + message + "\", \"numbers\": [\"" + number + "\"]}" + "\n";
+        }
+
+        public static string creationAppelString(string author, string appareil, string number)
+        {
+            return "{type: 'Appel', conn: '" + appareil + "',author: '" + author +
+                "',object: {application: 'com.google.android.apps.messaging', numbers: '[" + number + "]'}}" + "\n";
         }
     }
 }
