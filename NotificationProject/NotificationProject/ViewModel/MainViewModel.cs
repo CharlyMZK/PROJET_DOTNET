@@ -202,6 +202,7 @@ namespace NotificationProject.ViewModel
                 device.ListMessages.Add(notification);
                 CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
                 communicationViewModel.CommunicationStatus = message;
+                communicationViewModel.OnPropertyChanged("Messages");
             }
              
         }
@@ -232,6 +233,8 @@ namespace NotificationProject.ViewModel
             communicationViewModel.CommunicationStatus = "Device connecté";
             Devices.addDevice(newDevice);
             OnPropertyChanged("Devices");
+            communicationViewModel.OnPropertyChanged("ListDevices");
+                
 
             //var dataAccess = new XmlAccess("./data.xml");
             //dataAccess.saveDevice(newDevice);
