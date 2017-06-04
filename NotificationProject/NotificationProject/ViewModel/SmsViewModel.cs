@@ -46,8 +46,10 @@ namespace NotificationProject.ViewModel
             set
             {
                 _phoneNumber = value;
+
             }
         }
+
 
         public string SmsText
         {

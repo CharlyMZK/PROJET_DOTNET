@@ -23,9 +23,9 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Numéro de téléphone" Grid.Row="0" Grid.Column="0" Margin="10"></Label>
-            <TextBox Text="{Binding  PhoneNumber}" Grid.Row="0" Grid.Column="1" Margin="10" />
+            <TextBox Text="{Binding  PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Margin="10"/>
             <Label Content="Message" Grid.Row="1" Grid.Column="0" Margin="10"></Label>
-            <TextBox Text="{Binding SmsText}" Grid.Row="1" Grid.Column="1" Margin="10"/>
+            <TextBox Text="{Binding SmsText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Margin="10"/>
 
             <ListView Margin="10" Name="listDevices" HorizontalAlignment="Stretch" ItemsSource="{Binding ListDevices}" SelectedItem="{Binding SelectedDevice}" Grid.Row="2" Height="100" Grid.ColumnSpan="2">
                 <ListView.View>
@@ -41,7 +41,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button Content="Envoyer Sms" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding SendSmsCommand}"  Grid.Column="0"/>
-            <Button Content="Appeler" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding SendSmsCommand}"  Grid.Column="1"/>
+            <Button Content="Appeler" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding CallCommand}"  Grid.Column="1"/>
         </Grid>
     </Grid>
 

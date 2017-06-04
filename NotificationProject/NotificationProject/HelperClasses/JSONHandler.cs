@@ -101,7 +101,7 @@ namespace NotificationProject.HelperClasses
         {
             var dt = DateTime.Now;
             return "{\"type\": \"smsToSend\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
-                 "\",\"application\": \"com.google.android.apps.messaging\",\"message\": \"" + message + "\", \"numbers\": [\"" + number + "\"]}" + "\n";
+                "\",\"object\": {\"application\": \"com.google.android.apps.messaging\",\"message\": \"" + message + "\", \"numbers\": [\"" + number + "\"]}}" + "\n";
         }
 
         public static string creationAppelString(string author, string appareil, string number)
