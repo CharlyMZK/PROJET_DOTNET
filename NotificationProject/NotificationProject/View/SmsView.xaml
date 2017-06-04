@@ -10,25 +10,41 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="500"/>
-            <ColumnDefinition Width="500"/>
-        </Grid.ColumnDefinitions>
-        <Label Content="Numéro de téléphone" Grid.Row="0" Grid.Column="0"></Label>
-        <TextBox Text="{Binding  PhoneNumber}" Grid.Row="0" Grid.Column="1" />
-        <Label Content="Message" Grid.Row="1" Grid.Column="0"></Label>
-        <TextBox Text="{Binding SmsText}" Grid.Row="1" Grid.Column="1"/>
-        <ListView Margin="10" Name="listDevices" ItemsSource="{Binding ListDevices}" SelectedItem="{Binding SelectedDevice}" Grid.Row="2" Height="100">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button x:Name="SmsButton" Content="Envoyer Sms" HorizontalAlignment="Left" Margin="78,234,0,0" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding ButtonCommand}"  Grid.Row="3"/>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="500"/>
+            </Grid.ColumnDefinitions>
 
+            <Label Content="Numéro de téléphone" Grid.Row="0" Grid.Column="0" Margin="10"></Label>
+            <TextBox Text="{Binding  PhoneNumber}" Grid.Row="0" Grid.Column="1" Margin="10" />
+            <Label Content="Message" Grid.Row="1" Grid.Column="0" Margin="10"></Label>
+            <TextBox Text="{Binding SmsText}" Grid.Row="1" Grid.Column="1" Margin="10"/>
+
+            <ListView Margin="10" Name="listDevices" HorizontalAlignment="Stretch" ItemsSource="{Binding ListDevices}" SelectedItem="{Binding SelectedDevice}" Grid.Row="2" Height="100" Grid.ColumnSpan="2">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Envoyer Sms" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding SendSmsCommand}"  Grid.Column="0"/>
+            <Button Content="Appeler" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding SendSmsCommand}"  Grid.Column="1"/>
+        </Grid>
     </Grid>
+
+
+
 </UserControl>
