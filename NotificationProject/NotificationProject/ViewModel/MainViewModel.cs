@@ -40,7 +40,7 @@ namespace NotificationProject.ViewModel
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
             this.StartServer();
-            //this.DisplayNotif("Messenger", "Hey ! Send nudes plz", "Message"); // Decommenter pour avoir un apercu d'une notif
+            this.DisplayNotif("Appel", "Vous avez un appel de Tony Stark sur l'appareil 'LGG4'", "appel"); // Decommenter pour avoir un apercu d'une notif
         }
 
         #endregion
@@ -239,23 +239,17 @@ namespace NotificationProject.ViewModel
 
         public void DisplayNotif(string title, string content, string type)
         {
-            NotificationView notif = new NotificationView();
-            NotificationViewModel notifContext = new NotificationViewModel(title, content);
-            notif.DataContext = notifContext;
-
             int slideOutTimer = 5;
-
-            if (type == "appel?")
+            if (type == "appel")
             {
                 slideOutTimer = 30;
-                // Ajouts boutons décrocher/racrocher
-            } else if (type == "demande_connexion")
-            {
-                // Ajouts boutons accepter/refuser
             }
+
+            NotificationView notif = new NotificationView();
+            NotificationViewModel notifContext = new NotificationViewModel(title, content, type);
+            notif.DataContext = notifContext;
             notif.displayNotif(slideOutTimer);
         }
-
          
         private void StartServer()
         {
@@ -265,8 +259,6 @@ namespace NotificationProject.ViewModel
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Server Started";
         }
-
-
     }
 }
  

@@ -34,11 +34,64 @@ namespace NotificationProject.ViewModel
                 _content = value;
             }
         }
-
-        public NotificationViewModel(string t, string c)
+        private string _type;
+        public string Type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                _type = value;
+            }
+        }
+        private bool _affiche_boutons;
+        public bool AfficheBoutons
+        {
+            get
+            {
+                return _affiche_boutons;
+            }
+            set
+            {
+                _affiche_boutons = value;
+            }
+        }
+        public NotificationViewModel(string t, string c, string type)
         {
             this.TitleNotif = t;
             this.ContentNotif = c;
+            this.Type = type;
+            this.AfficheBoutons = false;
+
+            if(this.Type == "connexion")
+            {
+                this.uneConnexion();
+            } 
+            else if(this.Type == "appel")
+            {
+                this.unAppel();
+            }
+            else if(this.Type == "notif")
+            {
+                this.uneNotif();
+            }
+        }
+        public void unAppel()
+        {
+            this.AfficheBoutons = true;
+            Console.WriteLine("un appel !");
+        }
+        public void uneConnexion()
+        {
+            this.AfficheBoutons = true;
+            Console.WriteLine("un connexion !");
+        }
+        public void uneNotif()
+        {
+            this.AfficheBoutons = false;
+            Console.WriteLine("une notif !");
         }
     }
 }

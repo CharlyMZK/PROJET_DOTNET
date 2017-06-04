@@ -10,30 +10,54 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Name="myNotificationWindow"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <Grid RenderTransformOrigin="0,1" Margin="0,0,0,0" Name="myNotificationGrid">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <Border BorderThickness="1" Background="White" BorderBrush="Black" CornerRadius="0" Margin="0,0,0,0">
+        <Grid Margin="0,0,0,0" Name="myNotificationGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="255"/>
+                <ColumnDefinition Width="25"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Notification area -->
-        <Border BorderThickness="1" Background="White" BorderBrush="Black" CornerRadius="0" Margin="0,0,0,0">
-            <DockPanel Margin="5">
-                <TextBlock TextWrapping="Wrap" Margin="80,0,0,0" Width="260">
-                    <Bold>
-                        <Run Text="{Binding TitleNotif}"/>
-                    </Bold>
-                    
-                    <LineBreak />
-                    <LineBreak />
-                    <Run Text="{Binding ContentNotif}"/>
-                </TextBlock>
-                <Button Width="20" Height="20" Margin="0,0,0,0" Background="White" BorderBrush="White" HorizontalAlignment="Right" VerticalAlignment="Top" Command="{Binding closeNotif}">
-                    <Canvas x:Name="canvas" Height="10"  Width="10">
-                        <Path Stroke="Red" StrokeThickness="2" Data="M0,0 L10,10 M0,10 L10,0"/>
-                    </Canvas>
+            <Image 
+                x:Name="image" 
+                Width="100" 
+                Height="100" 
+                Margin="0,0,0,0" 
+                Grid.Column="0" />
+            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0" Height="90" Grid.Column="1">
+                <Bold>
+                    <Run Text="{Binding TitleNotif}"/>
+                </Bold>
+                <LineBreak />
+                <Run Text="{Binding ContentNotif}"/>
+                <LineBreak />
+                <Button 
+                    Width="60" 
+                    Height="20" 
+                    Content="Accepter" 
+                    Margin="50,10,0,0"
+                    Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
-            </DockPanel>
-        </Border>
+                <Button 
+                    Width="60" 
+                    Height="20" 
+                    Content="Refuser" 
+                    Margin="15,10,0,0"
+                    Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
+                </Button>
+            </TextBlock>
+            <Button Grid.Column="3" Width="20" Height="20" Margin="0,5,5,0" Background="White" BorderBrush="White" VerticalAlignment="Top" Command="{Binding untest}">
+                <Canvas x:Name="canvas" Height="10"  Width="10">
+                    <Path Stroke="Red" StrokeThickness="2" Data="M0,0 L10,10 M0,10 L10,0"/>
+                </Canvas>
+            </Button>
 
-        <Grid.RenderTransform>
-            <ScaleTransform ScaleY="1" />
-        </Grid.RenderTransform>
-    </Grid>
+            <Grid.RenderTransform>
+                <ScaleTransform ScaleY="1" />
+            </Grid.RenderTransform>
+        </Grid>
+    </Border>
 </Window>
