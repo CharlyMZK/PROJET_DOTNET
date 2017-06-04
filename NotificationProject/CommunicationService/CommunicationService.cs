@@ -39,13 +39,21 @@ namespace BusinessLayer
         {
             try
             {
-                // Creates one SocketPermission object for access restrictions
+
+                
                 permission = new SocketPermission(
                 NetworkAccess.Accept,     // Allowed to accept connections 
                 TransportType.Tcp,        // Defines transport types 
                 "",                       // The IP addresses of local host 
                 SocketPermission.AllPorts // Specifies all ports 
                 );
+
+
+               
+                Console.WriteLine(this.ipAddr);
+                // Sets port
+                this.port = 4510;
+
 
                 // Listening Socket object 
                 sListener = null;
@@ -58,21 +66,19 @@ namespace BusinessLayer
 
                 // Gets first IP address associated with a localhost 
                 // FIXME the localhost ip adress is not alway in this place in the array
-                for(int i = 0;i < ipHost.AddressList.Length;i++)
+                for (int i = 0; i < ipHost.AddressList.Length; i++)
                 {
                     if (ipHost.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
                         this.ipAddr = ipHost.AddressList[i];
                 }
-                Console.WriteLine(this.ipAddr);
-                // Sets port
-                this.port = 4510;
 
                 // Creates a network endpoint 
-                ipEndPoint = new IPEndPoint(this.ipAddr, port);
+                ipEndPoint = new IPEndPoint(ipAddr, port);
+
 
                 // Create one Socket object to listen the incoming connection 
                 sListener = new Socket(
-                    this.ipAddr.AddressFamily,
+                    ipAddr.AddressFamily,
                     SocketType.Stream,
                     ProtocolType.Tcp
                     );
@@ -80,19 +86,22 @@ namespace BusinessLayer
                 // Associates a Socket with a local endpoint 
                 sListener.Bind(ipEndPoint);
 
+              
+
             }
             catch (Exception exc) { Console.WriteLine("Communicationservice : "+exc); }
 
 
             try
             {
-                // Places a Socket in a listening state and specifies the maximum 
                 // Length of the pending connections queue 
-                sListener.Listen(nbDevices);
+                sListener.Listen(10);
 
                 // Begins an asynchronous operation to accept an attempt 
                 AsyncCallback aCallback = new AsyncCallback(AcceptCallback);
                 sListener.BeginAccept(aCallback, sListener);
+
+
 
             }
             catch (Exception exc) { Console.WriteLine("Communicationservice listen : " + exc); }
@@ -114,7 +123,7 @@ namespace BusinessLayer
         // --
         private void AcceptCallback(IAsyncResult ar)
         {
-            
+
             // A new Socket to handle remote host communication 
             Socket handler = null;
             Socket listener = null;
@@ -127,6 +136,8 @@ namespace BusinessLayer
                 listener = (Socket)ar.AsyncState;
                 // Create a new socket 
                 handler = listener.EndAccept(ar);
+                // Using the Nagle algorithm 
+                handler.NoDelay = false;
 
                 var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];    // -- 
                 IPAddress rIp = IPAddress.Parse(sIp);                           // -- Get & parse client IP
@@ -199,26 +210,18 @@ namespace BusinessLayer
                     content += Encoding.UTF8.GetString(buffer, 0,
                         bytesRead);
 
-                    // If message contains "<Client Quit>", finish receiving
-                    if (content.IndexOf("<Client Quit>") > -1)
-                    {
-                        // Convert byte array to string
-                        str = content.Substring(0, content.LastIndexOf("<Client Quit>"));
-                           
-                    
-                    }
-                    else
-                    {
-                        // Continues to asynchronously receive data
-                        byte[] buffernew = new byte[1024];
-                        obj[0] = buffernew;
-                        obj[1] = handler;
-                        handler.BeginReceive(buffernew, 0, buffernew.Length,
-                            SocketFlags.None,
-                            new AsyncCallback(ReceiveCallback), obj);
-                    }
+                    // Convert byte array to string
+                    str = content.Substring(0, content.LastIndexOf("}"));
+                    // -- After converting it delete the last }
+                    str += "}"; // -- TODO : Better management ?
+                    // Continues to asynchronously receive data
+                    byte[] buffernew = new byte[1024];
+                    obj[0] = buffernew;
+                    obj[1] = handler;
+                    handler.BeginReceive(buffernew, 0, buffernew.Length,
+                        SocketFlags.None,
+                        new AsyncCallback(ReceiveCallback), obj);
 
-                
                 }
             }
             catch (Exception exc) { Console.WriteLine("Receivecallback : " + exc); }

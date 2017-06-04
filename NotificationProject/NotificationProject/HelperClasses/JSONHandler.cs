@@ -12,6 +12,7 @@ namespace NotificationProject.HelperClasses
     {
         public static JObject stringToJson(string chaine)
         {
+            Console.WriteLine(chaine);
             JObject message = JObject.Parse(chaine);
             return message;
         }
@@ -31,9 +32,7 @@ namespace NotificationProject.HelperClasses
                 port = Int32.Parse(pairaineKey[0]);
                 string author = (string)json["author"];
                 if (type.ToLower() == "connect") //1.Type 2.Author 3.IPaddress@Port
-                {
-               
-                   
+                {  
                     res[0] = "Connection";
                     res[1] = author;
                     res[2] = ipAddress.ToString() + ":" + port.ToString() + ":" + pairaineKey[1];
@@ -47,7 +46,7 @@ namespace NotificationProject.HelperClasses
                     res[1] = author;
                     res[2] = ipAddress.ToString() + ":" + port.ToString();
                     Console.WriteLine("Demande Connection");
-                    Console.WriteLine("L'appareil " + author + "(" + ipAddress.ToString() + ":" + port.ToString() + ") souhaite se connecter.");
+                    Console.WriteLine("L'appareil " + author + "(" + ipAddress.ToString() + ":" + port.ToString() + ") souhaite se deconnecter.");
                 }
 
                 else if (type.ToLower() == "notification") //1.Type 2.Application 3.Message
@@ -56,12 +55,12 @@ namespace NotificationProject.HelperClasses
                     Console.WriteLine("Notification");
                     IList<string> allObject = json["object"].Select(t => (string)t).ToList();
                     string application = allObject[0];
+                    string date = allObject[2]; 
                     string message = allObject[1];
-                    DateTime dateNotif = DateTime.Parse(allObject[2]);
                     res[1] = application;
-                    
+                    res[2] = message;  
                     //Démonstration utilisation des objets obtenus depuis le JSON
-                    Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + dateNotif + ".");
+                    Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + date + ".");
                 }
             }
             else

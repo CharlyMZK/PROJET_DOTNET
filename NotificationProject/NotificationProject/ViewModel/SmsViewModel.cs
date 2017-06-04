@@ -85,8 +85,6 @@ namespace NotificationProject.ViewModel
             set
             {
                 _selectedDevice = value;
-                // Tell to the view that SelectedDevice has changed
-                OnPropertyChanged("Messages");
             }
         }
 

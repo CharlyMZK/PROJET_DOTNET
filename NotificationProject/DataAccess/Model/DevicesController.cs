@@ -28,6 +28,11 @@ namespace DataAccess.Model
             Devices = new ObservableCollection<Device>(Devices);  // -- TODO : Its supposed to work without this line, but it throw an exception.
             Devices.Add(device);                                      // -- Add device on list
         }
+
+        public void deleteDevice(Device device)
+        {
+            Devices.Remove(device); // -- Remove device on list
+        } 
     }
 
 
