@@ -74,12 +74,14 @@ namespace NotificationProject.ViewModel
                 return "ok";
             }
         }
-        public NotificationViewModel(string t, string c, string type)
+        private string application;
+        public NotificationViewModel(string t, string c, string type, string app)
         {
             this.TitleNotif = t;
             this.ContentNotif = c;
             this.Type = type;
             this.AfficheBoutons = false;
+            this.application = app;
 
             if(this.Type == "connexion")
             {
@@ -97,11 +99,13 @@ namespace NotificationProject.ViewModel
         public void unAppel()
         {
             this.AfficheBoutons = true;
+            this.application = "appel";
             Console.WriteLine("un appel !");
         }
         public void uneConnexion()
         {
             this.AfficheBoutons = true;
+            this.application = "connexion";
             Console.WriteLine("un connexion !");
         }
         public void uneNotif()
