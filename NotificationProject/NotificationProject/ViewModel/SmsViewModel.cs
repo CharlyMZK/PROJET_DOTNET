@@ -17,7 +17,6 @@ namespace NotificationProject.ViewModel
         #region constructor
         public SmsViewModel()
         {
-            ButtonCommand = new RelayCommand(o => SendMessage(), n => CanSend());
             _devicesController = DevicesController.getInstance();
         }
         #endregion
@@ -27,7 +26,6 @@ namespace NotificationProject.ViewModel
         private string _smsText;
         public Device _selectedDevice;
         private DevicesController _devicesController;
-        public ICommand ButtonCommand { get; set; }
         #endregion
 
 
@@ -49,8 +47,10 @@ namespace NotificationProject.ViewModel
             set
             {
                 _phoneNumber = value;
+
             }
         }
+
 
         public string SmsText
         {
@@ -76,7 +76,7 @@ namespace NotificationProject.ViewModel
                 OnPropertyChanged("ListDevices");
             }
         }
-        #endregion
+
         public Device SelectedDevice
         {
             get
@@ -88,16 +88,51 @@ namespace NotificationProject.ViewModel
                 _selectedDevice = value;
             }
         }
+        #endregion
 
-        #region Command
+        #region Method
         private void SendMessage()
         {
-            SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob","test",SelectedDevice.Name,"Test de message"));
+            SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob",SelectedDevice.Name,SmsText, PhoneNumber));
         }
 
         private bool CanSend()
         {
             return !String.IsNullOrEmpty(SmsText) && !String.IsNullOrEmpty(PhoneNumber) && SelectedDevice!=null;
+        }
+
+        private void Call()
+        {
+            SelectedDevice.sendMessage(JSONHandler.creationAppelString("bob", SelectedDevice.Name, PhoneNumber));
+        }
+
+        private bool CanCall()
+        {
+            return !String.IsNullOrEmpty(PhoneNumber) && SelectedDevice != null;
+        }
+        #endregion
+
+        #region Command
+        private ICommand _sendSmsCommand;
+        public ICommand SendSmsCommand
+        {
+            get
+            {
+                if(_sendSmsCommand == null)
+                    _sendSmsCommand = new RelayCommand(o => SendMessage(), n => CanSend());
+                return _sendSmsCommand;
+            }
+        }
+
+        private ICommand _callCommand;
+        public ICommand CallCommand
+        {
+            get
+            {
+                if (_callCommand == null)
+                    _callCommand = new RelayCommand(o => Call(), n => CanCall());
+                return _callCommand;
+            }
         }
         #endregion
 

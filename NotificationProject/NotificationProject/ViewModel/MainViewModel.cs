@@ -45,7 +45,7 @@ namespace NotificationProject.ViewModel
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
             this.StartServer();
-            //this.DisplayNotif("Messenger", "Hey ! Send nudes plz", "Message"); // Decommenter pour avoir un apercu d'une notif
+            //this.DisplayNotif("Appel", "Vous avez un appel de Tony Stark sur l'appareil 'LGG4'", "appel", null); // Decommenter pour avoir un apercu d'une notif
         }
 
         #endregion
@@ -161,10 +161,10 @@ namespace NotificationProject.ViewModel
                     notification.Application = parsedJson[1];
                     notification.Message ="demande de connexion"; 
                     Console.WriteLine("Successfuly connexion !");
-                    this.DisplayNotif("Connexion", "Vous êtes désormais connecté avec l'appareil " + connectionReq.Autor, "Connection");
+                    this.DisplayNotif("Connexion", "Vous êtes désormais connecté avec l'appareil " + connectionReq.Appareil, "Connection", null);
                 } else
                 {
-                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Autor + ". La clé temporaire n'est plus correcte, veuillez réessayer.","Message");
+                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.","Message", null);
                 }
                 addMessage = true;
             }
@@ -185,7 +185,7 @@ namespace NotificationProject.ViewModel
                 notification.Application = parsedJson[1];
                 notification.Message = parsedJson[2];
                 addMessage = true;
-                this.DisplayNotif("Message", notification.Message, "Notification");
+                this.DisplayNotif("Message", notification.Message, "Notification", null);
             }
 
 
@@ -209,6 +209,7 @@ namespace NotificationProject.ViewModel
                 device.ListMessages.Add(notification);
                 CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
                 communicationViewModel.CommunicationStatus = message;
+                communicationViewModel.OnPropertyChanged("Messages");
             }
              
         }
@@ -239,29 +240,30 @@ namespace NotificationProject.ViewModel
             communicationViewModel.CommunicationStatus = "Device connecté";
             Devices.addDevice(newDevice);
             OnPropertyChanged("Devices");
+            communicationViewModel.OnPropertyChanged("ListDevices");
+                
 
             //var dataAccess = new XmlAccess("./data.xml");
             //dataAccess.saveDevice(newDevice);
         }
 
-        public void DisplayNotif(string title, string content, string type)
+        public void DisplayNotif(string title, string content, string type, string application)
         {
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, (ThreadStart)delegate
             {
-                NotificationView notif = new NotificationView();
-                NotificationViewModel notifContext = new NotificationViewModel(title, content);
-                notif.DataContext = notifContext;
-
                 int slideOutTimer = 5;
-
-                if (type == "appel?")
+                if (type == "appel")
                 {
                     slideOutTimer = 30;
                 }
+
+                NotificationView notif = new NotificationView();
+                NotificationViewModel notifContext = new NotificationViewModel(title, content, type, application);
+                notif.DataContext = notifContext;
                 notif.displayNotif(slideOutTimer);
             });
-        }
 
+        }
          
         private void StartServer()
         {
@@ -271,8 +273,6 @@ namespace NotificationProject.ViewModel
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Server Started";
         }
-
-
     }
 }
  

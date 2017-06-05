@@ -31,7 +31,7 @@ namespace DataAccess.Model
         {
             if(Handler != null)
             {
-                Handler.Send(Encoding.ASCII.GetBytes(message));
+                Handler.Send(Encoding.UTF8.GetBytes(message));
             }
             
         }
