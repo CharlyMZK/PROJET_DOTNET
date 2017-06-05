@@ -240,7 +240,7 @@ namespace NotificationProject.ViewModel
             //dataAccess.saveDevice(newDevice);
         }
 
-        public void DisplayNotif(string title, string content, string type)
+        public void DisplayNotif(string title, string content, string type, string application)
         {
             int slideOutTimer = 5;
             if (type == "appel")
@@ -249,7 +249,7 @@ namespace NotificationProject.ViewModel
             }
 
             NotificationView notif = new NotificationView();
-            NotificationViewModel notifContext = new NotificationViewModel(title, content, type);
+            NotificationViewModel notifContext = new NotificationViewModel(title, content, type, application);
             notif.DataContext = notifContext;
             notif.displayNotif(slideOutTimer);
         }
