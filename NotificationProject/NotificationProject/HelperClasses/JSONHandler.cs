@@ -63,8 +63,8 @@ namespace NotificationProject.HelperClasses
                     Console.WriteLine("Notification");
                     IList<string> allObject = json["object"].Select(t => (string)t).ToList();
                     string application = allObject[0];
-                    string date = allObject[2]; 
-                    string message = allObject[1];
+                    string date = allObject[1]; 
+                    string message = allObject[2];
                     res[1] = application;
                     res[2] = message;  
                     //Démonstration utilisation des objets obtenus depuis le JSON
