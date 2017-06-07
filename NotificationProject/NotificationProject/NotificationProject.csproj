@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controller\DevicesController.cs" />
     <Compile Include="HelperClasses\JSONHandler.cs" />
     <Compile Include="ViewModel\CommunicationViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />

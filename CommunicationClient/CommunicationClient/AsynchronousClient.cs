@@ -79,7 +79,7 @@ namespace CommunicationClient
 
                 //String theMessageToSend = "test<Client Quit>";  
 
-                String theMessageToSend = "{type: 'connect',conn: '192.168.43.110:4552@417647',author: 'MOMO-LG',object: {application: 'Messenger',Message: 'Message sent',heureDate: '2017-04-28 09:06:34'}}<Client Quit>";
+                String theMessageToSend = "{type: 'connect',conn: '192.168.43.110:4552@775042',author: 'MOMO-LG',object: {application: 'Messenger',Message: 'Message sent',heureDate: '2017-04-28 09:06:34'}}<Client Quit>";
 
 
                 byte[] msg = Encoding.UTF8.GetBytes(theMessageToSend);

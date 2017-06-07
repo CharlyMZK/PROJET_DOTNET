@@ -7,6 +7,7 @@ using NotificationProject.HelperClasses;
 using System.Windows.Input;
 using DataAccess.Model;
 using System.Collections.ObjectModel;
+using NotificationProjet.Controller;
 
 namespace NotificationProject.ViewModel
 {

@@ -108,7 +108,6 @@ namespace NotificationProject.HelperClasses
         {
             return "{\"type\": \"requestCall\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
                 "\",\"object\": { \"number\": \"" + number + "\"}}" + "\n";
-
         }
     }
 }
