@@ -67,11 +67,10 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                return _devicesController.Devices;
+                return new ObservableCollection<Device>(_devicesController.Devices);
             }
             set
             {
-                _devicesController.Devices = value;
                 OnPropertyChanged("ListDevices");
             }
         }
@@ -92,6 +91,7 @@ namespace NotificationProject.ViewModel
         #region Method
         private void SendMessage()
         {
+            var test = (JSONHandler.creationSMSString("bob", SelectedDevice.Name, SmsText, PhoneNumber));
             SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob",SelectedDevice.Name,SmsText, PhoneNumber));
         }
 

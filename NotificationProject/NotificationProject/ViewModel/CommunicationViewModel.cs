@@ -33,11 +33,12 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                return _devicesController.Devices;
+                return new ObservableCollection<Device>(_devicesController.Devices);
+                   
             }
             set
             {
-                _devicesController.Devices = value;
+               // _devicesController.Devices = value;
                 OnPropertyChanged("ListDevices");
             }
         }
