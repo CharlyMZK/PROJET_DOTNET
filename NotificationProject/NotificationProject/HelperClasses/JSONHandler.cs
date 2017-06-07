@@ -107,7 +107,8 @@ namespace NotificationProject.HelperClasses
         public static string creationAppelString(string author, string appareil, string number)
         {
             return "{type: 'Appel', conn: '" + appareil + "',author: '" + author +
-                "',object: {application: 'com.google.android.apps.messaging', numbers: '[" + number + "]'}}" + "\n";
+                "\",\"object\": { \"number\": \"" + number + "\"}}" + "\n";
+
         }
     }
 }
