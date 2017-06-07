@@ -10,7 +10,7 @@ namespace NotificationProjet.Controller
 {
     public class DevicesController
     {
-        public ObservableCollection<Device> Devices { get; set; }
+        public List<Device> Devices { get; set; }
         private static DevicesController _instance;
 
         public static DevicesController getInstance()
@@ -21,12 +21,12 @@ namespace NotificationProjet.Controller
         }
         private DevicesController()
         {
-            Devices = new ObservableCollection<Device>();
+            Devices = new List<Device>();
         }
 
         public void addDevice(Device device)
         {
-            Devices = new ObservableCollection<Device>(Devices);  // -- TODO : Its supposed to work without this line, but it throw an exception.
+        //    Devices = new List<Device>(Devices);  // -- TODO : Its supposed to work without this line, but it throw an exception.
             Devices.Add(device);                                      // -- Add device on list
         }
 

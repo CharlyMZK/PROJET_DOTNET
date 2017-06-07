@@ -178,6 +178,12 @@ namespace NotificationProject.ViewModel
 
                 //--Deconnexion de l'appareil--
 
+                // Notifaction des vues
+                CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+                communicationViewModel.OnPropertyChanged("ListDevices");
+                SmsViewModel smsViewModel = (SmsViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Sms View");
+                smsViewModel.OnPropertyChanged("ListDevices");
+
             }
                 //Reception d'un message
             else if (parsedJson[0].ToLower() == "notification")
