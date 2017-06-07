@@ -92,8 +92,14 @@ namespace NotificationProject.ViewModel
         #region Method
         private void SendMessage()
         {
-            var test = (JSONHandler.creationSMSString("bob", SelectedDevice.Name, SmsText, PhoneNumber));
-            SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob",SelectedDevice.Name,SmsText, PhoneNumber));
+            try
+            {
+                SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob", SelectedDevice.Name, SmsText, PhoneNumber));
+            }
+            catch (Exception ex)
+            {
+                //TODO popup message fail
+            }
         }
 
         private bool CanSend()
@@ -103,7 +109,14 @@ namespace NotificationProject.ViewModel
 
         private void Call()
         {
-            SelectedDevice.sendMessage(JSONHandler.creationAppelString("bob", SelectedDevice.Name, PhoneNumber));
+            try
+            {
+                SelectedDevice.sendMessage(JSONHandler.creationAppelString("bob", SelectedDevice.Name, PhoneNumber));
+            }
+           catch(Exception ex)
+            {
+                //TODO faire popup fail message
+            }
         }
 
         private bool CanCall()
