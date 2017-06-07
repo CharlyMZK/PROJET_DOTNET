@@ -106,7 +106,7 @@ namespace NotificationProject.HelperClasses
 
         public static string creationAppelString(string author, string appareil, string number)
         {
-            return "{type: 'Appel', conn: '" + appareil + "',author: '" + author +
+            return "{\"type\": \"requestCall\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
                 "\",\"object\": { \"number\": \"" + number + "\"}}" + "\n";
 
         }
