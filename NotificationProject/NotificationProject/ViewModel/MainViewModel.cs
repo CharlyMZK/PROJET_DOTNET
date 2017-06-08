@@ -224,6 +224,7 @@ namespace NotificationProject.ViewModel
         {
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Device déconnecté";
+            clientDevice.sendMessage(JSONHandler.creationDisconnectString("bob", clientDevice.Name));
             Devices.deleteDevice(clientDevice); 
            /* CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Device connecté";

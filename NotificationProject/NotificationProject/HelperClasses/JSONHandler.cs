@@ -109,5 +109,12 @@ namespace NotificationProject.HelperClasses
             return "{\"type\": \"requestCall\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
                 "\",\"object\": { \"number\": \"" + number + "\"}}" + "\n";
         }
+
+        public static string creationDisconnectString(string appareil, string author)
+        {
+            return "{\"type\": \"disconnectionAcknowledged\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
+                "\"}" + "\n";
+        }
+
     }
 }
