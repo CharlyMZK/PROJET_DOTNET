@@ -6,19 +6,28 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Model
 {
-    class NotificationConfiguration
+    public class NotificationConfiguration
     {
-        private Boolean isEnabled { get; set; }
-        private Boolean smsEnabled { get; set; }
-        private Boolean callEnabled { get; set; }
-        private Boolean otherEnabled { get; set; }
+        public Boolean IsEnabled { get; set; }
+        public Boolean SmsEnabled { get; set; }
+        public Boolean CallEnabled { get; set; }
+        public Boolean OtherEnabled { get; set; }
+        private static NotificationConfiguration instance;
+
+        public static NotificationConfiguration getInstance()
+        {
+            if (instance == null)
+                //TODO lire le fichier de config
+                instance = new NotificationConfiguration(false,false,false,false);
+            return instance;
+        }
 
         public NotificationConfiguration(bool isEnabled, bool smsEnabled, bool callEnabled, bool otherEnabled)
         {
-            this.isEnabled = isEnabled;
-            this.smsEnabled = smsEnabled;
-            this.callEnabled = callEnabled;
-            this.otherEnabled = otherEnabled;
+            this.IsEnabled = isEnabled;
+            this.SmsEnabled = smsEnabled;
+            this.CallEnabled = callEnabled;
+            this.OtherEnabled = otherEnabled;
         }
     }
 }
