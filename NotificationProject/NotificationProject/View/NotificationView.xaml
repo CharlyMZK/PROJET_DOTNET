@@ -38,14 +38,22 @@
                     Width="60" 
                     Height="20" 
                     Content="Accepter" 
-                    Margin="50,10,0,0"
+                    Margin="10,10,0,0"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
                 <Button 
                     Width="60" 
                     Height="20" 
                     Content="Refuser" 
-                    Margin="15,10,0,0"
+                    Margin="10,10,0,0"
+                    Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
+                </Button>
+                 <Button 
+                    Width="60" 
+                    Height="20" 
+                    Content="Afficher" 
+                    Margin="10,10,0,0"
+                     Command="{Binding DisplayCommand}"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
             </TextBlock>
