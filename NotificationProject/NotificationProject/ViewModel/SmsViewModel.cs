@@ -104,7 +104,7 @@ namespace NotificationProject.ViewModel
 
         private bool CanSend()
         {
-            return !String.IsNullOrEmpty(SmsText) && !String.IsNullOrEmpty(PhoneNumber) && SelectedDevice!=null;
+            return !String.IsNullOrEmpty(SmsText) && !String.IsNullOrEmpty(PhoneNumber) && SelectedDevice != null;
         }
 
         private void Call()
@@ -113,7 +113,7 @@ namespace NotificationProject.ViewModel
             {
                 SelectedDevice.sendMessage(JSONHandler.creationAppelString("bob", SelectedDevice.Name, PhoneNumber));
             }
-           catch(Exception ex)
+            catch (Exception ex)
             {
                 //TODO faire popup fail message
             }
@@ -131,7 +131,7 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                if(_sendSmsCommand == null)
+                if (_sendSmsCommand == null)
                     _sendSmsCommand = new RelayCommand(o => SendMessage(), n => CanSend());
                 return _sendSmsCommand;
             }
