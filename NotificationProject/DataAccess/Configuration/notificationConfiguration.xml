@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<notificationConfiguration>
+  <isEnabled>true</isEnabled>
+  <smsEnabled>false</smsEnabled>
+  <callEnabled>true</callEnabled>
+  <otherEnabled>false</otherEnabled>
+</notificationConfiguration>
