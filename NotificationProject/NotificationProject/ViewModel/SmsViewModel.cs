@@ -27,6 +27,8 @@ namespace NotificationProject.ViewModel
         private string _phoneNumber;
         private string _smsText;
         public Device _selectedDevice;
+        public Contact _selectedContact = Contact.GetContact();
+        
         private DevicesController _devicesController;
         #endregion
 
@@ -49,7 +51,6 @@ namespace NotificationProject.ViewModel
             set
             {
                 _phoneNumber = value;
-
             }
         }
 
@@ -87,6 +88,18 @@ namespace NotificationProject.ViewModel
             set
             {
                 _selectedDevice = value;
+            }
+        }
+
+        public Contact SelectedContact
+        {
+            get
+            {
+                return _selectedContact;
+            }
+            set
+            {
+                _selectedContact = value;
             }
         }
         #endregion
@@ -131,7 +144,7 @@ namespace NotificationProject.ViewModel
         }
 
         private void WriteConversationOnXml() {
-
+            Contact.GetContact().Chatter.Add(new Sms(DateTime.Today, SmsText, true));
             if (File.Exists(PhoneNumber + ".xml"))
             {
                 string filename = PhoneNumber + ".xml";
@@ -175,6 +188,8 @@ namespace NotificationProject.ViewModel
             }
            
         }
+
+       
         #endregion
 
         #region Command
