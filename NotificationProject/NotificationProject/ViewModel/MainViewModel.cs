@@ -41,6 +41,9 @@ namespace NotificationProject.ViewModel
             PageViewModels.Add(new QRCodeViewModel());
             PageViewModels.Add(new CommunicationViewModel());
             PageViewModels.Add(new SmsViewModel());
+            PageViewModels.Add(new ContactViewModel());
+            PageViewModels.Add(new ConfigurationViewModel());
+            PageViewModels.Add(new EtatViewModel());
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
