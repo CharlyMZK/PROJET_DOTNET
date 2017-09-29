@@ -92,6 +92,8 @@
     <Compile Include="HelperClasses\JSONHandler.cs" />
     <Compile Include="ViewModel\CommunicationViewModel.cs" />
     <Compile Include="ViewModel\ConfigurationViewModel.cs" />
+    <Compile Include="ViewModel\ContactViewModel.cs" />
+    <Compile Include="ViewModel\EtatViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\NotificationViewModel.cs" />
     <Compile Include="ViewModel\QRCodeViewModel.cs" />
@@ -101,6 +103,12 @@
     </Compile>
     <Compile Include="View\ConfigurationView.xaml.cs">
       <DependentUpon>ConfigurationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContactView.xaml.cs">
+      <DependentUpon>ContactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EtatView.xaml.cs">
+      <DependentUpon>EtatView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\NotificationView.xaml.cs">
       <DependentUpon>NotificationView.xaml</DependentUpon>
@@ -116,6 +124,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ContactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EtatView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
