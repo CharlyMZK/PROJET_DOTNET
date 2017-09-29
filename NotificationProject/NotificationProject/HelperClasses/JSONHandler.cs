@@ -99,12 +99,12 @@ namespace NotificationProject.HelperClasses
             json = stringToJson(res);
             return json;
         }
-        public static string sendState(string deviceName, string appareil, string etat, string pourcentage)
+        public static string sendState(string deviceName, string etat, string pourcentage)
         {
             string res = "";
-            if (appareil != "" && etat != "")
+            if (deviceName != "" && etat != "")
             {
-                res = @"{type:'batteryState', author:'" + deviceName + "',conn:'" + appareil + "',object:{ percent:'" + pourcentage + "',isCharging:'" + etat + "'}}";
+                res = @"{type:'batteryState', author:'" + deviceName + "',conn:'" + deviceName + "',object:{ percent:'" + pourcentage + "',isCharging:'" + etat + "'}}";
             }
             return res;
         }
