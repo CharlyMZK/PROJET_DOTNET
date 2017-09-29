@@ -26,21 +26,24 @@ namespace NotificationProject.ViewModel
         private IPageViewModel _currentPageViewModel;
         private List<IPageViewModel> _pageViewModels;
         private DevicesController _devicesController;
-       
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-     
+
         #endregion Fields
 
         #region constructor
 
-        public MainViewModel() 
+        public MainViewModel()
         {
             //Add the pages
             PageViewModels.Add(new HomeViewModel());
             PageViewModels.Add(new QRCodeViewModel());
             PageViewModels.Add(new CommunicationViewModel());
             PageViewModels.Add(new SmsViewModel());
+            PageViewModels.Add(new ContactViewModel());
+            PageViewModels.Add(new ConfigurationViewModel());
+            PageViewModels.Add(new EtatViewModel());
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
@@ -69,7 +72,7 @@ namespace NotificationProject.ViewModel
             }
             set
             {
-                if(_currentPageViewModel != value)
+                if (_currentPageViewModel != value)
                 {
                     _currentPageViewModel = value;
                     OnPropertyChanged("CurrentPageViewModel");
@@ -96,7 +99,7 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                if(_changePageCommand == null)
+                if (_changePageCommand == null)
                 {
                     _changePageCommand = new RelayCommand(
                         p => ChangeViewModel((IPageViewModel)p),
@@ -112,7 +115,7 @@ namespace NotificationProject.ViewModel
         protected void OnPropertyChanged(string name)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
@@ -155,21 +158,22 @@ namespace NotificationProject.ViewModel
                 var pairaineKey = parsedJson[2].Split(':');
                 //--Demande d'acceptation de connexion--
                 //TODO: créer une méthode qui gère le choix de l'utilisateur JObject messageToDevice = JSONHandler.messageRetour("connected", connectionReq.Appareil, connectionReq.Autor);
-                if(int.Parse(pairaineKey[2]) == CommunicationService.getInstance().randomSecretNumberAccess)
+                if (int.Parse(pairaineKey[2]) == CommunicationService.getInstance().randomSecretNumberAccess)
                 {
                     device = Devices.Devices.FirstOrDefault(o => o.Name == name);
                     notification.Application = parsedJson[1];
-                    notification.Message ="demande de connexion"; 
+                    notification.Message = "demande de connexion";
                     Console.WriteLine("Successfuly connexion !");
                     this.DisplayNotif("Connexion", "Vous êtes désormais connecté avec l'appareil " + connectionReq.Appareil, "Connection", null);
-                } else
+                }
+                else
                 {
-                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.","Message", null);
+                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.", "Message", null);
                 }
                 addMessage = true;
             }
-                //Demande de deconnexion
-            else if(parsedJson[0].ToLower() == "disconnection")
+            //Demande de deconnexion
+            else if (parsedJson[0].ToLower() == "disconnection")
             {
                 //JObject messageToDevice = JSONHandler.messageRetour("disconnected", parsedJson[1], parsedJson[2]);
                 device = Devices.Devices.FirstOrDefault(o => o.Name == name);
@@ -185,13 +189,37 @@ namespace NotificationProject.ViewModel
                 smsViewModel.OnPropertyChanged("ListDevices");
 
             }
-                //Reception d'un message
+            //Reception d'un message
             else if (parsedJson[0].ToLower() == "notification")
             {
                 notification.Application = parsedJson[1];
                 notification.Message = parsedJson[2];
                 addMessage = true;
                 this.DisplayNotif("Message", notification.Message, "Notification", null);
+            }
+
+            else if (parsedJson[0].ToLower() == "batterystate")
+            {
+                device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+                if (parsedJson[1] != "")
+                    device.Pourcentage = parsedJson[1];
+                else
+                    device.Pourcentage = "Non renseigné.";
+
+                if (parsedJson[2] != "")
+                    device.Etat = parsedJson[2];
+                else
+                    device.Etat = "Non renseigné.";
+
+                foreach (Device d in Devices.Devices)
+                {
+                    if (d != device)
+                    {
+                        d.sendMessage(JSONHandler.sendState(d.Name,parsedJson[1], parsedJson[2]));
+                    }
+                }
+                CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+                communicationViewModel.OnPropertyChanged("Etat");
             }
 
 
@@ -217,7 +245,7 @@ namespace NotificationProject.ViewModel
                 communicationViewModel.CommunicationStatus = message;
                 communicationViewModel.OnPropertyChanged("Messages");
             }
-             
+
         }
 
         public void CallBackAfterDeconnexion(Device clientDevice)
@@ -225,11 +253,11 @@ namespace NotificationProject.ViewModel
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Device déconnecté";
             clientDevice.sendMessage(JSONHandler.creationDisconnectString("bob", clientDevice.Name));
-            Devices.deleteDevice(clientDevice); 
-           /* CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
-            communicationViewModel.CommunicationStatus = "Device connecté";
-            Devices.addDevice(newDevice);
-            OnPropertyChanged("Devices");*/
+            Devices.deleteDevice(clientDevice);
+            /* CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+             communicationViewModel.CommunicationStatus = "Device connecté";
+             Devices.addDevice(newDevice);
+             OnPropertyChanged("Devices");*/
 
             //var dataAccess = new XmlAccess("./data.xml");
             //dataAccess.saveDevice(newDevice);
@@ -248,7 +276,7 @@ namespace NotificationProject.ViewModel
             Devices.addDevice(newDevice);
             OnPropertyChanged("Devices");
             communicationViewModel.OnPropertyChanged("ListDevices");
-                
+
 
             //var dataAccess = new XmlAccess("./data.xml");
             //dataAccess.saveDevice(newDevice);
@@ -270,7 +298,7 @@ namespace NotificationProject.ViewModel
                 notif.displayNotif(slideOutTimer);
             });
         }
-         
+
         private void StartServer()
         {
             CommunicationService cs = CommunicationService.getInstance();
@@ -281,4 +309,3 @@ namespace NotificationProject.ViewModel
         }
     }
 }
- 

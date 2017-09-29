@@ -12,6 +12,8 @@ namespace DataAccess.Model
     public class Device
     {
         public String Name { get; set; }
+        public String Etat { get; set; }
+        public String Pourcentage { get; set; }
         public List<Notification> ListMessages { get; set; }
         public Socket Handler { get; set; }
 
@@ -29,11 +31,11 @@ namespace DataAccess.Model
 
         public void sendMessage(String message)
         {
-            if(Handler != null)
+            if (Handler != null)
             {
                 Handler.Send(Encoding.UTF8.GetBytes(message));
             }
-            
+
         }
     }
 }

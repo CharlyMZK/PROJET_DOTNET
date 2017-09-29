@@ -91,12 +91,24 @@
     <Compile Include="Controller\DevicesController.cs" />
     <Compile Include="HelperClasses\JSONHandler.cs" />
     <Compile Include="ViewModel\CommunicationViewModel.cs" />
+    <Compile Include="ViewModel\ConfigurationViewModel.cs" />
+    <Compile Include="ViewModel\ContactViewModel.cs" />
+    <Compile Include="ViewModel\EtatViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\NotificationViewModel.cs" />
     <Compile Include="ViewModel\QRCodeViewModel.cs" />
     <Compile Include="ViewModel\SmsViewModel.cs" />
     <Compile Include="View\CommunicationView.xaml.cs">
       <DependentUpon>CommunicationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ConfigurationView.xaml.cs">
+      <DependentUpon>ConfigurationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContactView.xaml.cs">
+      <DependentUpon>ContactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EtatView.xaml.cs">
+      <DependentUpon>EtatView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\NotificationView.xaml.cs">
       <DependentUpon>NotificationView.xaml</DependentUpon>
@@ -108,6 +120,18 @@
       <DependentUpon>SmsView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\CommunicationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ContactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EtatView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,7 +203,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -202,9 +225,6 @@
       <Project>{75103ad1-4836-4f9c-a77e-f0fcbf9e0e30}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ressources\images\notif.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ressources\images\appIcon.ico" />
