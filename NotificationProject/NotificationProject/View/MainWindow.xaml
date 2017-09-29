@@ -7,7 +7,7 @@
         xmlns:viewModel="clr-namespace:NotificationProject.ViewModel"
         xmlns:view="clr-namespace:NotificationProject.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="525" WindowState="Maximized">
+        Title="MainWindow" Height="720" Width="525" WindowState="Maximized" StateChanged="onMinimizeWindow">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <view:HomeView/>

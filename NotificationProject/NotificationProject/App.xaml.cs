@@ -24,5 +24,10 @@ namespace NotificationProject
             main.DataContext = context;
             main.Show();
         }
+
+        private void onStateChange()
+        {
+
+        }
     }
 }
