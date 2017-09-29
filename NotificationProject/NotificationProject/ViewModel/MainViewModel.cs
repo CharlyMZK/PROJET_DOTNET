@@ -212,7 +212,7 @@ namespace NotificationProject.ViewModel
                 {
                     if (d != device)
                     {
-                        d.sendMessage(JSONHandler.sendState(d.Name, parsedJson[1], parsedJson[2]));
+                        d.sendMessage(JSONHandler.sendState(d.Name,parsedJson[1], parsedJson[2]));
                     }
                 }
                 CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
