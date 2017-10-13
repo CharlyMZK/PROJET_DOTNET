@@ -41,5 +41,10 @@ namespace DataAccess.Model
             }
 
         }
+
+        public Contact GetContactByNumber(string number)
+        {
+            return listContact.ToList().Where(x => x.Number == "0" + number).SingleOrDefault();
+        }
     }
 }
