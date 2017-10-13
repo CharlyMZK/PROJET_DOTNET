@@ -12,6 +12,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -26,7 +27,7 @@
         <CheckBox IsChecked="{Binding Config.CallEnabled}" Grid.Row="2" Grid.Column="1"></CheckBox>
         <Label Content="Autre Activé" Grid.Row="3" Grid.Column="0"></Label>
         <CheckBox IsChecked="{Binding Config.OtherEnabled}" Grid.Row="3" Grid.Column="1"></CheckBox>
-
+        <Button Command="{Binding ChangeOptionCommand}" Grid.Row="4">Changer les options</Button>
 
     </Grid>
 </UserControl>

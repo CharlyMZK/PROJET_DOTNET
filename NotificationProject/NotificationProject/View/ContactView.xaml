@@ -5,8 +5,34 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NotificationProject.View"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Grid>
-        <Label Content="Contact"></Label>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" Grid.Row="0" HorizontalAlignment="Center">Devices</TextBlock>
+        <ListView Margin="10" Name="listDevices" ItemsSource="{Binding ListDevices}" SelectedItem="{Binding SelectedDevice}" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Etat" Width="120" DisplayMemberBinding="{Binding Etat}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" Grid.Row="2" HorizontalAlignment="Center">Contacts</TextBlock>
+        <ListView Margin="10" Name="listContacts" ItemsSource="{Binding Contacts}" Height="Auto" Grid.Row="3">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Number" Width="120" DisplayMemberBinding="{Binding Number}" />
+                    <GridViewColumn Header="E-mail" Width="120" DisplayMemberBinding="{Binding Email}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 </UserControl>
