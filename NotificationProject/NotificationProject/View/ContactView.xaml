@@ -33,6 +33,13 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Image x:Name="image" Source="{Binding ImageSource}"
+               HorizontalAlignment="Left" 
+               Height="30" 
+               Margin="65,2,0,0" 
+               Grid.Row="2" 
+               VerticalAlignment="Top"
+               Width="30"/>
 
     </Grid>
 </UserControl>

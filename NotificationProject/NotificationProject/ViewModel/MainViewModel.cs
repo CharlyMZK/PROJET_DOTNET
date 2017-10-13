@@ -284,7 +284,7 @@ namespace NotificationProject.ViewModel
             OnPropertyChanged("Devices");
             communicationViewModel.OnPropertyChanged("ListDevices");
 
-
+            newDevice.sendMessage(JSONHandler.creationContactRequest("bob", newDevice.Name));
             //var dataAccess = new XmlAccess("./data.xml");
             //dataAccess.saveDevice(newDevice);
         }

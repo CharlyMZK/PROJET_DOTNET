@@ -141,5 +141,11 @@ namespace NotificationProject.HelperClasses
                 "\"}" + "\n";
         }
 
+        public static string creationContactRequest(string appareil, string author)
+        {
+            return "{\"type\": \"requestContacts\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
+                "\"}" + "\n";
+        }
+
     }
 }

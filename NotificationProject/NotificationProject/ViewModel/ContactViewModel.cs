@@ -7,6 +7,7 @@ using NotificationProject.HelperClasses;
 using DataAccess.Model;
 using System.Collections.ObjectModel;
 using NotificationProjet.Controller;
+using System.Windows.Media.Imaging;
 
 namespace NotificationProject.ViewModel
 {
@@ -74,6 +75,25 @@ namespace NotificationProject.ViewModel
                 _contacts.Add(new Contact("TEST DEBUG 2", "0646690454", "test@test.fr"));
 
                 return _contacts;
+            }
+        }
+
+        private BitmapSource _imageSource;
+
+        public BitmapSource ImageSource
+        {
+            get
+            {
+                if (_imageSource == null)
+                {
+                    _imageSource = null;
+                }
+                return _imageSource;
+            }
+            set
+            {
+                _imageSource = value;
+                OnPropertyChanged("ImageSource");
             }
         }
         #endregion Properties
