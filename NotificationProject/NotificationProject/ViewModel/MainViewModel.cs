@@ -56,7 +56,7 @@ namespace NotificationProject.ViewModel
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
             this.StartServer();
-            //this.DisplayNotif("Appel", "Vous avez un appel de Tony Stark sur l'appareil 'LGG4'", "appel", null, this.exempleCallbackDisplayNotif, this.exempleCallbackDisplayNotif); // Decommenter pour avoir un apercu d'une notif
+            //this.DisplayNotif("Connexion", "Vous avez un appel de Tony Stark sur l'appareil 'LGG4'", "appel", null, this.exempleCallbackDisplayNotif, this.exempleCallbackDisplayNotif); // Decommenter pour avoir un apercu d'une notif
         }
 
         #endregion
@@ -284,7 +284,7 @@ namespace NotificationProject.ViewModel
             OnPropertyChanged("Devices");
             communicationViewModel.OnPropertyChanged("ListDevices");
 
-            newDevice.sendMessage(JSONHandler.creationContactRequest("bob", newDevice.Name));
+            //newDevice.sendMessage(JSONHandler.creationContactRequest("bob", newDevice.Name));
             //var dataAccess = new XmlAccess("./data.xml");
             //dataAccess.saveDevice(newDevice);
         }
