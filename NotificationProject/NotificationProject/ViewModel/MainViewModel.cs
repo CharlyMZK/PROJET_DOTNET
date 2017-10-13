@@ -17,7 +17,10 @@ using System.Windows.Threading;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
+using System.IO;
 using System.Timers;
+using System.Configuration;
+using System.IO;
 
 namespace NotificationProject.ViewModel
 {
@@ -28,7 +31,9 @@ namespace NotificationProject.ViewModel
         private ICommand _changePageCommand;
         private IPageViewModel _currentPageViewModel;
         private List<IPageViewModel> _pageViewModels;
-        private DevicesController _devicesController;
+        private DevicesController _devicesController; 
+        public string configPath = ConfigurationManager.AppSettings["XmlFilePath"];
+        private List<string> listConversationName { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -195,6 +200,7 @@ namespace NotificationProject.ViewModel
             {
                 notification.Application = parsedJson[1];
                 notification.Message = parsedJson[2];
+                RetrieveSms(parsedJson[2], parsedJson[4]);
                 addMessage = true;
                 this.DisplayNotif("Message", notification.Message, "Notification", null, null, null);
             }
@@ -305,6 +311,76 @@ namespace NotificationProject.ViewModel
             Console.WriteLine("Action car il a accepté/refusé");
         }
 
+
+        public void RetrieveSms(string content, string datetime)
+        {
+            Sms result = new Sms();
+
+            result.IsOriginNative = false;
+            result.SendHour = DateTime.Now;
+            //result.SendHour = Convert.ToDateTime(datetime, culture);
+                //DateTime.ParseExact((string)level2Element.Value, "dd-MM-yyyy HH:mm:ss",
+                //                     System.Globalization.CultureInfo.InvariantCulture);
+            result.Content = content;
+            System.Windows.Application.Current.Dispatcher.Invoke(
+                   DispatcherPriority.Normal,
+                   (Action)delegate()
+                   {
+                       Contact.GetContact().Chatter.Add(result);
+                   }
+               );
+            
+            string filename = configPath + "0688269472.xml";
+
+            if (File.Exists(filename))
+            {
+                XmlDocument doc = new XmlDocument();
+                //load from file
+                doc.Load(filename);
+
+                //create node and add value
+                XmlNode node = doc.CreateNode(XmlNodeType.Element, "Envoi", null);
+                XmlAttribute attr = doc.CreateAttribute("native");
+                attr.Value = "false";
+
+                //Add the attribute to the node     
+                node.Attributes.SetNamedItem(attr);
+                //create title node
+                XmlNode nodeDate = doc.CreateElement("DateTime");
+                //add value for it
+                nodeDate.InnerText = DateTime.Now.ToString();
+
+                //create Url node
+                XmlNode nodeMessage = doc.CreateElement("Content");
+                nodeMessage.InnerText = content;
+
+                //add to parent node
+                node.AppendChild(nodeDate);
+                node.AppendChild(nodeMessage);
+
+                //add to elements collection
+                doc.DocumentElement.AppendChild(node);
+
+                //save back
+                doc.Save(filename);
+
+            }
+            else
+            {
+                using (XmlWriter writer = XmlWriter.Create(filename))
+                {
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("Message");
+                    writer.WriteStartElement("Envoi");
+                    writer.WriteElementString("DateTime", DateTime.Now.ToString());
+                    writer.WriteElementString("Content", content);
+                    writer.WriteEndElement();
+                    writer.WriteEndElement();
+                    writer.WriteEndDocument();
+                }
+            }
+        }
+
         private void StartServer()
         {
             CommunicationService cs = CommunicationService.getInstance();
@@ -312,29 +388,8 @@ namespace NotificationProject.ViewModel
             cs.callBackAfterAnalysis = CallBackAfterAnalysis;
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Server Started";
-            //RetrieveConversation();
         }
 
-        private void RetrieveConversation()
-        {
-            foreach (XElement level1Element in XElement.Load("0688269472.xml").Elements("Envoi"))
-            {
-                Sms result = new Sms();
-
-                result.IsOriginNative = (level1Element.Attribute("native").Value == "true") ? true : false;
-                 foreach (XElement level2Element in level1Element.Elements("DateTime"))
-                {
-                    result.SendHour = Convert.ToDateTime((string)level2Element.Value); 
-                      //DateTime.ParseExact((string)level2Element.Value, "dd-MM-yyyy HH:mm:ss",
-                      //                     System.Globalization.CultureInfo.InvariantCulture);
-                }
-                    
-                 foreach (XElement level2Element in level1Element.Elements("Content"))
-                {
-                     result.Content = level2Element.Value;
-                }
-                Contact.GetContact().Chatter.Add(result);
-            }
-        }
+       
     }
 }

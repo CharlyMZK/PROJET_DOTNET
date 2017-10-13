@@ -11,6 +11,7 @@ namespace DataAccess.Model
         public ObservableCollection<Sms> Chatter { get; set; }
 
         private static Contact _contact;
+        private static Contact _contact2;
 
         public Contact(string Name, string Number, string Email)
         {
@@ -26,6 +27,14 @@ namespace DataAccess.Model
                 _contact = new Contact("Toto", "0688269472", "test@example.fr");
 
             return _contact;
+        }
+
+        public static Contact GetContact2()
+        {
+            if (_contact2 == null)
+                _contact2 = new Contact("Tata", "0606", "test@example.fr");
+
+            return _contact2;
         }
     }
 }

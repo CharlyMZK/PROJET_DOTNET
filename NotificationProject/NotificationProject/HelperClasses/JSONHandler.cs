@@ -59,14 +59,18 @@ namespace NotificationProject.HelperClasses
 
                 else if (type.ToLower() == "notification") //1.Type 2.Application 3.Message
                 {
+                    res = new string[5] { "", "", "", "","" };
                     res[0] = "Notification";
                     Console.WriteLine("Notification");
                     IList<string> allObject = json["object"].Select(t => (string)t).ToList();
                     string application = allObject[0];
                     string date = allObject[1];
                     string message = allObject[2];
+                    string title = allObject[3];
                     res[1] = application;
                     res[2] = message;
+                    res[3] = title;
+                    res[4] = date;
                     //Démonstration utilisation des objets obtenus depuis le JSON
                     Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + date + ".");
                 }
