@@ -70,6 +70,18 @@ namespace NotificationProject.HelperClasses
                     //Démonstration utilisation des objets obtenus depuis le JSON
                     Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + date + ".");
                 }
+                else if (type.ToLower() == "batterystate")
+                {
+                    res[0] = "batteryState";
+                    Console.WriteLine("batteryState");
+                    IList<string> allObject = json["object"].Select(t => (string)t).ToList();
+                    string pourcentage = allObject[0];
+                    string etat = allObject[1];
+                    res[1] = pourcentage;
+                    res[2] = etat;
+                    //Démonstration utilisation des objets obtenus depuis le JSON
+                    Console.WriteLine("L'appareil " + author + " est a " + pourcentage + "%. Etat: " + etat);
+                }
             }
             else
                 Console.WriteLine("Message invalide.");
@@ -86,6 +98,15 @@ namespace NotificationProject.HelperClasses
             }
             json = stringToJson(res);
             return json;
+        }
+        public static string sendState(string deviceName, string etat, string pourcentage)
+        {
+            string res = "";
+            if (deviceName != "" && etat != "")
+            {
+                res = @"{type:'batteryState', author:'" + deviceName + "',conn:'" + deviceName + "',object:{ percent:'" + pourcentage + "',isCharging:'" + etat + "'}}";
+            }
+            return res;
         }
 
         public static JObject creationSMS(string author, string receiver, string appareil, string message)

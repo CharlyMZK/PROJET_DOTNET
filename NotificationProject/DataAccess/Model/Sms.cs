@@ -11,15 +11,17 @@ namespace DataAccess.Model
     {
         public string Title = "SMS";
 
-        public Contact Contact { get; set; }
-
         public string Content { get; set; }
+        public bool IsOriginNative { get; set; }
 
-        public Sms(Contact Contact, string Content)
+        public Sms(DateTime time, string Content, bool IsOriginNative)
         {
-            this.Contact = Contact;
             this.Content = Content;
+            this.IsOriginNative = IsOriginNative;
+            this.SendHour = time;
         }
+
+        public Sms() { }
 
         public string getTitle()
         {

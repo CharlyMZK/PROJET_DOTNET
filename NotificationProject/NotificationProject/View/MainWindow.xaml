@@ -7,7 +7,15 @@
         xmlns:viewModel="clr-namespace:NotificationProject.ViewModel"
         xmlns:view="clr-namespace:NotificationProject.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="525" WindowState="Maximized">
+        Title="MainWindow" Height="720" Width="525" WindowState="Maximized"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="{DynamicResource MaterialDesignFont}">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <view:HomeView/>
@@ -21,7 +29,7 @@
         <DataTemplate DataType="{x:Type viewModel:SmsViewModel}">
             <view:SmsView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:ConfigurationViewModel}">
+        <!--<DataTemplate DataType="{x:Type viewModel:ConfigurationViewModel}">
             <view:ConfigurationView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:ContactViewModel}">
@@ -29,7 +37,7 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:EtatViewModel}">
             <view:EtatView/>
-        </DataTemplate>
+        </DataTemplate>-->
     </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="0,0,1,0">

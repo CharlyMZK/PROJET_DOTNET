@@ -15,6 +15,8 @@ using BusinessLayer.Model;
 using System.Threading;
 using System.Windows.Threading;
 using System.Windows;
+using System.Xml;
+using System.Xml.Linq;
 using System.Timers;
 
 namespace NotificationProject.ViewModel
@@ -42,9 +44,9 @@ namespace NotificationProject.ViewModel
             PageViewModels.Add(new QRCodeViewModel());
             PageViewModels.Add(new CommunicationViewModel());
             PageViewModels.Add(new SmsViewModel());
-            PageViewModels.Add(new ConfigurationViewModel());
-            PageViewModels.Add(new ContactViewModel());
-            PageViewModels.Add(new EtatViewModel());
+            ////PageViewModels.Add(new ContactViewModel());
+            //PageViewModels.Add(new ConfigurationViewModel());
+            //PageViewModels.Add(new EtatViewModel());
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
@@ -200,6 +202,30 @@ namespace NotificationProject.ViewModel
                 this.DisplayNotif("Message", notification.Message, "Notification", null);
             }
 
+            else if (parsedJson[0].ToLower() == "batterystate")
+            {
+                device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+                if (parsedJson[1] != "")
+                    device.Pourcentage = parsedJson[1];
+                else
+                    device.Pourcentage = "Non renseigné.";
+
+                if (parsedJson[2] != "")
+                    device.Etat = parsedJson[2];
+                else
+                    device.Etat = "Non renseigné.";
+
+                foreach (Device d in Devices.Devices)
+                {
+                    if (d != device)
+                    {
+                        d.sendMessage(JSONHandler.sendState(d.Name,parsedJson[1], parsedJson[2]));
+                    }
+                }
+                CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+                communicationViewModel.OnPropertyChanged("Etat");
+            }
+
 
 
             // -- TODO : Remove its a test
@@ -284,6 +310,29 @@ namespace NotificationProject.ViewModel
             cs.callBackAfterAnalysis = CallBackAfterAnalysis;
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Server Started";
+            RetrieveConversation();
+        }
+
+        private void RetrieveConversation()
+        {
+            foreach (XElement level1Element in XElement.Load("0688269472.xml").Elements("Envoi"))
+            {
+                Sms result = new Sms();
+
+                result.IsOriginNative = (level1Element.Attribute("native").Value == "true") ? true : false;
+                 foreach (XElement level2Element in level1Element.Elements("DateTime"))
+                {
+                    result.SendHour = Convert.ToDateTime((string)level2Element.Value); 
+                      //DateTime.ParseExact((string)level2Element.Value, "dd-MM-yyyy HH:mm:ss",
+                      //                     System.Globalization.CultureInfo.InvariantCulture);
+                }
+                    
+                 foreach (XElement level2Element in level1Element.Elements("Content"))
+                {
+                     result.Content = level2Element.Value;
+                }
+                Contact.GetContact().Chatter.Add(result);
+            }
         }
     }
 }
