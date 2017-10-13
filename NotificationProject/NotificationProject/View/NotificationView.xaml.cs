@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NotificationProject.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,6 +77,7 @@ namespace NotificationProject.View
         {
             this.Close();
             this.myStoryboard = new Storyboard();
+            
         }
     }
 }

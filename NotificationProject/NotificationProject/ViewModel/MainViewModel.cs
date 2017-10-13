@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
+using System.Timers;
 
 namespace NotificationProject.ViewModel
 {
@@ -50,7 +51,7 @@ namespace NotificationProject.ViewModel
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
             this.StartServer();
-            //this.DisplayNotif("Appel", "Vous avez un appel de Tony Stark sur l'appareil 'LGG4'", "appel", null); // Decommenter pour avoir un apercu d'une notif
+            //this.DisplayNotif("Appel", "Vous avez un appel de Tony Stark sur l'appareil 'LGG4'", "appel", null, this.exempleCallbackDisplayNotif, this.exempleCallbackDisplayNotif); // Decommenter pour avoir un apercu d'une notif
         }
 
         #endregion
@@ -132,8 +133,6 @@ namespace NotificationProject.ViewModel
 
         #endregion
 
-
-
         public void CallBackAfterAnalysis(String name, String message)
         {
             //Création des objets vides
@@ -166,11 +165,11 @@ namespace NotificationProject.ViewModel
                     notification.Application = parsedJson[1];
                     notification.Message = "demande de connexion";
                     Console.WriteLine("Successfuly connexion !");
-                    this.DisplayNotif("Connexion", "Vous êtes désormais connecté avec l'appareil " + connectionReq.Appareil, "Connection", null);
+                    this.DisplayNotif("Connexion", "Vous êtes désormais connecté avec l'appareil " + connectionReq.Appareil, "Connection", null, null, null);
                 }
                 else
                 {
-                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.", "Message", null);
+                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.", "Message", null, null, null);
                 }
                 addMessage = true;
             }
@@ -197,7 +196,7 @@ namespace NotificationProject.ViewModel
                 notification.Application = parsedJson[1];
                 notification.Message = parsedJson[2];
                 addMessage = true;
-                this.DisplayNotif("Message", notification.Message, "Notification", null);
+                this.DisplayNotif("Message", notification.Message, "Notification", null, null, null);
             }
 
             else if (parsedJson[0].ToLower() == "batterystate")
@@ -284,7 +283,7 @@ namespace NotificationProject.ViewModel
             //dataAccess.saveDevice(newDevice);
         }
 
-        public void DisplayNotif(string title, string content, string type, string application)
+        public void DisplayNotif(string title, string content, string type, string application, Action callbackYes, Action callbackNo)
         {
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, (ThreadStart)delegate
             {
@@ -295,10 +294,15 @@ namespace NotificationProject.ViewModel
                 }
 
                 NotificationView notif = new NotificationView();
-                NotificationViewModel notifContext = new NotificationViewModel(title, content, type, application);
+                NotificationViewModel notifContext = new NotificationViewModel(title, content, type, application, callbackYes, callbackNo);
                 notif.DataContext = notifContext;
                 notif.displayNotif(slideOutTimer);
             });
+        }
+
+        public void exempleCallbackDisplayNotif()
+        {
+            Console.WriteLine("Action car il a accepté/refusé");
         }
 
         private void StartServer()

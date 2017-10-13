@@ -24,14 +24,14 @@ namespace DataAccess
         {
             //Créer un nouveau client
             doc.Root.Add(new XElement("Device",
-                        new XAttribute("Name",device.Name)
+                        new XAttribute("Name", device.Name)
                     ));
             doc.Save(path);
         }
         //Save several devices
         public void saveDevices(IEnumerable<Device> devices)
         {
-            foreach(var device in devices)
+            foreach (var device in devices)
             {
                 saveDevice(device);
             }
@@ -44,7 +44,7 @@ namespace DataAccess
             devices.AddRange(doc.Root.Descendants("Device")
                 .Select(device => new Device()
                 {
-                   Name = device.Element("Name").Value
+                    Name = device.Element("Name").Value
                 }
             ));
             return devices;
@@ -68,7 +68,7 @@ namespace DataAccess
         //Save several contact
         public void saveContacts(IEnumerable<Contact> contacts)
         {
-            foreach(var contact in contacts)
+            foreach (var contact in contacts)
             {
                 saveContact(contact);
             }
@@ -79,8 +79,8 @@ namespace DataAccess
         {
             var contacts = new List<Contact>();
             contacts.AddRange(doc.Root.Descendants("Contact")
-                .Select(contact => 
-                    new Contact(contact.Element("Name").Value,contact.Element("Number").Value, contact.Element("Email").Value)
+                .Select(contact =>
+                    new Contact(contact.Element("Name").Value, contact.Element("Number").Value, contact.Element("Email").Value)
                 ));
             return contacts;
         }
@@ -93,6 +93,5 @@ namespace DataAccess
                 .Remove();
             doc.Save("path");
         }
-
     }
 }
