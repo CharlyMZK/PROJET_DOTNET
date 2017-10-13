@@ -1,10 +1,13 @@
-﻿using NotificationProject.HelperClasses;
+﻿
+using NotificationProject.HelperClasses;
 using NotificationProject.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace NotificationProject.ViewModel
 {
@@ -59,6 +62,34 @@ namespace NotificationProject.ViewModel
             }
         }
 
+        private string _accepter;
+        public string Accepter
+        {
+            get
+            {
+                return "ok";
+            }
+        }
+        private string _refuser;
+        public string Refuser
+        {
+            get
+            {
+                return "ok";
+            }
+        }
+
+        private ICommand _displayCommand;
+        public ICommand DisplayCommand
+        {
+            get
+            {
+                if (_displayCommand == null)
+                    _displayCommand = new RelayCommand(o => Display());
+                return _displayCommand;
+            }
+        }
+
         private string application;
 
         private Action callbackYes;
@@ -73,31 +104,34 @@ namespace NotificationProject.ViewModel
             this.callbackYes = cbYes;
             this.callbackNo = cbNo;
 
-            if(this.Type == "connexion")
+            if (this.Type == "connexion")
             {
                 this.uneConnexion();
-            } 
-            else if(this.Type == "appel")
+            }
+            else if (this.Type == "appel")
             {
                 this.unAppel();
             }
-            else if(this.Type == "notif")
+            else if (this.Type == "notif")
             {
                 this.uneNotif();
             }
         }
+
         public void unAppel()
         {
             this.AfficheBoutons = true;
             this.application = "appel";
             Console.WriteLine("un appel !");
         }
+
         public void uneConnexion()
         {
             this.AfficheBoutons = true;
             this.application = "connexion";
             Console.WriteLine("un connexion !");
         }
+
         public void uneNotif()
         {
             this.AfficheBoutons = false;
@@ -106,13 +140,18 @@ namespace NotificationProject.ViewModel
 
         public void clickButton(Boolean action)
         {
-            if(action && this.callbackYes != null)
+            if (action && this.callbackYes != null)
             {
                 this.callbackYes();
-            } else if (!action && this.callbackNo != null)
+            }
+            else if (!action && this.callbackNo != null)
             {
                 this.callbackNo();
             }
+        }
+        private void Display()
+        {
+            Window.GetWindow(Application.Current.MainWindow).WindowState = WindowState.Maximized;
         }
     }
 }

@@ -7,7 +7,15 @@
         xmlns:viewModel="clr-namespace:NotificationProject.ViewModel"
         xmlns:view="clr-namespace:NotificationProject.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="525" WindowState="Maximized" StateChanged="onMinimizeWindow">
+        Title="MainWindow" Height="720" Width="525" WindowState="Maximized"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="{DynamicResource MaterialDesignFont}">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <view:HomeView/>
