@@ -16,9 +16,9 @@ namespace NotificationProject.HelperClasses
             JObject message;
             try
             {
-                message  = JObject.Parse(chaine);
+                message = JObject.Parse(chaine);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 message = new JObject();
             }
@@ -27,7 +27,7 @@ namespace NotificationProject.HelperClasses
 
         public static string[] interpretation(JObject json)
         {
-            string[] res = new string[3] { "", "", ""}; 
+            string[] res = new string[3] { "", "", "" };
             string type = (string)json["type"];
             string conn = (string)(json["conn"]);
             if (!String.IsNullOrEmpty(type))
@@ -40,11 +40,11 @@ namespace NotificationProject.HelperClasses
                 port = Int32.Parse(pairaineKey[0]);
                 string author = (string)json["author"];
                 if (type.ToLower() == "connect") //1.Type 2.Author 3.IPaddress@Port
-                {  
+                {
                     res[0] = "Connection";
                     res[1] = author;
                     res[2] = ipAddress.ToString() + ":" + port.ToString() + ":" + pairaineKey[1];
-            
+
                     Console.WriteLine("Demande Connection");
                     Console.WriteLine("L'appareil " + author + "(" + ipAddress.ToString() + ":" + port.ToString() + ") souhaite se connecter.");
                 }
@@ -63,10 +63,10 @@ namespace NotificationProject.HelperClasses
                     Console.WriteLine("Notification");
                     IList<string> allObject = json["object"].Select(t => (string)t).ToList();
                     string application = allObject[0];
-                    string date = allObject[1]; 
+                    string date = allObject[1];
                     string message = allObject[2];
                     res[1] = application;
-                    res[2] = message;  
+                    res[2] = message;
                     //Démonstration utilisation des objets obtenus depuis le JSON
                     Console.WriteLine("L'application " + application + " a reçu le message suivant: '" + message + "' depuis l'appareil de " + author + " à " + date + ".");
                 }
@@ -80,9 +80,9 @@ namespace NotificationProject.HelperClasses
         {
             JObject json;
             string res = "";
-            if(case1.ToLower() == "connect" || case1.ToLower() == "disconnect")
+            if (case1.ToLower() == "connect" || case1.ToLower() == "disconnect")
             {
-                res = @"{type: '"+ case1 +"', conn: '"+case3+"', author: '"+case2+"', object: null}";
+                res = @"{type: '" + case1 + "', conn: '" + case3 + "', author: '" + case2 + "', object: null}";
             }
             json = stringToJson(res);
             return json;
@@ -92,7 +92,7 @@ namespace NotificationProject.HelperClasses
         {
             DateTime dt = DateTime.Now;
             JObject json;
-            string sms = @"{type: 'SMS', conn: '"+appareil+"',author: '"+author+"', receiver: '"+receiver+"',object: {application: 'SMS App',Message: '"+message+"',heureDate: '"+dt+"'}}";
+            string sms = @"{type: 'SMS', conn: '" + appareil + "',author: '" + author + "', receiver: '" + receiver + "',object: {application: 'SMS App',Message: '" + message + "',heureDate: '" + dt + "'}}";
             json = stringToJson(sms);
             return json;
         }
