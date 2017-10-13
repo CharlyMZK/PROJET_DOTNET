@@ -102,7 +102,11 @@ namespace NotificationProject.ViewModel
         #region Method
         private void getContact()
         {
-            throw new NotImplementedException();
+            if(_selectedDevice != null)
+            {
+                JSONHandler.creationContactRequest("bob", _selectedDevice.Name);
+            }
+            
         }
 
         private bool canGetContact()
