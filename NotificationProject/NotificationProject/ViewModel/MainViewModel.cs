@@ -217,33 +217,24 @@ namespace NotificationProject.ViewModel
                     device.Etat = parsedJson[2];
                 else
                     device.Etat = "Non renseigné.";
+                EtatViewModel etatViewModel = (EtatViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Etat");
+                etatViewModel.OnPropertyChanged("Devices");
 
+
+                // -- TODO : Remove its a test
+                /*Console.WriteLine("Affichage des devices : "); 
                 foreach (Device d in Devices.Devices)
                 {
-                    if (d != device)
+                    Console.WriteLine("Nom du device : " + d.Name);
+                    foreach (Notification n in d.ListMessages)
                     {
-                        d.sendMessage(JSONHandler.sendState(d.Name,parsedJson[1], parsedJson[2]));
+                        Console.WriteLine("Message : " + n.Message);
+
                     }
-                }
-                CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
-                communicationViewModel.OnPropertyChanged("Etat");
+                }*/
+                // -- 
             }
-
-
-
-            // -- TODO : Remove its a test
-            /*Console.WriteLine("Affichage des devices : "); 
-            foreach (Device d in Devices.Devices)
-            {
-                Console.WriteLine("Nom du device : " + d.Name);
-                foreach (Notification n in d.ListMessages)
-                {
-                    Console.WriteLine("Message : " + n.Message);
-
-                }
-            }*/
-            // -- 
-            if (addMessage)
+                if (addMessage)
             {
 
                 device = Devices.Devices.FirstOrDefault(o => o.Name == name);
