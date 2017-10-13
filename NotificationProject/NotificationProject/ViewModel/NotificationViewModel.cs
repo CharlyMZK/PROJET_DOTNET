@@ -90,6 +90,28 @@ namespace NotificationProject.ViewModel
             }
         }
 
+        private ICommand _clickButtonYes;
+        public ICommand ClickButtonYes
+        {
+            get
+            {
+                if (_clickButtonYes == null)
+                    _clickButtonYes = new RelayCommand(o => clickButtonYes());
+                return _clickButtonYes;
+            }
+        }
+
+        private ICommand _clickButtonNo;
+        public ICommand ClickButtonNo
+        {
+            get
+            {
+                if (_clickButtonNo == null)
+                    _clickButtonNo = new RelayCommand(o => clickButtonNo());
+                return _clickButtonNo;
+            }
+        }
+
         private string application;
 
         private Action callbackYes;
@@ -138,13 +160,17 @@ namespace NotificationProject.ViewModel
             Console.WriteLine("une notif !");
         }
 
-        public void clickButton(Boolean action)
+        public void clickButtonYes()
         {
-            if (action && this.callbackYes != null)
+            if (this.callbackYes != null)
             {
                 this.callbackYes();
             }
-            else if (!action && this.callbackNo != null)
+        }
+
+        public void clickButtonNo()
+        {
+            if (this.callbackNo != null)
             {
                 this.callbackNo();
             }

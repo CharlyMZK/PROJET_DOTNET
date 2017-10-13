@@ -65,27 +65,12 @@ namespace NotificationProject.View
             this.myStoryboard.Children.Add(popOut);
         }
 
-        private NotificationViewModel getMyDataContext()
-        {
-            return this.DataContext as NotificationViewModel;
-        }
-
         public void displayNotif(int slideOutTimer)
         {
             this.setSlideInAnimation();
             this.setSlideOutAnimation(slideOutTimer);
             this.Show();
             this.myStoryboard.Begin(this);
-        }
-
-        public void yesButtonClick(object sender, EventArgs e)
-        {
-            this.getMyDataContext().clickButton(true);
-        }
-
-        public void noButtonClick(object sender, EventArgs e)
-        {
-            this.getMyDataContext().clickButton(false);
         }
 
         public void closeNotif(object sender, EventArgs e)

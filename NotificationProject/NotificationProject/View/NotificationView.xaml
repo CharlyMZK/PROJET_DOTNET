@@ -39,15 +39,15 @@
                     Height="20" 
                     Content="Accepter" 
                     Margin="10,10,0,0"
-                    Click="yesButtonClick"
+                    Command="{Binding ClickButtonYes}"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
                 <Button 
                     Width="60" 
                     Height="20" 
-                    Content="Refuser" 
-                    Click="noButtonClick"            
+                    Content="Refuser"           
                     Margin="10,10,0,0"
+                    Command="{Binding ClickButtonNo}"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
                  <Button 
