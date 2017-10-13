@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" Grid.Row="0" HorizontalAlignment="Center">Devices</TextBlock>
         <ListView Margin="10" Name="listDevices" ItemsSource="{Binding ListDevices}" SelectedItem="{Binding SelectedDevice}" Grid.Row="1">
@@ -33,13 +34,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Image x:Name="image" Source="{Binding ImageSource}"
-               HorizontalAlignment="Left" 
-               Height="30" 
-               Margin="65,2,0,0" 
-               Grid.Row="2" 
-               VerticalAlignment="Top"
-               Width="30"/>
+        <Button Grid.Row="4" Command="{Binding GetContactCommand}">Recevoir les contacts</Button>
 
     </Grid>
 </UserControl>

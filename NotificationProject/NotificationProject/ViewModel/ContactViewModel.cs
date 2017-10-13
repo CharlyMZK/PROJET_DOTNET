@@ -8,6 +8,7 @@ using DataAccess.Model;
 using System.Collections.ObjectModel;
 using NotificationProjet.Controller;
 using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace NotificationProject.ViewModel
 {
@@ -97,6 +98,33 @@ namespace NotificationProject.ViewModel
             }
         }
         #endregion Properties
+
+        #region Method
+        private void getContact()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool canGetContact()
+        {
+            return true;
+        }
+        #endregion Method
+
+        #region Command
+        #region Command
+        private ICommand _getContactCommand;
+        public ICommand GetContactCommand
+        {
+            get
+            {
+                if (_getContactCommand == null)
+                    _getContactCommand = new RelayCommand(o => getContact(), n => canGetContact());
+                return _getContactCommand;
+            }
+        }
+        #endregion Command
+        #endregion
 
 
     }
