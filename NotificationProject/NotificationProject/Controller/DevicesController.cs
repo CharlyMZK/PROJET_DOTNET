@@ -26,14 +26,14 @@ namespace NotificationProjet.Controller
 
         public void addDevice(Device device)
         {
-        //    Devices = new List<Device>(Devices);  // -- TODO : Its supposed to work without this line, but it throw an exception.
+            //    Devices = new List<Device>(Devices);  // -- TODO : Its supposed to work without this line, but it throw an exception.
             Devices.Add(device);                                      // -- Add device on list
         }
 
         public void deleteDevice(Device device)
         {
             Devices.Remove(device); // -- Remove device on list
-        } 
+        }
     }
 
 

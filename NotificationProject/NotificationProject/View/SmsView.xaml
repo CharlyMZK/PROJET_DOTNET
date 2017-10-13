@@ -3,15 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
              xmlns:local="clr-namespace:NotificationProject.View"
+             xmlns:helperClasses="clr-namespace:NotificationProject.HelperClasses"
              mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+
+    <!--<Grid RenderTransformOrigin="0.5,0.5" Margin="0,0,-345,-26">
+        
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform Angle="0.001"/>
+                <TranslateTransform/>
+            </TransformGroup>
+        </Grid.RenderTransform>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="0,0,-428,34">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -21,10 +34,10 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="500"/>
             </Grid.ColumnDefinitions>
-
             <Label Content="Numéro de téléphone" Grid.Row="0" Grid.Column="0" Margin="10"></Label>
             <TextBox Text="{Binding  PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Margin="10"/>
             <Label Content="Message" Grid.Row="1" Grid.Column="0" Margin="10"></Label>
+           
             <TextBox Text="{Binding SmsText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Margin="10"/>
 
             <ListView Margin="10" Name="listDevices" HorizontalAlignment="Stretch" ItemsSource="{Binding ListDevices}" SelectedItem="{Binding SelectedDevice}" Grid.Row="2" Height="100" Grid.ColumnSpan="2">
@@ -43,8 +56,327 @@
             <Button Content="Envoyer Sms" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding SendSmsCommand}"  Grid.Column="0"/>
             <Button Content="Appeler" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding CallCommand}"  Grid.Column="1"/>
         </Grid>
-    </Grid>
+    </Grid>-->
 
+    <UserControl.Resources>
+
+        <Style x:Key="SendCallStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryHueDarkBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Viewbox Width="48" Height="48">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" Fill="Black" />
+                            </Canvas>
+                        </Viewbox>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="SendButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryHueDarkBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="#00000000">
+                            <materialDesign:PackIcon Name="SendIcon" Kind="Send" SnapsToDevicePixels="True"
+                                                     Foreground="{TemplateBinding Foreground}"
+                                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                     Margin="{TemplateBinding Padding}" Width="Auto" Height="Auto"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" TargetName="SendIcon" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Foreground" TargetName="SendIcon" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.23"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ParticipantsListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" 
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" 
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Padding" Value="2,0,0,0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" TargetName="Bd" Value="#E3F2FD"/>
+                                <Setter Property="Foreground" 
+                                        Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="#E3F2FD"/>
+                                <Setter Property="Foreground" 
+                                        Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ConversationListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" 
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" 
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Padding" Value="2,0,0,0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" TargetName="Bd" Value="#E3F2FD"/>
+                                <Setter Property="Foreground" 
+                                        Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="#E3F2FD"/>
+                                <Setter Property="Foreground" 
+                                        Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="ParticipantsDataTemplate">
+            <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MaterialDesignDivider}"
+                    Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
+                    Height="50">
+                <Grid Margin="5,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Name-->
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Margin="5,0" FontWeight="SemiBold"
+                               Text="{Binding Name}" SnapsToDevicePixels="True"/>
+
+                    <materialDesign:PackIcon Name="NewMessageIcon" Grid.Column="2" SnapsToDevicePixels="True"
+                                             VerticalAlignment="Center" HorizontalAlignment="Center"
+                                             Kind="MessageReplyText" Opacity="0.5" Visibility="Hidden"/>
+
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding HasSentNewMessage}" Value="True">
+                    <Setter TargetName="NewMessageIcon" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ConversationDataTemplate">
+            <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MaterialDesignDivider}"
+                    Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
+                    Height="50">
+                <Grid Margin="5,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Name-->
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Margin="5,0" FontWeight="SemiBold"
+                               Text="{Binding Name}" SnapsToDevicePixels="True"/>
+
+                    <materialDesign:PackIcon Name="NewMessageIcon" Grid.Column="2" SnapsToDevicePixels="True"
+                                             VerticalAlignment="Center" HorizontalAlignment="Center"
+                                             Kind="MessageReplyText" Opacity="0.5" Visibility="Hidden"/>
+
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding HasSentNewMessage}" Value="True">
+                    <Setter TargetName="NewMessageIcon" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+
+        <DataTemplate x:Key="MessagesDataTemplate">
+            <Border Name="MessageBorder" MinHeight="40" BorderThickness="1" Background="#EFEBE9" 
+                    Margin="150,0,10,10" BorderBrush="#BCAAA4" CornerRadius="2" SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="15"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="7,5,7,0"                                
+                               TextWrapping="Wrap" Text="{Binding Content}" Foreground="Black"/>
+                    <TextBlock Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                               Margin="0,0,5,0" FontSize="10" Opacity="0.8"
+                               Text="{Binding SendHour}"
+                               Foreground="Black"/>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsOriginNative}" Value="True">
+                    <Setter TargetName="MessageBorder" Property="Margin" Value="10,0,150,10"/>
+                    <Setter TargetName="MessageBorder" Property="Background" Value="#BBDEFB"/>
+                    <Setter TargetName="MessageBorder" Property="BorderBrush" Value="#64B5F6"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.RowSpan="1" BorderThickness="0,0,1,0" SnapsToDevicePixels="True" Grid.Column="0"
+               BorderBrush="{DynamicResource MaterialDesignDivider}" Margin="0,0,0,0">
+
+
+            <ListBox ItemsSource="{Binding ListDevices}" 
+                 ItemTemplate="{DynamicResource ParticipantsDataTemplate}"
+                 ItemContainerStyle="{DynamicResource ParticipantsListBoxItemStyle}"
+                 SelectedItem="{Binding SelectedDevice}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,0,0.2,0"/>
+        </Border>
+        <Border Grid.RowSpan="1" BorderThickness="0,0,1,0" SnapsToDevicePixels="True" Grid.Column="0" Grid.Row="1"
+               BorderBrush="{DynamicResource MaterialDesignDivider}" Margin="0,0,0,0">
+
+
+            <ListBox ItemsSource="{Binding ListContacts}" 
+                 ItemTemplate="{DynamicResource ConversationDataTemplate}"
+                 ItemContainerStyle="{DynamicResource ConversationListBoxItemStyle}"
+                 SelectedItem="{Binding SelectedContact}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,0,0.2,0"/>
+        </Border>
+        <Border BorderThickness="0,0,1,0" SnapsToDevicePixels="True" Grid.Row="0" Grid.Column="1"
+               BorderBrush="{DynamicResource MaterialDesignDivider}" Margin="10,10,10,10" Grid.ColumnSpan="3">
+            <StackPanel Margin="3">
+                <Label Content="Numéro de téléphone" Grid.Row="0" Grid.Column="0" Margin="10,10,10,9.6"></Label>
+                <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Margin="10,10,9.8,9.6"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Messages -->
+        <ItemsControl x:Name="MessagesItemsCtrl" Grid.Column="1" Margin="0,5,0,10" Grid.Row="1"
+
+                  ItemsSource="{Binding SelectedContact.Chatter}" 
+
+                  ItemTemplate="{DynamicResource MessagesDataTemplate}"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Grid.RowSpan="1">
+            <i:Interaction.Behaviors>
+                <helperClasses:BringNewItemIntoViewBehavior/>
+            </i:Interaction.Behaviors>
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="ItemsControl">
+                    <ScrollViewer>
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
+
+        <Border Grid.Row="2" Grid.Column="1" SnapsToDevicePixels="True" VerticalAlignment="Bottom"
+            BorderBrush="{DynamicResource MaterialDesignDivider}" Grid.ColumnSpan="2" Margin="0,0.4,0,0">
+
+            
+            <Grid HorizontalAlignment="Right" Margin="0,0,0,0.2" Width="500">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <!-- Message -->
+                <TextBox x:Name="MessageTxtBox" Margin="10,10,0.4,9.4" MaxHeight="80"                                         
+
+                     BorderThickness="1" BorderBrush="{DynamicResource MaterialDesignDivider}"
+
+                     TextWrapping="Wrap" AcceptsReturn="True" CaretBrush="#7F000000" 
+
+                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+
+                     VerticalScrollBarVisibility="Auto"
+
+                     Text="{Binding SmsText, UpdateSourceTrigger=PropertyChanged}"/>
+                <!-- Send -->
+                <Button x:Name="SendButton" Grid.Column="1" Margin="10"
+                    Style="{DynamicResource SendButtonStyle}"
+                    Command="{Binding SendSmsCommand}"/>
+                <Button x:Name="SendCallButton" Content="Appeler" Grid.Column="2"
+                        Style="{DynamicResource SendCallStyle}"
+                        Command="{Binding CallCommand}" Margin="10,10,10,10" Grid.ColumnSpan="2" />
+            </Grid>
+        </Border>
+    </Grid>
 
 
 </UserControl>

@@ -1,10 +1,13 @@
-﻿using NotificationProject.HelperClasses;
+﻿
+using NotificationProject.HelperClasses;
 using NotificationProject.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace NotificationProject.ViewModel
 {
@@ -58,6 +61,7 @@ namespace NotificationProject.ViewModel
                 _affiche_boutons = value;
             }
         }
+
         private string _accepter;
         public string Accepter
         {
@@ -74,44 +78,106 @@ namespace NotificationProject.ViewModel
                 return "ok";
             }
         }
+
+        private ICommand _displayCommand;
+        public ICommand DisplayCommand
+        {
+            get
+            {
+                if (_displayCommand == null)
+                    _displayCommand = new RelayCommand(o => Display());
+                return _displayCommand;
+            }
+        }
+
+        private ICommand _clickButtonYes;
+        public ICommand ClickButtonYes
+        {
+            get
+            {
+                if (_clickButtonYes == null)
+                    _clickButtonYes = new RelayCommand(o => clickButtonYes());
+                return _clickButtonYes;
+            }
+        }
+
+        private ICommand _clickButtonNo;
+        public ICommand ClickButtonNo
+        {
+            get
+            {
+                if (_clickButtonNo == null)
+                    _clickButtonNo = new RelayCommand(o => clickButtonNo());
+                return _clickButtonNo;
+            }
+        }
+
         private string application;
-        public NotificationViewModel(string t, string c, string type, string app)
+
+        private Action callbackYes;
+        private Action callbackNo;
+        public NotificationViewModel(string t, string c, string type, string app, Action cbYes, Action cbNo)
         {
             this.TitleNotif = t;
             this.ContentNotif = c;
             this.Type = type;
             this.AfficheBoutons = false;
             this.application = app;
+            this.callbackYes = cbYes;
+            this.callbackNo = cbNo;
 
-            if(this.Type == "connexion")
+            if (this.Type == "connexion")
             {
                 this.uneConnexion();
-            } 
-            else if(this.Type == "appel")
+            }
+            else if (this.Type == "appel")
             {
                 this.unAppel();
             }
-            else if(this.Type == "notif")
+            else if (this.Type == "notif")
             {
                 this.uneNotif();
             }
         }
+
         public void unAppel()
         {
             this.AfficheBoutons = true;
             this.application = "appel";
             Console.WriteLine("un appel !");
         }
+
         public void uneConnexion()
         {
             this.AfficheBoutons = true;
             this.application = "connexion";
             Console.WriteLine("un connexion !");
         }
+
         public void uneNotif()
         {
             this.AfficheBoutons = false;
             Console.WriteLine("une notif !");
+        }
+
+        public void clickButtonYes()
+        {
+            if (this.callbackYes != null)
+            {
+                this.callbackYes();
+            }
+        }
+
+        public void clickButtonNo()
+        {
+            if (this.callbackNo != null)
+            {
+                this.callbackNo();
+            }
+        }
+        private void Display()
+        {
+            Window.GetWindow(Application.Current.MainWindow).WindowState = WindowState.Maximized;
         }
     }
 }
