@@ -162,6 +162,46 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ConversationListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" 
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" 
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Padding" Value="2,0,0,0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" TargetName="Bd" Value="#E3F2FD"/>
+                                <Setter Property="Foreground" 
+                                        Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="#E3F2FD"/>
+                                <Setter Property="Foreground" 
+                                        Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <DataTemplate x:Key="ParticipantsDataTemplate">
             <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MaterialDesignDivider}"
@@ -174,7 +214,7 @@
 
                     <!--Name-->
                     <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
-                               Margin="5,0" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                               Margin="5,0" FontWeight="SemiBold"
                                Text="{Binding Name}" SnapsToDevicePixels="True"/>
 
                     <materialDesign:PackIcon Name="NewMessageIcon" Grid.Column="2" SnapsToDevicePixels="True"
@@ -190,6 +230,34 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
+        <DataTemplate x:Key="ConversationDataTemplate">
+            <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MaterialDesignDivider}"
+                    Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
+                    Height="50">
+                <Grid Margin="5,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Name-->
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Margin="5,0" FontWeight="SemiBold"
+                               Text="{Binding Name}" SnapsToDevicePixels="True"/>
+
+                    <materialDesign:PackIcon Name="NewMessageIcon" Grid.Column="2" SnapsToDevicePixels="True"
+                                             VerticalAlignment="Center" HorizontalAlignment="Center"
+                                             Kind="MessageReplyText" Opacity="0.5" Visibility="Hidden"/>
+
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding HasSentNewMessage}" Value="True">
+                    <Setter TargetName="NewMessageIcon" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+
         <DataTemplate x:Key="MessagesDataTemplate">
             <Border Name="MessageBorder" MinHeight="40" BorderThickness="1" Background="#EFEBE9" 
                     Margin="150,0,10,10" BorderBrush="#BCAAA4" CornerRadius="2" SnapsToDevicePixels="True">
@@ -202,7 +270,7 @@
                                TextWrapping="Wrap" Text="{Binding Content}" Foreground="Black"/>
                     <TextBlock Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch"
                                Margin="0,0,5,0" FontSize="10" Opacity="0.8"
-                               Text="{Binding SendHour, StringFormat={}{0:t}}"
+                               Text="{Binding SendHour}"
                                Foreground="Black"/>
                 </Grid>
             </Border>
@@ -228,7 +296,7 @@
             <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.RowSpan="4" BorderThickness="0,0,1,0" SnapsToDevicePixels="True" Grid.Column="0"
+        <Border Grid.RowSpan="1" BorderThickness="0,0,1,0" SnapsToDevicePixels="True" Grid.Column="0"
                BorderBrush="{DynamicResource MaterialDesignDivider}" Margin="0,0,0,0">
 
 
@@ -236,6 +304,17 @@
                  ItemTemplate="{DynamicResource ParticipantsDataTemplate}"
                  ItemContainerStyle="{DynamicResource ParticipantsListBoxItemStyle}"
                  SelectedItem="{Binding SelectedDevice}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,0,0.2,0"/>
+        </Border>
+        <Border Grid.RowSpan="1" BorderThickness="0,0,1,0" SnapsToDevicePixels="True" Grid.Column="0" Grid.Row="1"
+               BorderBrush="{DynamicResource MaterialDesignDivider}" Margin="0,0,0,0">
+
+
+            <ListBox ItemsSource="{Binding ListContacts}" 
+                 ItemTemplate="{DynamicResource ConversationDataTemplate}"
+                 ItemContainerStyle="{DynamicResource ConversationListBoxItemStyle}"
+                 SelectedItem="{Binding SelectedContact}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,0,0.2,0"/>
         </Border>

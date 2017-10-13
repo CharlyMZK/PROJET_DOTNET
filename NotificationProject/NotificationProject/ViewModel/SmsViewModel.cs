@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using NotificationProjet.Controller;
 using System.Xml;
 using System.IO;
+using System.Xml.Linq;
+using System.Configuration;
 
 namespace NotificationProject.ViewModel
 {
@@ -27,8 +29,8 @@ namespace NotificationProject.ViewModel
         private string _phoneNumber;
         private string _smsText;
         public Device _selectedDevice;
-        public Contact _selectedContact = Contact.GetContact();
-        
+        public Contact _selectedContact;
+        public string configPath = ConfigurationManager.AppSettings["XmlFilePath"];
         private DevicesController _devicesController;
         #endregion
 
@@ -88,6 +90,30 @@ namespace NotificationProject.ViewModel
             set
             {
                 _selectedDevice = value;
+                _selectedDevice.listContact.Add(Contact.GetContact());
+                _selectedDevice.listContact.Add(Contact.GetContact2());
+                ListContacts = _selectedDevice.listContact;
+            }
+        }
+
+        public ObservableCollection<Contact> ListContacts
+        {
+            get
+            {
+                if (SelectedDevice != null)
+                    return new ObservableCollection<Contact>(SelectedDevice.listContact);
+                return null;  
+            }
+            set
+            {
+                OnPropertyChanged("ListContacts");
+                if (_selectedContact != null)
+                {
+                    PhoneNumber = _selectedContact.Number;
+                    _selectedContact.Chatter.Clear();
+                    RetrieveConversation(_selectedContact);
+                }
+            
             }
         }
 
@@ -95,11 +121,16 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                return _selectedContact;
+               return _selectedContact;
             }
             set
             {
                 _selectedContact = value;
+                 PhoneNumber = _selectedContact.Number;
+                 _selectedContact.Chatter.Clear();
+                RetrieveConversation(_selectedContact);
+                if (_selectedContact.HasSentNewMessage) _selectedContact.HasSentNewMessage = false;
+                OnPropertyChanged("SelectedContact");
             }
         }
         #endregion
@@ -144,23 +175,29 @@ namespace NotificationProject.ViewModel
         }
 
         private void WriteConversationOnXml() {
-            Contact.GetContact().Chatter.Add(new Sms(DateTime.Today, SmsText, true));
-            if (File.Exists(PhoneNumber + ".xml"))
+            _selectedContact.Chatter.Add(new Sms(DateTime.Now, SmsText, true));
+            string filename = configPath + PhoneNumber + ".xml";
+
+            if (File.Exists(filename))
             {
-                string filename = PhoneNumber + ".xml";
                 XmlDocument doc = new XmlDocument();
                 //load from file
                 doc.Load(filename);
 
                 //create node and add value
-                XmlNode node = doc.CreateNode(XmlNodeType.Element, "Envoi", null);
+                XmlNode node = doc.CreateNode(XmlNodeType.Element, "Envoi",null);
+                XmlAttribute attr = doc.CreateAttribute("native");
+                attr.Value = "true";
+
+                //Add the attribute to the node     
+                node.Attributes.SetNamedItem(attr);
                 //create title node
                 XmlNode nodeDate = doc.CreateElement("DateTime");
                 //add value for it
-                nodeDate.InnerText = DateTime.Today.ToString();
+                nodeDate.InnerText = DateTime.Now.ToString();
 
                 //create Url node
-                XmlNode nodeMessage = doc.CreateElement("Message");
+                XmlNode nodeMessage = doc.CreateElement("Content");
                 nodeMessage.InnerText = SmsText;
 
                 //add to parent node
@@ -176,17 +213,46 @@ namespace NotificationProject.ViewModel
             }
             else
             {
-                using (XmlWriter writer = XmlWriter.Create(PhoneNumber + ".xml"))
+                using (XmlWriter writer = XmlWriter.Create(filename))
                 {
                     writer.WriteStartDocument();
+                    writer.WriteStartElement("Message");
                     writer.WriteStartElement("Envoi");
-                    writer.WriteElementString("DateTime", DateTime.Today.ToString());
-                    writer.WriteElementString("Message", SmsText);
+                    writer.WriteElementString("DateTime", DateTime.Now.ToString());
+                    writer.WriteElementString("Content", SmsText);
+                    writer.WriteEndElement();
                     writer.WriteEndElement();
                     writer.WriteEndDocument();
                 }
             }
            
+        }
+
+        private void RetrieveConversation(Contact contact)
+        {
+            contact.Chatter.Clear();
+            var filename = configPath + contact.Number + ".xml";
+            if (File.Exists(filename))
+            {
+                foreach (XElement level1Element in XElement.Load(filename).Elements("Envoi"))
+                {
+                    Sms result = new Sms();
+
+                    result.IsOriginNative = (level1Element.Attribute("native").Value == "true") ? true : false;
+                    foreach (XElement level2Element in level1Element.Elements("DateTime"))
+                    {
+                        result.SendHour = Convert.ToDateTime((string)level2Element.Value);
+                        //DateTime.ParseExact((string)level2Element.Value, "dd-MM-yyyy HH:mm:ss",
+                        //                     System.Globalization.CultureInfo.InvariantCulture);
+                    }
+
+                    foreach (XElement level2Element in level1Element.Elements("Content"))
+                    {
+                        result.Content = level2Element.Value;
+                    }
+                    contact.Chatter.Add(result);
+                }
+            }
         }
 
        
