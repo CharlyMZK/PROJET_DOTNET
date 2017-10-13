@@ -15,6 +15,19 @@ namespace DataAccess.Model
         public String Name { get; set; }
         public String Etat { get; set; }
         public String Pourcentage { get; set; }
+        public double PourcentageDouble
+        {
+            get
+            {
+                if (Pourcentage == null)
+                    return 0;
+                return Double.Parse(Pourcentage);
+            }
+            set
+            {
+                Pourcentage = value.ToString();
+            }
+        }
         public List<Notification> ListMessages { get; set; }
         public Socket Handler { get; set; }
         public ObservableCollection<Contact> listContact { get; set; }

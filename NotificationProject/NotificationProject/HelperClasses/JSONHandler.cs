@@ -83,7 +83,7 @@ namespace NotificationProject.HelperClasses
                     IList<string> allObject = json["object"].Select(t => (string)t).ToList();
                     pourcentage = allObject[1];
 
-                    if (allObject[0] == "true")
+                    if (allObject[0].ToLower() == "true")
                     {
                         etat = "isCharging";
                     }

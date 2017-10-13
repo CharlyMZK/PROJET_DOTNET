@@ -28,7 +28,7 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                return "Etat du téléphone";
+                return "Etat";
             }
         }
 
