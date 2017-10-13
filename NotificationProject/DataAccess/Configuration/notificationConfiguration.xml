@@ -3,5 +3,5 @@
   <isEnabled>true</isEnabled>
   <smsEnabled>false</smsEnabled>
   <callEnabled>true</callEnabled>
-  <otherEnabled>false</otherEnabled>
+  <otherEnabled>true</otherEnabled>
 </notificationConfiguration>

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using DataAccess.Model;
+using System.IO;
+using System.Xml;
+using System.Diagnostics;
 
 namespace DataAccess
 {
@@ -24,14 +27,14 @@ namespace DataAccess
         {
             //Créer un nouveau client
             doc.Root.Add(new XElement("Device",
-                        new XAttribute("Name",device.Name)
+                        new XAttribute("Name", device.Name)
                     ));
             doc.Save(path);
         }
         //Save several devices
         public void saveDevices(IEnumerable<Device> devices)
         {
-            foreach(var device in devices)
+            foreach (var device in devices)
             {
                 saveDevice(device);
             }
@@ -44,7 +47,7 @@ namespace DataAccess
             devices.AddRange(doc.Root.Descendants("Device")
                 .Select(device => new Device()
                 {
-                   Name = device.Element("Name").Value
+                    Name = device.Element("Name").Value
                 }
             ));
             return devices;
@@ -68,7 +71,7 @@ namespace DataAccess
         //Save several contact
         public void saveContacts(IEnumerable<Contact> contacts)
         {
-            foreach(var contact in contacts)
+            foreach (var contact in contacts)
             {
                 saveContact(contact);
             }
@@ -79,8 +82,8 @@ namespace DataAccess
         {
             var contacts = new List<Contact>();
             contacts.AddRange(doc.Root.Descendants("Contact")
-                .Select(contact => 
-                    new Contact(contact.Element("Name").Value,contact.Element("Number").Value, contact.Element("Email").Value)
+                .Select(contact =>
+                    new Contact(contact.Element("Name").Value, contact.Element("Number").Value, contact.Element("Email").Value)
                 ));
             return contacts;
         }
@@ -92,6 +95,40 @@ namespace DataAccess
                 d.Element("Number").Value == contact.Number)
                 .Remove();
             doc.Save("path");
+        }
+
+        public static void parseConfiguration()
+        {
+
+            
+
+
+            Console.WriteLine("Parsing XML");
+
+            StringBuilder op = new StringBuilder();
+
+            string path = @"C:\Users\MZK\Documents\Visual Studio 2015\Projects\PROJET_DOTNET\NotificationProject\DataAccess\Configuration\notificationConfiguration.xml";
+            string readText = File.ReadAllText(path);
+            // Create an XmlReader
+            XmlDocument doc = new XmlDocument();
+            doc.Load(path);
+
+            XmlNode isEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/isEnabled");
+            XmlNode smsEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/smsEnabled");
+            XmlNode callEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/callEnabled");
+            XmlNode otherEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/otherEnabled");
+            
+
+            bool configIsEnabled = bool.Parse(isEnabledNode.InnerText);
+            bool configSmsEnabled = bool.Parse(smsEnabledNode.InnerText);
+            bool configCallEnabled = bool.Parse(callEnabledNode.InnerText);
+            bool configOtherEnabled = bool.Parse(otherEnabledNode.InnerText);
+
+            NotificationConfiguration.getInstance().IsEnabled = configIsEnabled;
+            NotificationConfiguration.getInstance().SmsEnabled = configSmsEnabled;
+            NotificationConfiguration.getInstance().CallEnabled = configCallEnabled;
+            NotificationConfiguration.getInstance().OtherEnabled = configOtherEnabled;
+     
         }
 
     }

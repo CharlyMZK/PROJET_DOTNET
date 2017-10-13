@@ -162,10 +162,10 @@ namespace NotificationProject.ViewModel
                     notification.Application = parsedJson[1];
                     notification.Message ="demande de connexion"; 
                     Console.WriteLine("Successfuly connexion !");
-                    this.DisplayNotif("Connexion", "Vous êtes désormais connecté avec l'appareil " + connectionReq.Appareil, "Connection", null);
+                    this.DisplayNotif("Connexion", "Vous êtes désormais connecté avec l'appareil " + connectionReq.Appareil, "Connection", "appel");
                 } else
                 {
-                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.","Message", null);
+                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.","Message", "appel");
                 }
                 addMessage = true;
             }
@@ -190,9 +190,59 @@ namespace NotificationProject.ViewModel
             else if (parsedJson[0].ToLower() == "notification")
             {
                 notification.Application = parsedJson[1];
-                notification.Message = parsedJson[2];
+                Boolean notificationHandled = false;
                 addMessage = true;
-                this.DisplayNotif("Message", notification.Message, "Notification", null);
+                var config = NotificationConfiguration.getInstance();
+                if (NotificationConfiguration.getInstance().IsEnabled)
+                {
+                    if ( ( notification.Application.Equals("com.android.sms") || notification.Application.Equals("com.android.mms") ))
+                    {
+                        if (NotificationConfiguration.getInstance().SmsEnabled)
+                        {
+                            Console.WriteLine("SMS reçu et traité");
+                        }else
+                        {
+                            addMessage = false;
+                            Console.WriteLine("Ce message n'est pas un sms");
+                        }
+                        notificationHandled = true;
+                    }
+                    if(notificationHandled == false)
+                    {
+                        if (notification.Application.Equals("com.android.server.telecom"))
+                        {
+                            if (NotificationConfiguration.getInstance().CallEnabled)
+                            {
+                                Console.WriteLine("Appel reçu et traité");
+                               
+                            }else
+                            {
+                                addMessage = false;
+                                Console.WriteLine("Appel reçu et non traité");
+                            }
+                            notificationHandled = true;
+                        }
+                    }
+                    if (notificationHandled == false)
+                    {
+                        if (NotificationConfiguration.getInstance().OtherEnabled)
+                        {
+                            Console.WriteLine("Autre reçu et traité");
+                            
+                        }
+                        else
+                        {
+                            addMessage = false;
+                            Console.WriteLine("Autre reçu et non traité");
+                        }
+                        notificationHandled = true;
+                    }
+
+                }
+
+                notification.Message = parsedJson[2];
+                //addMessage = true;
+                if (addMessage) { this.DisplayNotif("Message", notification.Message, "Notification", null); }
             }
 
 
