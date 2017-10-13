@@ -44,9 +44,9 @@ namespace NotificationProject.ViewModel
             PageViewModels.Add(new QRCodeViewModel());
             PageViewModels.Add(new CommunicationViewModel());
             PageViewModels.Add(new SmsViewModel());
-            ////PageViewModels.Add(new ContactViewModel());
-            //PageViewModels.Add(new ConfigurationViewModel());
-            //PageViewModels.Add(new EtatViewModel());
+            PageViewModels.Add(new ContactViewModel());
+            PageViewModels.Add(new ConfigurationViewModel());
+            PageViewModels.Add(new EtatViewModel());
             // Set default page
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
@@ -310,7 +310,7 @@ namespace NotificationProject.ViewModel
             cs.callBackAfterAnalysis = CallBackAfterAnalysis;
             CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
             communicationViewModel.CommunicationStatus = "Server Started";
-            RetrieveConversation();
+            //RetrieveConversation();
         }
 
         private void RetrieveConversation()
