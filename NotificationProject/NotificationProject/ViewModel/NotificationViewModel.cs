@@ -58,30 +58,20 @@ namespace NotificationProject.ViewModel
                 _affiche_boutons = value;
             }
         }
-        private string _accepter;
-        public string Accepter
-        {
-            get
-            {
-                return "ok";
-            }
-        }
-        private string _refuser;
-        public string Refuser
-        {
-            get
-            {
-                return "ok";
-            }
-        }
+
         private string application;
-        public NotificationViewModel(string t, string c, string type, string app)
+
+        private Action callbackYes;
+        private Action callbackNo;
+        public NotificationViewModel(string t, string c, string type, string app, Action cbYes, Action cbNo)
         {
             this.TitleNotif = t;
             this.ContentNotif = c;
             this.Type = type;
             this.AfficheBoutons = false;
             this.application = app;
+            this.callbackYes = cbYes;
+            this.callbackNo = cbNo;
 
             if(this.Type == "connexion")
             {
@@ -112,6 +102,17 @@ namespace NotificationProject.ViewModel
         {
             this.AfficheBoutons = false;
             Console.WriteLine("une notif !");
+        }
+
+        public void clickButton(Boolean action)
+        {
+            if(action && this.callbackYes != null)
+            {
+                this.callbackYes();
+            } else if (!action && this.callbackNo != null)
+            {
+                this.callbackNo();
+            }
         }
     }
 }

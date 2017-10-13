@@ -39,6 +39,7 @@
                     Height="20" 
                     Content="Accepter" 
                     Margin="50,10,0,0"
+                    Click="yesButtonClick"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
                 <Button 
@@ -46,6 +47,7 @@
                     Height="20" 
                     Content="Refuser" 
                     Margin="15,10,0,0"
+                    Click="noButtonClick"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
             </TextBlock>
