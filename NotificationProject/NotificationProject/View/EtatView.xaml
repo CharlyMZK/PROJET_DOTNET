@@ -13,7 +13,7 @@
                     <StackPanel>
                         <TextBlock Text="{Binding Name}"></TextBlock>
                         <Grid Margin="20" Height="200">
-                            <ProgressBar Minimum="0" Maximum="100" Value="75" />
+                            <ProgressBar Minimum="0" Maximum="100" Value="{Binding PourcentageDouble}" />
                         </Grid>
                     </StackPanel>
                 </DataTemplate>
