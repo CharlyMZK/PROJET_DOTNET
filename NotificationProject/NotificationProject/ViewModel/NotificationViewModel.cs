@@ -120,21 +120,21 @@ namespace NotificationProject.ViewModel
         {
             this.TitleNotif = t;
             this.ContentNotif = c;
-            this.Type = type;
+            this.Type = type.ToUpper();
             this.AfficheBoutons = false;
             this.application = app;
             this.callbackYes = cbYes;
             this.callbackNo = cbNo;
 
-            if (this.Type == "connexion")
+            if (this.Type == "CONNEXION")
             {
                 this.uneConnexion();
             }
-            else if (this.Type == "appel")
+            else if (this.Type == "APPEL")
             {
                 this.unAppel();
             }
-            else if (this.Type == "notif")
+            else if (this.Type == "NOTIF")
             {
                 this.uneNotif();
             }

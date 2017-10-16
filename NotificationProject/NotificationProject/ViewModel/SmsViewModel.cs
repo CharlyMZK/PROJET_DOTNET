@@ -56,6 +56,8 @@ namespace NotificationProject.ViewModel
             }
         }
 
+        private string ContactPhoneNumber { get; set; }
+
 
         public string SmsText
         {
@@ -109,7 +111,7 @@ namespace NotificationProject.ViewModel
                 OnPropertyChanged("ListContacts");
                 if (_selectedContact != null)
                 {
-                    PhoneNumber = _selectedContact.Number;
+                    ContactPhoneNumber = _selectedContact.Number;
                     _selectedContact.Chatter.Clear();
                     RetrieveConversation(_selectedContact);
                 }
@@ -126,7 +128,7 @@ namespace NotificationProject.ViewModel
             set
             {
                 _selectedContact = value;
-                 PhoneNumber = _selectedContact.Number;
+                 ContactPhoneNumber = _selectedContact.Number;
                  _selectedContact.Chatter.Clear();
                 RetrieveConversation(_selectedContact);
                 if (_selectedContact.HasSentNewMessage) _selectedContact.HasSentNewMessage = false;
@@ -140,8 +142,11 @@ namespace NotificationProject.ViewModel
         {
             try
             {
+                var realNumber = (String.IsNullOrEmpty(PhoneNumber)) 
+                    ? ContactPhoneNumber 
+                    : PhoneNumber;
                 WriteConversationOnXml();
-                SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob", SelectedDevice.Name, SmsText, PhoneNumber));
+                SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob", SelectedDevice.Name, SmsText, realNumber));
             }
             catch (Exception ex)
             {
@@ -153,7 +158,7 @@ namespace NotificationProject.ViewModel
 
         private bool CanSend()
         {
-            return !String.IsNullOrEmpty(SmsText) && !String.IsNullOrEmpty(PhoneNumber) && SelectedDevice!=null;
+            return !String.IsNullOrEmpty(SmsText) && (!String.IsNullOrEmpty(PhoneNumber) || !String.IsNullOrEmpty(ContactPhoneNumber)) && SelectedDevice!=null;
         }
 
         private void Call()
@@ -175,11 +180,12 @@ namespace NotificationProject.ViewModel
         }
 
         private void WriteConversationOnXml() {
-            _selectedContact.Chatter.Add(new Sms(DateTime.Now, SmsText, true));
             string filename = configPath + PhoneNumber + ".xml";
 
             if (File.Exists(filename))
             {
+                _selectedContact.Chatter.Add(new Sms(DateTime.Now, SmsText, true));
+
                 XmlDocument doc = new XmlDocument();
                 //load from file
                 doc.Load(filename);
@@ -213,11 +219,17 @@ namespace NotificationProject.ViewModel
             }
             else
             {
+                Contact newContact = new Contact(PhoneNumber, PhoneNumber, "");
+                newContact.Chatter.Add(new Sms(DateTime.Now, SmsText, true));
+                SelectedDevice.listContact.Add(newContact);
+                ListContacts = SelectedDevice.listContact;
+
                 using (XmlWriter writer = XmlWriter.Create(filename))
                 {
                     writer.WriteStartDocument();
                     writer.WriteStartElement("Message");
                     writer.WriteStartElement("Envoi");
+                    writer.WriteAttributeString("native", "true");
                     writer.WriteElementString("DateTime", DateTime.Now.ToString());
                     writer.WriteElementString("Content", SmsText);
                     writer.WriteEndElement();
