@@ -24,7 +24,7 @@ namespace DataAccess.Model
 
         public static Contact GetContact() {
             if(_contact == null)
-                _contact = new Contact("Toto", "0688269472", "test@example.fr");
+                _contact = new Contact("Laurent", "0688269472", "test@example.fr");
 
             return _contact;
         }

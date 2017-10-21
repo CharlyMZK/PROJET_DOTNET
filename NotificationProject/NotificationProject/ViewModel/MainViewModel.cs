@@ -21,6 +21,7 @@ using System.IO;
 using System.Timers;
 using System.Configuration;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace NotificationProject.ViewModel
 {
@@ -200,7 +201,15 @@ namespace NotificationProject.ViewModel
             {
                 notification.Application = parsedJson[1];
                 notification.Message = parsedJson[2];
-                RetrieveSms(parsedJson[2], parsedJson[4]);
+                if(parsedJson[1].Contains("messaging")) {
+                    if (!String.IsNullOrEmpty(parsedJson[3]))
+                    {
+                        var contact = parsedJson[3].Split(':')[0];
+                        var content = parsedJson[3].Split(':')[1];
+                        RetrieveSms(contact, content, parsedJson[4]);
+                    }
+                }
+               
                 addMessage = true;
                 this.DisplayNotif("Message", notification.Message, "Notification", null, null, null);
             }
@@ -303,8 +312,18 @@ namespace NotificationProject.ViewModel
         }
 
 
-        public void RetrieveSms(string content, string datetime)
+        public void RetrieveSms(string contact, string content, string datetime)
         {
+
+            var regex = new Regex("[0-9]");
+            Contact realContact = Contact.GetContact();
+            string number = "";
+            if (regex.IsMatch(contact))
+            {
+                number = contact.Replace(" ", "").Substring(3).ToString();
+                DevicesController.getInstance().Devices.ForEach(x => realContact = x.GetContactByNumber(number));
+            }
+
             Sms result = new Sms();
 
             result.IsOriginNative = false;
@@ -317,11 +336,11 @@ namespace NotificationProject.ViewModel
                    DispatcherPriority.Normal,
                    (Action)delegate()
                    {
-                       Contact.GetContact().Chatter.Add(result);
+                       realContact.Chatter.Add(result);
                    }
                );
             
-            string filename = configPath + "0688269472.xml";
+            string filename = configPath + realContact.Number + ".xml";
 
             if (File.Exists(filename))
             {

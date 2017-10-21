@@ -15,6 +15,19 @@ namespace DataAccess.Model
         public String Name { get; set; }
         public String Etat { get; set; }
         public String Pourcentage { get; set; }
+        public double PourcentageDouble
+        {
+            get
+            {
+                if (Pourcentage == null)
+                    return 0;
+                return Double.Parse(Pourcentage);
+            }
+            set
+            {
+                Pourcentage = value.ToString();
+            }
+        }
         public List<Notification> ListMessages { get; set; }
         public Socket Handler { get; set; }
         public ObservableCollection<Contact> listContact { get; set; }
@@ -40,6 +53,11 @@ namespace DataAccess.Model
                 Handler.Send(Encoding.UTF8.GetBytes(message));
             }
 
+        }
+
+        public Contact GetContactByNumber(string number)
+        {
+            return listContact.ToList().Where(x => x.Number == "0" + number).SingleOrDefault();
         }
     }
 }
