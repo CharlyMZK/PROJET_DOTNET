@@ -367,6 +367,7 @@ namespace NotificationProject.ViewModel
             OnPropertyChanged("Devices");
             communicationViewModel.OnPropertyChanged("ListDevices");
             deviceWaitingToBeConnected.sendMessage(JSONHandler.creationAcceptConnexionRequest(deviceWaitingToBeConnected.ConnexionId, "Server"));
+            deviceWaitingToBeConnected.sendMessage(JSONHandler.creationContactRequest(deviceWaitingToBeConnected.ConnexionId, "Server"));
             this.DisplayNotif("Message", "Connexion établie", "Notification", null, null, null, null);
         }
 

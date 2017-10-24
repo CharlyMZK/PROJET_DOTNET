@@ -202,7 +202,7 @@ namespace BusinessLayer
                 string content = string.Empty;
 
                 // -- Client ip
-                var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];    // -- 
+                var sIp = (handler.LocalEndPoint.ToString().Split(':'))[0];    // -- 
                 IPAddress rIp = IPAddress.Parse(sIp);                           // -- Get & parse client IP
                 clientIp = rIp.ToString();
 
