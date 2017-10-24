@@ -63,13 +63,15 @@ namespace NotificationProject.ViewModel
             }
         }
 
-        private List<Contact> _contacts;
-        public List<Contact> Contacts
+        private ObservableCollection<Contact> _contacts;
+        public ObservableCollection<Contact> Contacts
         {
             get
             {
+                //return new ObservableCollection(SelectedDevice.listContact);
+
                 if (_contacts == null)
-                    _contacts = new List<Contact>();
+                    _contacts = new ObservableCollection<Contact>();
 
                 //DEBUG
                 _contacts.Add(new Contact("TEST DEBUG", "+33646690454", "test@test.fr"));
