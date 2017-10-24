@@ -143,7 +143,7 @@ namespace BusinessLayer
                 // Using the Nagle algorithm 
                 handler.NoDelay = false;
 
-                var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];    // -- 
+                var sIp = (handler.LocalEndPoint.ToString().Split(':'))[0];    // -- 
                 IPAddress rIp = IPAddress.Parse(sIp);                           // -- Get & parse client IP
                 string clientIp = rIp.ToString();
 
@@ -202,7 +202,7 @@ namespace BusinessLayer
                 string content = string.Empty;
 
                 // -- Client ip
-                var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];    // -- 
+                var sIp = (handler.LocalEndPoint.ToString().Split(':'))[0];    // -- 
                 IPAddress rIp = IPAddress.Parse(sIp);                           // -- Get & parse client IP
                 clientIp = rIp.ToString();
 
@@ -219,7 +219,7 @@ namespace BusinessLayer
                     // -- After converting it delete the last }
                     str += "}"; // -- TODO : Better management ?
                     // Continues to asynchronously receive data
-                    byte[] buffernew = new byte[1024];
+                    byte[] buffernew = new byte[10240];
                     obj[0] = buffernew;
                     obj[1] = handler;
                     handler.BeginReceive(buffernew, 0, buffernew.Length,
