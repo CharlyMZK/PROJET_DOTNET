@@ -9,6 +9,8 @@ using System.Collections.ObjectModel;
 using NotificationProjet.Controller;
 using System.Windows.Media.Imaging;
 using System.Windows.Input;
+using System.Windows;
+using System.Windows.Interop;
 
 namespace NotificationProject.ViewModel
 {
@@ -22,6 +24,8 @@ namespace NotificationProject.ViewModel
         public ContactViewModel()
         {
             _devicesController = DevicesController.getInstance();
+            var hbmp = NotificationProject.Properties.Resources.synchronize.GetHbitmap();
+            _imageSource = Imaging.CreateBitmapSourceFromHBitmap(hbmp, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
         }
         #endregion Constructor
 

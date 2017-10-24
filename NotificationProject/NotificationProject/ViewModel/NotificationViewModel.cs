@@ -1,4 +1,5 @@
 ﻿
+using DataAccess.Model;
 using NotificationProject.HelperClasses;
 using NotificationProject.View;
 using System;
@@ -78,6 +79,18 @@ namespace NotificationProject.ViewModel
                 return "ok";
             }
         }
+        private Device _device;
+        public Device unDevice
+        {
+            get
+            {
+                return _device;
+            }
+            set
+            {
+                _device = value;
+            }
+        }
 
         private ICommand _displayCommand;
         public ICommand DisplayCommand
@@ -114,29 +127,34 @@ namespace NotificationProject.ViewModel
 
         private string application;
 
-        private Action callbackYes;
-        private Action callbackNo;
-        public NotificationViewModel(string t, string c, string type, string app, Action cbYes, Action cbNo)
+        private Action<Device> callbackYes;
+        private Action<Device> callbackNo;
+        public NotificationViewModel(string t, string c, string type, string app, Action<Device> cbYes, Action<Device> cbNo, Device d)
         {
-            this.TitleNotif = t;
-            this.ContentNotif = c;
-            this.Type = type;
+
             this.AfficheBoutons = false;
             this.application = app;
             this.callbackYes = cbYes;
             this.callbackNo = cbNo;
+            this.unDevice = d;
 
-            if (this.Type == "connexion")
+            this.TitleNotif = t;
+            this.ContentNotif = c;
+            this.Type = t.ToUpper();
+            
+            switch(this.Type)
             {
-                this.uneConnexion();
-            }
-            else if (this.Type == "appel")
-            {
-                this.unAppel();
-            }
-            else if (this.Type == "notif")
-            {
-                this.uneNotif();
+                case "CONNEXION":
+                    this.uneConnexion();
+                    break;
+                case "APPEL":
+                    this.unAppel();
+                    break;
+                case "NOTIF":
+                    this.uneNotif();
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -164,7 +182,7 @@ namespace NotificationProject.ViewModel
         {
             if (this.callbackYes != null)
             {
-                this.callbackYes();
+                this.callbackYes(this.unDevice);
             }
         }
 
@@ -172,7 +190,7 @@ namespace NotificationProject.ViewModel
         {
             if (this.callbackNo != null)
             {
-                this.callbackNo();
+                this.callbackNo(this.unDevice);
             }
         }
         private void Display()

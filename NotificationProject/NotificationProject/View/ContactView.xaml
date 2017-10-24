@@ -35,6 +35,14 @@
             </ListView.View>
         </ListView>
         <Button Grid.Row="4" Command="{Binding GetContactCommand}">Recevoir les contacts</Button>
-
+        <Image x:Name="image" 
+               Cursor="Hand"
+               HorizontalAlignment="Center"
+               Height="30"
+               Margin="-180,2,0,0"
+               Grid.Row="2"
+               VerticalAlignment="Top"
+               Source="{Binding ImageSource}"
+               Width="30"/>
     </Grid>
 </UserControl>

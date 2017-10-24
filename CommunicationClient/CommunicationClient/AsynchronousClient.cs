@@ -51,8 +51,16 @@ namespace CommunicationClient
                 // remote device is "host.contoso.com".  
                 IPHostEntry ipHost = Dns.GetHostEntry("");
 
-                IPAddress ipAddress = ipHost.AddressList[2];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, 4510);
+                IPAddress ipAddr = null;
+                for (int i = 0; i < ipHost.AddressList.Length; i++)
+                {
+                    if (ipHost.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                        ipAddr = ipHost.AddressList[i];
+                }
+                // Creates a network endpoint 
+                IPEndPoint remoteEP = new IPEndPoint(ipAddr, 4510);
+                //IPAddress ipAddress = ipHost.AddressList[1];
+                //IPEndPoint remoteEP = new IPEndPoint(ipAddress, 4510);
 
                 // Create a TCP/IP socket.  
                 Socket client = new Socket(AddressFamily.InterNetwork,
@@ -64,32 +72,29 @@ namespace CommunicationClient
 
                 connectDone.WaitOne();
 
-                // Send test data to the remote device.  
-                /*String theMessageToSend = "test";
-                byte[] msg = Encoding.Unicode.GetBytes(theMessageToSend + "<Client Quit>");
-                client.Send(msg);
-                Send(client, "This is a test<EOF>");
-                sendDone.WaitOne();*/
-                // Convert the string data to byte data using ASCII encoding.
-                /*byte[] byteData = Encoding.ASCII.GetBytes("test");
-                 
-                // Begin sending the data to the remote device. 
-                client.BeginSend(byteData, 0, byteData.Length, SocketFlags.None,
-                    new AsyncCallback(SendCallback), client);*/
-
-                //String theMessageToSend = "test<Client Quit>";  
-
-                String theMessageToSend = "{type: 'connect',conn: '192.168.43.110:4552@775042',author: 'MOMO-LG',object: {application: 'Messenger',Message: 'Message sent',heureDate: '2017-04-28 09:06:34'}}<Client Quit>";
+                String theMessageToSend = "{type: 'connect',conn: '192.168.43.110:4552@775042',author: 'CommunicationClientTester',object: {application: 'Messenger',Message: 'Message sent',heureDate: '2017-04-28 09:06:34'}}";
 
 
                 byte[] msg = Encoding.UTF8.GetBytes(theMessageToSend);
                 // Blocks until send returns.
-                int i = client.Send(msg);
-                Console.WriteLine("Sent {0} bytes.", i);
+                int j = client.Send(msg);
+                Console.WriteLine("Sent {0} bytes.", j);
+
+                Console.WriteLine("Waiting 5s");
+                Thread.Sleep(10000);
+
+                String secondMessageToSend = "{\"author\":\"Galaxy S4\",\"conn\":\"192.168.1.100:4510@429437\",\"object\":{\"application\":\"com.android.mms\",\"heureDate\":\"Sat Oct 21 17:01:36 GMT + 02:00 2017\",\"message\":\"Ggjgffv\",\"title\":\"aaaaaa: ‎Ggjgffv\"},\"type\":\"Notification\"}";
+
+
+                byte[] msg2 = Encoding.UTF8.GetBytes(secondMessageToSend);
+                // Blocks until send returns.
+                int aj = client.Send(msg2);
+                Console.WriteLine("Sent {0} bytes.", aj);
 
 
                 // Receive the response from the remote device.  
                 Receive(client);
+
                 receiveDone.WaitOne();
 
                 // Write the response to the console.  

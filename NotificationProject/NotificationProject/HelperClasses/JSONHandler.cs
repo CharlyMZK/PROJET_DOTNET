@@ -81,10 +81,20 @@ namespace NotificationProject.HelperClasses
                 else if (type.ToLower() == "batterystate")
                 {
                     res[0] = "batteryState";
+                    string etat;
+                    string pourcentage;
                     Console.WriteLine("batteryState");
                     IList<string> allObject = json["object"].Select(t => (string)t).ToList();
-                    string pourcentage = allObject[0];
-                    string etat = allObject[1];
+                    pourcentage = allObject[1];
+
+                    if (allObject[0].ToLower() == "true")
+                    {
+                        etat = "isCharging";
+                    }
+                    else
+                    {
+                        etat = "notCharging";
+                    }
                     res[1] = pourcentage;
                     res[2] = etat;
                     //Démonstration utilisation des objets obtenus depuis le JSON
@@ -169,6 +179,18 @@ namespace NotificationProject.HelperClasses
         {
             return "{\"type\": \"requestContacts\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
                 "\"}" + "\n";
+        }
+
+        public static string creationAcceptConnexionRequest(string appareil, string author)
+        {
+            return "{\"type\": \"connectionAccepted\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
+              "\"}" + "\n";
+        }
+
+        public static string creationRefuseConnexionRequest(string appareil, string author)
+        {
+            return "{\"type\": \"connectionRefused\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
+              "\"}" + "\n";
         }
 
     }

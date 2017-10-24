@@ -31,9 +31,10 @@ namespace NotificationProject.ViewModel
         private ICommand _changePageCommand;
         private IPageViewModel _currentPageViewModel;
         private List<IPageViewModel> _pageViewModels;
-        private DevicesController _devicesController; 
+        private DevicesController _devicesController;
         public string configPath = ConfigurationManager.AppSettings["XmlFilePath"];
         private List<string> listConversationName { get; set; }
+        private Dictionary<string, Device> devicesWaitingToBeConnectedList = new Dictionary<string, Device>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -143,45 +144,45 @@ namespace NotificationProject.ViewModel
             //Création des objets vides
             Notification notification = new Notification("", "");
             ConnectionRequest connectionReq = new ConnectionRequest("", "");
-
-            /*using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(@"log.txt", true))
-            {
-                file.WriteLine(DateTime.Now.ToString() + "- Message reçu : " + message);
-            }*/
-
+            Device deviceWaitingToBeConnected = null;
             //Conversion et traitement et parsing d'un JSON
             JObject jsonMessage = JSONHandler.stringToJson(message);
             string[] parsedJson = JSONHandler.interpretation(jsonMessage);
+            string messageReceivedType = parsedJson[0].ToLower();
             Device device = new Device();
             Boolean addMessage = false;
             //Interprétation du JSON parsé
+
             //Demande de connexion
-            if (parsedJson[0].ToLower() == "connection")
+            if (messageReceivedType == "connection")
             {
                 connectionReq.Appareil = parsedJson[1];
                 connectionReq.Autor = parsedJson[2];
                 var pairaineKey = parsedJson[2].Split(':');
-                //--Demande d'acceptation de connexion--
-                //TODO: créer une méthode qui gère le choix de l'utilisateur JObject messageToDevice = JSONHandler.messageRetour("connected", connectionReq.Appareil, connectionReq.Autor);
-                if (int.Parse(pairaineKey[2]) == CommunicationService.getInstance().randomSecretNumberAccess)
+                var connexionId = pairaineKey[0] + ":" + pairaineKey[1] + "@" + pairaineKey[2];
+
+
+                deviceWaitingToBeConnected = getDeviceWaitingToBeConnected(name);
+                deviceWaitingToBeConnected.ConnexionId = connexionId;
+                if (isTestClient(connectionReq) || (int.Parse(pairaineKey[2]) == CommunicationService.getInstance().randomSecretNumberAccess))
                 {
-                    device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+                    //device = Devices.Devices.FirstOrDefault(o => o.Name == name);
                     notification.Application = parsedJson[1];
                     notification.Message = "demande de connexion";
                     Console.WriteLine("Successfuly connexion !");
-                    this.DisplayNotif("Connexion", "Vous êtes désormais connecté avec l'appareil " + connectionReq.Appareil, "Connection", null, null, null);
+                    this.DisplayNotif("connexion", "L'appareil " + connectionReq.Appareil + " tente de se connecter", "connexion", "appel", this.callBackYesOnConnexion, this.callBackNoOnConnexion, deviceWaitingToBeConnected);
                 }
                 else
                 {
-                    this.DisplayNotif("Connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.", "Message", null, null, null);
+                    deviceWaitingToBeConnected.sendMessage(JSONHandler.creationRefuseConnexionRequest(deviceWaitingToBeConnected.ConnexionId, "Server"));
+                    this.DisplayNotif("connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.", "Message", "appel", null, null, null);
                 }
                 addMessage = true;
             }
             //Demande de deconnexion
-            else if (parsedJson[0].ToLower() == "disconnection")
+            else if (messageReceivedType == "disconnection")
             {
-                //JObject messageToDevice = JSONHandler.messageRetour("disconnected", parsedJson[1], parsedJson[2]);
+                
                 device = Devices.Devices.FirstOrDefault(o => o.Name == name);
                 CallBackAfterDeconnexion(device);
                 //--Envoi du message
@@ -196,63 +197,131 @@ namespace NotificationProject.ViewModel
 
             }
             //Reception d'un message
-            else if (parsedJson[0].ToLower() == "notification")
+            else if (messageReceivedType == "notification")
             {
                 notification.Application = parsedJson[1];
-                notification.Message = parsedJson[2];
-                RetrieveSms(parsedJson[2], parsedJson[4]);
+
                 addMessage = true;
-                this.DisplayNotif("Message", notification.Message, "Notification", null, null, null);
+                var config = NotificationConfiguration.getInstance();
+                if (NotificationConfiguration.getInstance().IsEnabled)
+                {
+                    addMessage = isMessageDisplayAuthorised(notification);
+                }
+
+                notification.Message = parsedJson[2];
+
+                if (addMessage)
+                {
+                    RetrieveSms(parsedJson[2], parsedJson[4]);
+                    this.DisplayNotif("Message", notification.Message, "Notification", null, null, null, null);
+                }
+            }
+            else if (messageReceivedType == "batterystate")
+            {
+                handleBatteryState(name, parsedJson);
             }
 
-            else if (parsedJson[0].ToLower() == "batterystate")
+
+            if(messageReceivedType != "connection")
             {
-                device = Devices.Devices.FirstOrDefault(o => o.Name == name);
-                if (parsedJson[1] != "")
-                    device.Pourcentage = parsedJson[1];
-                else
-                    device.Pourcentage = "Non renseigné.";
-
-                if (parsedJson[2] != "")
-                    device.Etat = parsedJson[2];
-                else
-                    device.Etat = "Non renseigné.";
-
-                foreach (Device d in Devices.Devices)
+                if (addMessage)
                 {
-                    if (d != device)
+                    handleMessageAdded(name, notification, message);
+                }
+            }
+        }
+
+        public Device getDeviceWaitingToBeConnected(String name)
+        {
+            Device deviceWaitingToBeConnected = null;
+            if (devicesWaitingToBeConnectedList.ContainsKey(name))
+            {
+                deviceWaitingToBeConnected = devicesWaitingToBeConnectedList[name];
+            }
+            return deviceWaitingToBeConnected;
+        }
+
+        public Boolean isMessageDisplayAuthorised(Notification notification)
+        {
+            Boolean addMessage = true;
+            Boolean notificationHandled = false;
+
+            if ((notification.Application.Equals("com.android.sms") || notification.Application.Equals("com.android.mms")))
+            {
+                if (NotificationConfiguration.getInstance().SmsEnabled)
+                {
+                    Console.WriteLine("SMS reçu et traité");
+                }
+                else
+                {
+                    addMessage = false;
+                    Console.WriteLine("Sms reçu et non traité");
+                }
+                notificationHandled = true;
+            }
+            if (notificationHandled == false) 
+            {
+                if (notification.Application.Equals("com.android.server.telecom") || notification.Application.Equals("com.android.incallui"))
+                {
+                    if (NotificationConfiguration.getInstance().CallEnabled)
                     {
-                        d.sendMessage(JSONHandler.sendState(d.Name,parsedJson[1], parsedJson[2]));
+                        Console.WriteLine("Appel reçu et traité");
+
                     }
+                    else
+                    {
+                        addMessage = false;
+                        Console.WriteLine("Appel reçu et non traité");
+                    }
+                    notificationHandled = true;
                 }
-                CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
-                communicationViewModel.OnPropertyChanged("Etat");
             }
-
-
-
-            // -- TODO : Remove its a test
-            /*Console.WriteLine("Affichage des devices : "); 
-            foreach (Device d in Devices.Devices)
+            if (notificationHandled == false)
             {
-                Console.WriteLine("Nom du device : " + d.Name);
-                foreach (Notification n in d.ListMessages)
+                if (NotificationConfiguration.getInstance().OtherEnabled)
                 {
-                    Console.WriteLine("Message : " + n.Message);
+                    Console.WriteLine("Autre reçu et traité");
 
                 }
-            }*/
-            // -- 
-            if (addMessage)
-            {
-
-                device = Devices.Devices.FirstOrDefault(o => o.Name == name);
-                device.ListMessages.Add(notification);
-                CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
-                communicationViewModel.CommunicationStatus = message;
-                communicationViewModel.OnPropertyChanged("Messages");
+                else
+                {
+                    addMessage = false;
+                    Console.WriteLine("Autre reçu et non traité");
+                }
+                notificationHandled = true;
             }
+            return addMessage;
+        }
 
+        public void handleMessageAdded(String name, Notification notification, String message)
+        {
+            Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+            device.ListMessages.Add(notification);
+            CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+            communicationViewModel.CommunicationStatus = message;
+            communicationViewModel.OnPropertyChanged("Messages");
+        }
+
+        public void handleBatteryState(String name, String[] clientMessage)
+        {
+
+            Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+            if (clientMessage[1] != "")
+                device.Pourcentage = clientMessage[1];
+            else
+                device.Pourcentage = "Non renseigné.";
+
+            if (clientMessage[2] != "")
+                device.Etat = clientMessage[2];
+            else
+                device.Etat = "Non renseigné.";
+            EtatViewModel etatViewModel = (EtatViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Etat");
+            etatViewModel.OnPropertyChanged("Devices");
+        }
+
+        public Boolean isTestClient(ConnectionRequest connectionReq)
+        {
+            return connectionReq.Appareil.Equals("CommunicationClientTester");
         }
 
         public void CallBackAfterDeconnexion(Device clientDevice)
@@ -261,35 +330,15 @@ namespace NotificationProject.ViewModel
             communicationViewModel.CommunicationStatus = "Device déconnecté";
             clientDevice.sendMessage(JSONHandler.creationDisconnectString("bob", clientDevice.Name));
             Devices.deleteDevice(clientDevice);
-            /* CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
-             communicationViewModel.CommunicationStatus = "Device connecté";
-             Devices.addDevice(newDevice);
-             OnPropertyChanged("Devices");*/
-
-            //var dataAccess = new XmlAccess("./data.xml");
-            //dataAccess.saveDevice(newDevice);
         }
 
         public void CallBackAfterConnexion(String name, Socket clientDevice)
         {
             Device newDevice = new Device(name, clientDevice);
-            /*using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(@"log.txt", true))
-            {
-                file.WriteLine(DateTime.Now.ToString() + "- Device connecté : " + newDevice.Name);
-            }*/
-            CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
-            communicationViewModel.CommunicationStatus = "Device connecté";
-            Devices.addDevice(newDevice);
-            OnPropertyChanged("Devices");
-            communicationViewModel.OnPropertyChanged("ListDevices");
-
-            newDevice.sendMessage(JSONHandler.creationContactRequest("bob", newDevice.Name));
-            //var dataAccess = new XmlAccess("./data.xml");
-            //dataAccess.saveDevice(newDevice);
+            devicesWaitingToBeConnectedList.Add(newDevice.Name, newDevice);
         }
 
-        public void DisplayNotif(string title, string content, string type, string application, Action callbackYes, Action callbackNo)
+        public void DisplayNotif(string title, string content, string type, string application, Action<Device> callbackYes, Action<Device> callbackNo, Device d)
         {
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, (ThreadStart)delegate
             {
@@ -298,12 +347,34 @@ namespace NotificationProject.ViewModel
                 {
                     slideOutTimer = 30;
                 }
+                if (type == "connexion")
+                {
+                    slideOutTimer = 120;
+                }
 
                 NotificationView notif = new NotificationView();
-                NotificationViewModel notifContext = new NotificationViewModel(title, content, type, application, callbackYes, callbackNo);
+                NotificationViewModel notifContext = new NotificationViewModel(title, content, type, application, callbackYes, callbackNo, d);
                 notif.DataContext = notifContext;
                 notif.displayNotif(slideOutTimer);
             });
+        }
+
+        public void callBackYesOnConnexion(Device deviceWaitingToBeConnected)
+        {
+            CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
+            communicationViewModel.CommunicationStatus = "Device connecté";
+            Devices.addDevice(deviceWaitingToBeConnected);
+            OnPropertyChanged("Devices");
+            communicationViewModel.OnPropertyChanged("ListDevices");
+            deviceWaitingToBeConnected.sendMessage(JSONHandler.creationAcceptConnexionRequest(deviceWaitingToBeConnected.ConnexionId, "Server"));
+            this.DisplayNotif("Message", "Connexion établie", "Notification", null, null, null, null);
+        }
+
+        public void callBackNoOnConnexion(Device deviceWaitingToBeConnected)
+        {
+            devicesWaitingToBeConnectedList.Remove(deviceWaitingToBeConnected.Name);
+            deviceWaitingToBeConnected.sendMessage(JSONHandler.creationRefuseConnexionRequest(deviceWaitingToBeConnected.ConnexionId, "Server"));
+            this.DisplayNotif("Message", "La connexion a été refusée", "Notification", null, null, null, null);
         }
 
         public void exempleCallbackDisplayNotif()
@@ -311,25 +382,21 @@ namespace NotificationProject.ViewModel
             Console.WriteLine("Action car il a accepté/refusé");
         }
 
-
         public void RetrieveSms(string content, string datetime)
         {
             Sms result = new Sms();
 
             result.IsOriginNative = false;
             result.SendHour = DateTime.Now;
-            //result.SendHour = Convert.ToDateTime(datetime, culture);
-                //DateTime.ParseExact((string)level2Element.Value, "dd-MM-yyyy HH:mm:ss",
-                //                     System.Globalization.CultureInfo.InvariantCulture);
             result.Content = content;
             System.Windows.Application.Current.Dispatcher.Invoke(
                    DispatcherPriority.Normal,
-                   (Action)delegate()
+                   (Action)delegate ()
                    {
                        Contact.GetContact().Chatter.Add(result);
                    }
                );
-            
+
             string filename = configPath + "0688269472.xml";
 
             if (File.Exists(filename))
@@ -390,6 +457,6 @@ namespace NotificationProject.ViewModel
             communicationViewModel.CommunicationStatus = "Server Started";
         }
 
-       
+
     }
 }
