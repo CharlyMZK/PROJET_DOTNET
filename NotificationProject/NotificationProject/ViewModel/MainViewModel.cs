@@ -439,6 +439,7 @@ namespace NotificationProject.ViewModel
                     writer.WriteStartDocument();
                     writer.WriteStartElement("Message");
                     writer.WriteStartElement("Envoi");
+                    writer.WriteAttributeString("native", "true");
                     writer.WriteElementString("DateTime", DateTime.Now.ToString());
                     writer.WriteElementString("Content", content);
                     writer.WriteEndElement();

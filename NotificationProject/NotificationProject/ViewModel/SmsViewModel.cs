@@ -40,7 +40,7 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                return "Sms View";
+                return "Conversation";
             }
         }
 
@@ -142,11 +142,13 @@ namespace NotificationProject.ViewModel
         {
             try
             {
-                var realNumber = (String.IsNullOrEmpty(PhoneNumber)) 
+                var realNumber = (String.IsNullOrEmpty(PhoneNumber)) || PhoneNumber == null 
                     ? ContactPhoneNumber 
                     : PhoneNumber;
-                WriteConversationOnXml();
+                WriteConversationOnXml(realNumber);
                 SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob", SelectedDevice.Name, SmsText, realNumber));
+
+                SmsText = "";
             }
             catch (Exception ex)
             {
@@ -179,8 +181,8 @@ namespace NotificationProject.ViewModel
             return !String.IsNullOrEmpty(PhoneNumber) && SelectedDevice != null;
         }
 
-        private void WriteConversationOnXml() {
-            string filename = configPath + PhoneNumber + ".xml";
+        private void WriteConversationOnXml(string number) {
+            string filename = configPath + number + ".xml";
 
             if (File.Exists(filename))
             {
