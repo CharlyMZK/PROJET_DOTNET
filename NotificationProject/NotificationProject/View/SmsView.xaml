@@ -209,7 +209,7 @@
                     Height="50">
                 <Grid Margin="5,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
                     <!--Name-->
@@ -236,7 +236,7 @@
                     Height="50">
                 <Grid Margin="5,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
                     <!--Name-->
