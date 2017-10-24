@@ -131,26 +131,30 @@ namespace NotificationProject.ViewModel
         private Action<Device> callbackNo;
         public NotificationViewModel(string t, string c, string type, string app, Action<Device> cbYes, Action<Device> cbNo, Device d)
         {
-            this.TitleNotif = t;
-            this.ContentNotif = c;
-            this.Type = type.ToUpper();
+
             this.AfficheBoutons = false;
             this.application = app;
             this.callbackYes = cbYes;
             this.callbackNo = cbNo;
             this.unDevice = d;
 
-            if (this.Type == "CONNEXION")
+            this.TitleNotif = t;
+            this.ContentNotif = c;
+            this.Type = t.ToUpper();
+            
+            switch(this.Type)
             {
-                this.uneConnexion();
-            }
-            else if (this.Type == "APPEL")
-            {
-                this.unAppel();
-            }
-            else if (this.Type == "NOTIF")
-            {
-                this.uneNotif();
+                case "CONNEXION":
+                    this.uneConnexion();
+                    break;
+                case "APPEL":
+                    this.unAppel();
+                    break;
+                case "NOTIF":
+                    this.uneNotif();
+                    break;
+                default:
+                    break;
             }
         }
 
