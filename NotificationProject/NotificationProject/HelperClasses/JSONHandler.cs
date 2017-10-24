@@ -107,14 +107,15 @@ namespace NotificationProject.HelperClasses
 
                     JObject array = (JObject)json["object"];
                     var contacts = array["contacts"];
+                    var name = json.GetValue("conn").ToString().Split(':')[0];
 
-                    Device dev = DevicesController.getInstance().getDevice(json.GetValue("author").ToString());
+                    Device dev = DevicesController.getInstance().getDevice(name);
                     var list = DevicesController.getInstance().Devices;
                     foreach (JObject contact in contacts)
                     {
                         JToken[] numbers = contact["numbers"].ToArray();
                         Contact cont = new Contact((String)contact["nom"], (string)numbers[0], "email@test.com");
-                     //   dev.listContact.Add(cont);
+                        dev.listContact.Add(cont);
                     }
 
                     //Démonstration utilisation des objets obtenus depuis le JSON
