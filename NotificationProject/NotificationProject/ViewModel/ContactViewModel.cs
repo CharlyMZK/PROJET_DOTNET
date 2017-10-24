@@ -26,6 +26,7 @@ namespace NotificationProject.ViewModel
             _devicesController = DevicesController.getInstance();
             var hbmp = NotificationProject.Properties.Resources.synchronize.GetHbitmap();
             _imageSource = Imaging.CreateBitmapSourceFromHBitmap(hbmp, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+
         }
         #endregion Constructor
 
@@ -49,6 +50,7 @@ namespace NotificationProject.ViewModel
             {
                 // _devicesController.Devices = value;
                 OnPropertyChanged("ListDevices");
+
             }
         }
 
@@ -64,6 +66,7 @@ namespace NotificationProject.ViewModel
                 _selectedDevice = value;
                 // Tell to the view that SelectedDevice has changed
                 OnPropertyChanged("Messages");
+                this.Contacts = value.listContact;
             }
         }
 
@@ -77,11 +80,12 @@ namespace NotificationProject.ViewModel
                 if (_contacts == null)
                     _contacts = new ObservableCollection<Contact>();
 
-                //DEBUG
-                _contacts.Add(new Contact("TEST DEBUG", "+33646690454", "test@test.fr"));
-                _contacts.Add(new Contact("TEST DEBUG 2", "0646690454", "test@test.fr"));
-
                 return _contacts;
+            }
+            set
+            {
+                _contacts = value;
+                OnPropertyChanged("Contacts");
             }
         }
 
@@ -108,11 +112,11 @@ namespace NotificationProject.ViewModel
         #region Method
         private void getContact()
         {
-            if(_selectedDevice != null)
+            if (_selectedDevice != null)
             {
                 JSONHandler.creationContactRequest("bob", _selectedDevice.Name);
             }
-            
+
         }
 
         private bool canGetContact()
