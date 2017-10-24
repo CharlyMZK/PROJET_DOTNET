@@ -15,6 +15,8 @@ namespace DataAccess.Model
         public String Name { get; set; }
         public String Etat { get; set; }
         public String Pourcentage { get; set; }
+        public String ConnexionId { get; set; }
+
         public double PourcentageDouble
         {
             get

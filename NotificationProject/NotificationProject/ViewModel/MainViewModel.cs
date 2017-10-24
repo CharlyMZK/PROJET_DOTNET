@@ -163,19 +163,18 @@ namespace NotificationProject.ViewModel
 
 
                 deviceWaitingToBeConnected = getDeviceWaitingToBeConnected(name);
-
+                deviceWaitingToBeConnected.ConnexionId = connexionId;
                 if (isTestClient(connectionReq) || (int.Parse(pairaineKey[2]) == CommunicationService.getInstance().randomSecretNumberAccess))
                 {
                     //device = Devices.Devices.FirstOrDefault(o => o.Name == name);
                     notification.Application = parsedJson[1];
                     notification.Message = "demande de connexion";
                     Console.WriteLine("Successfuly connexion !");
-                    deviceWaitingToBeConnected.sendMessage(JSONHandler.creationAcceptConnexionRequest(connexionId, "Server"));
                     this.DisplayNotif("connexion", "L'appareil " + connectionReq.Appareil + " tente de se connecter", "connexion", "appel", this.callBackYesOnConnexion, this.callBackNoOnConnexion, deviceWaitingToBeConnected);
                 }
                 else
                 {
-                    deviceWaitingToBeConnected.sendMessage(JSONHandler.creationAcceptConnexionRequest(connexionId, "Server"));
+                    deviceWaitingToBeConnected.sendMessage(JSONHandler.creationRefuseConnexionRequest(deviceWaitingToBeConnected.ConnexionId, "Server"));
                     this.DisplayNotif("connexion", "Echec de connexion avec l'appareil " + connectionReq.Appareil + ". La clé temporaire n'est plus correcte, veuillez réessayer.", "Message", "appel", null, null, null);
                 }
                 addMessage = true;
@@ -260,9 +259,9 @@ namespace NotificationProject.ViewModel
                 }
                 notificationHandled = true;
             }
-            if (notificationHandled == false)
+            if (notificationHandled == false) 
             {
-                if (notification.Application.Equals("com.android.server.telecom"))
+                if (notification.Application.Equals("com.android.server.telecom") || notification.Application.Equals("com.android.incallui"))
                 {
                     if (NotificationConfiguration.getInstance().CallEnabled)
                     {
@@ -367,12 +366,14 @@ namespace NotificationProject.ViewModel
             Devices.addDevice(deviceWaitingToBeConnected);
             OnPropertyChanged("Devices");
             communicationViewModel.OnPropertyChanged("ListDevices");
+            deviceWaitingToBeConnected.sendMessage(JSONHandler.creationAcceptConnexionRequest(deviceWaitingToBeConnected.ConnexionId, "Server"));
             this.DisplayNotif("Message", "Connexion établie", "Notification", null, null, null, null);
         }
 
         public void callBackNoOnConnexion(Device deviceWaitingToBeConnected)
         {
             devicesWaitingToBeConnectedList.Remove(deviceWaitingToBeConnected.Name);
+            deviceWaitingToBeConnected.sendMessage(JSONHandler.creationRefuseConnexionRequest(deviceWaitingToBeConnected.ConnexionId, "Server"));
             this.DisplayNotif("Message", "La connexion a été refusée", "Notification", null, null, null, null);
         }
 
