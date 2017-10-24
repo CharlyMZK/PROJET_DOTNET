@@ -157,5 +157,17 @@ namespace NotificationProject.HelperClasses
                 "\"}" + "\n";
         }
 
+        public static string creationAcceptConnexionRequest(string appareil, string author)
+        {
+            return "{\"type\": \"connectionAccepted\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
+              "\"}" + "\n";
+        }
+
+        public static string creationRefuseConnexionRequest(string appareil, string author)
+        {
+            return "{\"type\": \"connectionRefused\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
+              "\"}" + "\n";
+        }
+
     }
 }

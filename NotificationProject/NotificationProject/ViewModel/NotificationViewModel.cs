@@ -1,4 +1,5 @@
 ﻿
+using DataAccess.Model;
 using NotificationProject.HelperClasses;
 using NotificationProject.View;
 using System;
@@ -78,6 +79,18 @@ namespace NotificationProject.ViewModel
                 return "ok";
             }
         }
+        private Device _device;
+        public Device unDevice
+        {
+            get
+            {
+                return _device;
+            }
+            set
+            {
+                _device = value;
+            }
+        }
 
         private ICommand _displayCommand;
         public ICommand DisplayCommand
@@ -114,9 +127,9 @@ namespace NotificationProject.ViewModel
 
         private string application;
 
-        private Action callbackYes;
-        private Action callbackNo;
-        public NotificationViewModel(string t, string c, string type, string app, Action cbYes, Action cbNo)
+        private Action<Device> callbackYes;
+        private Action<Device> callbackNo;
+        public NotificationViewModel(string t, string c, string type, string app, Action<Device> cbYes, Action<Device> cbNo, Device d)
         {
             this.TitleNotif = t;
             this.ContentNotif = c;
@@ -125,6 +138,7 @@ namespace NotificationProject.ViewModel
             this.application = app;
             this.callbackYes = cbYes;
             this.callbackNo = cbNo;
+            this.unDevice = d;
 
             if (this.Type == "CONNEXION")
             {
@@ -164,7 +178,7 @@ namespace NotificationProject.ViewModel
         {
             if (this.callbackYes != null)
             {
-                this.callbackYes();
+                this.callbackYes(this.unDevice);
             }
         }
 
@@ -172,7 +186,7 @@ namespace NotificationProject.ViewModel
         {
             if (this.callbackNo != null)
             {
-                this.callbackNo();
+                this.callbackNo(this.unDevice);
             }
         }
         private void Display()
