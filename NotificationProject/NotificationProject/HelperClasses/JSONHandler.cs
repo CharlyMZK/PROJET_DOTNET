@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace NotificationProject.HelperClasses
 {
@@ -115,7 +116,14 @@ namespace NotificationProject.HelperClasses
                     {
                         JToken[] numbers = contact["numbers"].ToArray();
                         Contact cont = new Contact((String)contact["nom"], (string)numbers[0], "email@test.com");
-                        dev.listContact.Add(cont);
+                        System.Windows.Application.Current.Dispatcher.Invoke(
+                           DispatcherPriority.Normal,
+                           (Action)delegate()
+                           {
+                               dev.listContact.Add(cont);
+                           }
+                       );
+                        
                     }
 
                     //Démonstration utilisation des objets obtenus depuis le JSON

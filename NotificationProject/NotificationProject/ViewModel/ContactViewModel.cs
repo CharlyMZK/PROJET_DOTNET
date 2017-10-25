@@ -65,7 +65,7 @@ namespace NotificationProject.ViewModel
             {
                 _selectedDevice = value;
                 // Tell to the view that SelectedDevice has changed
-                OnPropertyChanged("Messages");
+                OnPropertyChanged("SelectedDevice");
                 this.Contacts = value.listContact;
             }
         }

@@ -212,7 +212,7 @@ namespace NotificationProject.ViewModel
 
                 if (addMessage)
                 {
-                    RetrieveSms(parsedJson[2], parsedJson[4]);
+                    RetrieveSms(parsedJson[3], parsedJson[4], name);
                     this.DisplayNotif("Message", notification.Message, "Notification", null, null, null, null);
                 }
             }
@@ -383,71 +383,95 @@ namespace NotificationProject.ViewModel
             Console.WriteLine("Action car il a accepté/refusé");
         }
 
-        public void RetrieveSms(string content, string datetime)
+        public void RetrieveSms(string content, string datetime, string deviceName)
         {
-            Sms result = new Sms();
-
-            result.IsOriginNative = false;
-            result.SendHour = DateTime.Now;
-            result.Content = content;
-            System.Windows.Application.Current.Dispatcher.Invoke(
-                   DispatcherPriority.Normal,
-                   (Action)delegate ()
-                   {
-                       Contact.GetContact().Chatter.Add(result);
-                   }
-               );
-
-            string filename = configPath + "0688269472.xml";
-
-            if (File.Exists(filename))
+            if (content != "" && content != null)
             {
-                XmlDocument doc = new XmlDocument();
-                //load from file
-                doc.Load(filename);
+                var sender = content.Split(':')[0].TrimEnd();
+                Sms result = new Sms();
 
-                //create node and add value
-                XmlNode node = doc.CreateNode(XmlNodeType.Element, "Envoi", null);
-                XmlAttribute attr = doc.CreateAttribute("native");
-                attr.Value = "false";
+                result.IsOriginNative = false;
+                result.SendHour = DateTime.Now;
+                result.Content = content.Split(':')[1].TrimStart();
 
-                //Add the attribute to the node     
-                node.Attributes.SetNamedItem(attr);
-                //create title node
-                XmlNode nodeDate = doc.CreateElement("DateTime");
-                //add value for it
-                nodeDate.InnerText = DateTime.Now.ToString();
+                var device = Devices.Devices.FirstOrDefault(o => o.Name == deviceName);
+                Contact contact = device.listContact.Where(x => x.Name == sender).FirstOrDefault();
 
-                //create Url node
-                XmlNode nodeMessage = doc.CreateElement("Content");
-                nodeMessage.InnerText = content;
-
-                //add to parent node
-                node.AppendChild(nodeDate);
-                node.AppendChild(nodeMessage);
-
-                //add to elements collection
-                doc.DocumentElement.AppendChild(node);
-
-                //save back
-                doc.Save(filename);
-
-            }
-            else
-            {
-                using (XmlWriter writer = XmlWriter.Create(filename))
+                if (contact == null)
                 {
-                    writer.WriteStartDocument();
-                    writer.WriteStartElement("Message");
-                    writer.WriteStartElement("Envoi");
-                    writer.WriteAttributeString("native", "true");
-                    writer.WriteElementString("DateTime", DateTime.Now.ToString());
-                    writer.WriteElementString("Content", content);
-                    writer.WriteEndElement();
-                    writer.WriteEndElement();
-                    writer.WriteEndDocument();
+                    contact = new Contact(sender, sender, "");
+                    System.Windows.Application.Current.Dispatcher.Invoke(
+                       DispatcherPriority.Normal,
+                       (Action)delegate()
+                       {
+                           device.listContact.Add(contact);
+                       }
+                   );
+                }
+
+                System.Windows.Application.Current.Dispatcher.Invoke(
+                       DispatcherPriority.Normal,
+                       (Action)delegate()
+                       {
+                           contact.Chatter.Add(result);
+                           contact.HasSentNewMessage = true;
+                       }
+                   );
+
+                
+
+                string filename =  configPath + contact.Number + ".xml";
+
+                if (File.Exists(filename))
+                {
+                    XmlDocument doc = new XmlDocument();
+                    //load from file
+                    doc.Load(filename);
+
+                    //create node and add value
+                    XmlNode node = doc.CreateNode(XmlNodeType.Element, "Envoi", null);
+                    XmlAttribute attr = doc.CreateAttribute("native");
+                    attr.Value = "false";
+
+                    //Add the attribute to the node     
+                    node.Attributes.SetNamedItem(attr);
+                    //create title node
+                    XmlNode nodeDate = doc.CreateElement("DateTime");
+                    //add value for it
+                    nodeDate.InnerText = DateTime.Now.ToString();
+
+                    //create Url node
+                    XmlNode nodeMessage = doc.CreateElement("Content");
+                    nodeMessage.InnerText = result.Content;
+
+                    //add to parent node
+                    node.AppendChild(nodeDate);
+                    node.AppendChild(nodeMessage);
+
+                    //add to elements collection
+                    doc.DocumentElement.AppendChild(node);
+
+                    //save back
+                    doc.Save(filename);
+
+                }
+                else
+                {
+                    using (XmlWriter writer = XmlWriter.Create(filename))
+                    {
+                        writer.WriteStartDocument();
+                        writer.WriteStartElement("Message");
+                        writer.WriteStartElement("Envoi");
+                        writer.WriteAttributeString("native", "false");
+                        writer.WriteElementString("DateTime", DateTime.Now.ToString());
+                        writer.WriteElementString("Content", result.Content);
+                        writer.WriteEndElement();
+                        writer.WriteEndElement();
+                        writer.WriteEndDocument();
+                    }
                 }
             }
+           
         }
 
         private void StartServer()
