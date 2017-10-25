@@ -306,6 +306,8 @@ namespace NotificationProject.ViewModel
         {
 
             Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+            if (device == null)
+                return;
             if (clientMessage[1] != "")
                 device.Pourcentage = clientMessage[1];
             else
