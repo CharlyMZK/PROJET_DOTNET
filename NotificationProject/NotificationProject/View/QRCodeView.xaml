@@ -15,8 +15,10 @@
             Margin="-40,68,-28,-158"
             VerticalAlignment="Top"
             Source="{Binding ImageSource}"
-            RenderTransformOrigin="1.204,1.504"/>
-            <Button x:Name="QRCodeButton" Content="Générer QRCode" HorizontalAlignment="Left" Margin="651,460,-495,-203" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding ButtonCommand}"/>
+            RenderTransformOrigin="1.204,1.504"
+            Visibility="{Binding Path=VisibilityImage}"/>
+
+            <Button x:Name="QRCodeButton" Content="Générer QRCode" HorizontalAlignment="Left" Margin="820,471,-664,-214" VerticalAlignment="Top" Width="144" Height="43" Command="{Binding Path=ButtonCommand}" IsEnabled="{Binding ButtonEnabled, Mode=TwoWay}"/>
 
         </Grid>
 
