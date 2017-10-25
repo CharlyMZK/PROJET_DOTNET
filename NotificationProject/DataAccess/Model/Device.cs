@@ -30,6 +30,14 @@ namespace DataAccess.Model
                 Pourcentage = value.ToString();
             }
         }
+
+        public string PourcentageText
+        {
+            get
+            {
+                return Pourcentage + "%";
+            }
+        }
         public List<Notification> ListMessages { get; set; }
         public Socket Handler { get; set; }
         public ObservableCollection<Contact> listContact { get; set; }
