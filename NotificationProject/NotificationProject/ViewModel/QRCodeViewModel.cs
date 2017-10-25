@@ -125,7 +125,7 @@ namespace NotificationProject.ViewModel
             
             var getRandomNumber = GetRandomNumber(100000, 999999);
             _communicationService.randomSecretNumberAccess = getRandomNumber;
-            deleteNumberAfterXTime(3000);
+            deleteNumberAfterXTime(30000);
             var qrValue = _communicationService.getIpAddress().ToString() + ":" + _communicationService.getPort().ToString() + ":" + getRandomNumber.ToString();
 
             var barcodeWriter = createQRCode();
