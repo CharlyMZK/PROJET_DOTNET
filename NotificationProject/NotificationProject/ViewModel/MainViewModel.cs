@@ -394,7 +394,10 @@ namespace NotificationProject.ViewModel
 
                 result.IsOriginNative = false;
                 result.SendHour = DateTime.Now;
-                result.Content = content.Split(':')[1].TrimStart();
+                if(content != null)
+                {
+                    result.Content = content.Split(':')[1].TrimStart();
+                }
 
                 var device = Devices.Devices.FirstOrDefault(o => o.Name == deviceName);
                 Contact contact = device.listContact.Where(x => x.Name == sender).FirstOrDefault();
