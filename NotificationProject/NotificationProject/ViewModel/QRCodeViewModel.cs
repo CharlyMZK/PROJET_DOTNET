@@ -24,16 +24,19 @@ namespace NotificationProject.ViewModel
         public QRCodeViewModel()
         {
             _communicationService = CommunicationService.getInstance();
-            ButtonCommand = new RelayCommand(o => QRCodeButtonClick("QRCodeButton"), n => CanClick());
-            this.IsEnabled = false;
+            ButtonCommand = new RelayCommand(o => QRCodeButtonClick("QRCodeButton"));
+            //this.IsEnabled = false;
+            ButtonEnabled = false;
+            VisibilityImage = Visibility.Visible;
             loadQRCode();
         }
         private BitmapSource _imageSource;
+        private Visibility imageVisibility;
         private int randomNumberLimitedInTime { get; set; }
         private static readonly Random getrandom = new Random();
         private static readonly object syncLock = new object();
         public ICommand ButtonCommand { get; set; }
-        private bool IsEnabled { get; set; }
+        private bool _isEnabled;
         public CommunicationService _communicationService {get; set;}
         #endregion
 
@@ -49,9 +52,24 @@ namespace NotificationProject.ViewModel
         private void QRCodeButtonClick(object sender)
         {
             Console.WriteLine("Regénération du QRCode...");
-            this.IsEnabled = false;
+            //this.IsEnabled = false;
+            ButtonEnabled = false;
+            VisibilityImage = Visibility.Visible;
             loadQRCode();
         }
+        public Boolean ButtonEnabled
+        {
+            get
+            {
+                return _isEnabled;
+            }
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged("ButtonEnabled");
+            }
+        }
+
         public BitmapSource ImageSource
         {
             get
@@ -68,10 +86,21 @@ namespace NotificationProject.ViewModel
                 OnPropertyChanged("ImageSource");
             }
         }
-
+        public Visibility VisibilityImage
+        {
+            get
+            {
+                return imageVisibility;
+            }
+            set
+            {
+                imageVisibility = value;
+                OnPropertyChanged("VisibilityImage");
+            }
+        }
         public bool CanClick()
         {
-            return this.IsEnabled;
+            return ButtonEnabled;
         }
 
         public BarcodeWriter createQRCode()
@@ -96,7 +125,7 @@ namespace NotificationProject.ViewModel
             
             var getRandomNumber = GetRandomNumber(100000, 999999);
             _communicationService.randomSecretNumberAccess = getRandomNumber;
-            deleteNumberAfterXTime(30000);
+            deleteNumberAfterXTime(3000);
             var qrValue = _communicationService.getIpAddress().ToString() + ":" + _communicationService.getPort().ToString() + ":" + getRandomNumber.ToString();
 
             var barcodeWriter = createQRCode();
@@ -125,7 +154,9 @@ namespace NotificationProject.ViewModel
                 await Task.Delay(XTime);
                 Console.WriteLine("Task thread ID: {0}", Thread.CurrentThread.ManagedThreadId);
                 _communicationService.randomSecretNumberAccess = GetRandomNumber(100000, 999999);
-                this.IsEnabled = true;
+                //this.IsEnabled = true;
+                ButtonEnabled = true;
+                VisibilityImage = Visibility.Hidden;
                 Console.WriteLine("QR Code Random access number : " + _communicationService.randomSecretNumberAccess.ToString());
             });
         }
