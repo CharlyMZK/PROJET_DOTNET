@@ -219,7 +219,7 @@ namespace BusinessLayer
                     // -- After converting it delete the last }
                     str += "}"; // -- TODO : Better management ?
                     // Continues to asynchronously receive data
-                    byte[] buffernew = new byte[10240];
+                    byte[] buffernew = new byte[20000];
                     obj[0] = buffernew;
                     obj[1] = handler;
                     handler.BeginReceive(buffernew, 0, buffernew.Length,
