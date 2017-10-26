@@ -1,10 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DataAccess.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NotificationProjet.Controller;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace NotificationProject.HelperClasses
 {
@@ -27,6 +31,7 @@ namespace NotificationProject.HelperClasses
 
         public static string[] interpretation(JObject json)
         {
+            Console.WriteLine(json);
             string[] res = new string[3] { "", "", "" };
             string type = (string)json["type"];
             string conn = (string)(json["conn"]);
@@ -59,7 +64,7 @@ namespace NotificationProject.HelperClasses
 
                 else if (type.ToLower() == "notification") //1.Type 2.Application 3.Message
                 {
-                    res = new string[5] { "", "", "", "","" };
+                    res = new string[5] { "", "", "", "", "" };
                     res[0] = "Notification";
                     Console.WriteLine("Notification");
                     IList<string> allObject = json["object"].Select(t => (string)t).ToList();
@@ -95,6 +100,34 @@ namespace NotificationProject.HelperClasses
                     res[2] = etat;
                     //Démonstration utilisation des objets obtenus depuis le JSON
                     Console.WriteLine("L'appareil " + author + " est a " + pourcentage + "%. Etat: " + etat);
+                }
+                else if (type.ToLower() == "contacts")
+                {
+                    res[0] = "contacts";
+                    Console.WriteLine("contacts");
+
+                    JObject array = (JObject)json["object"];
+                    var contacts = array["contacts"];
+                    var name = json.GetValue("conn").ToString().Split(':')[0];
+
+                    Device dev = DevicesController.getInstance().getDevice(name);
+                    var list = DevicesController.getInstance().Devices;
+                    foreach (JObject contact in contacts)
+                    {
+                        JToken[] numbers = contact["numbers"].ToArray();
+                        Contact cont = new Contact((String)contact["nom"], (string)numbers[0], "email@test.com");
+                        System.Windows.Application.Current.Dispatcher.Invoke(
+                           DispatcherPriority.Normal,
+                           (Action)delegate()
+                           {
+                               dev.listContact.Add(cont);
+                           }
+                       );
+                        
+                    }
+
+                    //Démonstration utilisation des objets obtenus depuis le JSON
+                    Console.WriteLine("L'appareil a envoyé " + " contacts");
                 }
             }
             else
@@ -155,6 +188,18 @@ namespace NotificationProject.HelperClasses
         {
             return "{\"type\": \"requestContacts\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
                 "\"}" + "\n";
+        }
+
+        public static string creationAcceptConnexionRequest(string appareil, string author)
+        {
+            return "{\"type\": \"connectionAccepted\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
+              "\"}" + "\n";
+        }
+
+        public static string creationRefuseConnexionRequest(string appareil, string author)
+        {
+            return "{\"type\": \"connectionRefused\", \"conn\": \"" + appareil + "\",\"author\": \"" + author +
+              "\"}" + "\n";
         }
 
     }

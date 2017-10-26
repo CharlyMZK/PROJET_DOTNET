@@ -5,17 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using DataAccess.Model;
+using System.IO;
+using System.Xml;
+using System.Diagnostics;
 
 namespace DataAccess
 {
     public class XmlAccess
     {
         private XDocument doc;
-        private string path;
-
+        private static string path =  @"Configuration\notificationConfiguration.xml";
+       
         public XmlAccess(string path)
         {
-            this.path = path;
             doc = XDocument.Load(path);
         }
 
@@ -93,5 +95,61 @@ namespace DataAccess
                 .Remove();
             doc.Save("path");
         }
+        public static void persistConfiguration()
+        {
+            Console.WriteLine("Persisting");
+
+            StringBuilder op = new StringBuilder();
+
+
+            string readText = File.ReadAllText(path);
+            // Create an XmlReader
+            XmlDocument doc = new XmlDocument();
+            doc.Load(path);
+
+            XmlNode isEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/isEnabled");
+            XmlNode smsEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/smsEnabled");
+            XmlNode callEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/callEnabled");
+            XmlNode otherEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/otherEnabled");
+
+            isEnabledNode.InnerText = NotificationConfiguration.getInstance().IsEnabled.ToString();
+            smsEnabledNode.InnerText = NotificationConfiguration.getInstance().SmsEnabled.ToString();
+            callEnabledNode.InnerText = NotificationConfiguration.getInstance().CallEnabled.ToString();
+            otherEnabledNode.InnerText = NotificationConfiguration.getInstance().OtherEnabled.ToString();
+
+            doc.Save(path);
+
+        }
+
+        public static void parseConfiguration()
+        {
+            Console.WriteLine("Parsing XML");
+
+            StringBuilder op = new StringBuilder();
+
+          
+            string readText = File.ReadAllText(path);
+            // Create an XmlReader
+            XmlDocument doc = new XmlDocument();
+            doc.Load(path);
+
+            XmlNode isEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/isEnabled");
+            XmlNode smsEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/smsEnabled");
+            XmlNode callEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/callEnabled");
+            XmlNode otherEnabledNode = doc.DocumentElement.SelectSingleNode("/notificationConfiguration/otherEnabled");
+            
+
+            bool configIsEnabled = bool.Parse(isEnabledNode.InnerText);
+            bool configSmsEnabled = bool.Parse(smsEnabledNode.InnerText);
+            bool configCallEnabled = bool.Parse(callEnabledNode.InnerText);
+            bool configOtherEnabled = bool.Parse(otherEnabledNode.InnerText);
+
+            NotificationConfiguration.getInstance().IsEnabled = configIsEnabled;
+            NotificationConfiguration.getInstance().SmsEnabled = configSmsEnabled;
+            NotificationConfiguration.getInstance().CallEnabled = configCallEnabled;
+            NotificationConfiguration.getInstance().OtherEnabled = configOtherEnabled;
+     
+        }
+
     }
 }

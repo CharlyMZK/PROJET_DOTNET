@@ -24,6 +24,18 @@ namespace NotificationProjet.Controller
             Devices = new List<Device>();
         }
 
+        public Device getDevice(string name)
+        {
+            foreach(Device dev in Devices)
+            {
+                if(name == dev.Name)
+                {
+                    return dev;
+                }
+            }
+            return null;
+        }
+
         public void addDevice(Device device)
         {
             //    Devices = new List<Device>(Devices);  // -- TODO : Its supposed to work without this line, but it throw an exception.

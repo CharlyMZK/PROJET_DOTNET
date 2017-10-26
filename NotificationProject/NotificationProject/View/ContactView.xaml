@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" Grid.Row="0" HorizontalAlignment="Center">Devices</TextBlock>
-        <ListView Margin="10" Name="listDevices" ItemsSource="{Binding ListDevices}" SelectedItem="{Binding SelectedDevice}" Grid.Row="1">
+        <ListView Margin="10" Name="listDevices" ItemsSource="{Binding ListDevices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}" Grid.Row="1">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
@@ -25,7 +25,7 @@
             </ListView.View>
         </ListView>
         <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}" Grid.Row="2" HorizontalAlignment="Center">Contacts</TextBlock>
-        <ListView Margin="10" Name="listContacts" ItemsSource="{Binding Contacts}" Height="Auto" Grid.Row="3">
+        <ListView Margin="10" Name="listContacts" ItemsSource="{Binding Contacts}" Height="500" Grid.Row="3">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />

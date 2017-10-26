@@ -28,6 +28,7 @@ namespace NotificationProject.ViewModel
         #region Fields
         private string _phoneNumber;
         private string _smsText;
+        //private bool addNewNumber;
         public Device _selectedDevice;
         public Contact _selectedContact;
         public string configPath = ConfigurationManager.AppSettings["XmlFilePath"];
@@ -40,7 +41,7 @@ namespace NotificationProject.ViewModel
         {
             get
             {
-                return "Sms View";
+                return "Conversation";
             }
         }
 
@@ -68,6 +69,7 @@ namespace NotificationProject.ViewModel
             set
             {
                 _smsText = value;
+                OnPropertyChanged("SmsText");
             }
         }
 
@@ -92,9 +94,9 @@ namespace NotificationProject.ViewModel
             set
             {
                 _selectedDevice = value;
-                _selectedDevice.listContact.Add(Contact.GetContact());
-                _selectedDevice.listContact.Add(Contact.GetContact2());
-                ListContacts = _selectedDevice.listContact;
+                //_selectedDevice.listContact.Add(Contact.GetContact());
+                //_selectedDevice.listContact.Add(Contact.GetContact2());
+                ListContacts = new ObservableCollection<Contact>(_selectedDevice.listContact.OrderByDescending(i => i.HasSentNewMessage).ThenByDescending(i => i.Chatter.Count).ThenBy(i => i.Name));
             }
         }
 
@@ -103,7 +105,7 @@ namespace NotificationProject.ViewModel
             get
             {
                 if (SelectedDevice != null)
-                    return new ObservableCollection<Contact>(SelectedDevice.listContact);
+                    return new ObservableCollection<Contact>(_selectedDevice.listContact.OrderByDescending(i => i.HasSentNewMessage).ThenByDescending(i => i.Chatter.Count).ThenBy(i => i.Name));
                 return null;  
             }
             set
@@ -142,11 +144,14 @@ namespace NotificationProject.ViewModel
         {
             try
             {
-                var realNumber = (String.IsNullOrEmpty(PhoneNumber)) 
+                var realNumber = (String.IsNullOrEmpty(PhoneNumber)) || PhoneNumber == null 
                     ? ContactPhoneNumber 
                     : PhoneNumber;
-                WriteConversationOnXml();
+                WriteConversationOnXml(realNumber);
                 SelectedDevice.sendMessage(JSONHandler.creationSMSString("bob", SelectedDevice.Name, SmsText, realNumber));
+
+                SmsText = "";
+                //addNewNumber = false;
             }
             catch (Exception ex)
             {
@@ -158,14 +163,17 @@ namespace NotificationProject.ViewModel
 
         private bool CanSend()
         {
-            return !String.IsNullOrEmpty(SmsText) && (!String.IsNullOrEmpty(PhoneNumber) || !String.IsNullOrEmpty(ContactPhoneNumber)) && SelectedDevice!=null;
+            return !String.IsNullOrEmpty(SmsText) && (PhoneNumber != "" || ContactPhoneNumber != "") && SelectedDevice!=null;
         }
 
         private void Call()
         {
             try
             {
-                SelectedDevice.sendMessage(JSONHandler.creationAppelString("bob", SelectedDevice.Name, PhoneNumber));
+                var realNumber = (String.IsNullOrEmpty(PhoneNumber)) || PhoneNumber == null
+                    ? ContactPhoneNumber
+                    : PhoneNumber;
+                SelectedDevice.sendMessage(JSONHandler.creationAppelString("bob", SelectedDevice.Name, realNumber));
             }
            catch(Exception ex)
             {
@@ -176,11 +184,13 @@ namespace NotificationProject.ViewModel
 
         private bool CanCall()
         {
-            return !String.IsNullOrEmpty(PhoneNumber) && SelectedDevice != null;
+            return (PhoneNumber != "" || ContactPhoneNumber != "") && SelectedDevice != null;
         }
 
-        private void WriteConversationOnXml() {
-            string filename = configPath + PhoneNumber + ".xml";
+       
+
+        private void WriteConversationOnXml(string number) {
+            string filename = configPath + number + ".xml";
 
             if (File.Exists(filename))
             {
@@ -292,6 +302,20 @@ namespace NotificationProject.ViewModel
                 return _callCommand;
             }
         }
+
+        //private ICommand _addNewNumber;
+        //public ICommand AddNewNumber
+        //{
+        //    get
+        //    {
+        //        if (_addNewNumber == null)
+        //            _addNewNumber = new RelayCommand(o => Call(), n => CanCall());
+        //        return _callCommand;
+        //    }
+        //}
+        //private void AddNewNumber()
+        //{
+        //}
         #endregion
 
 

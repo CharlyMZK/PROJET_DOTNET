@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataAccess.Model;
 using NotificationProject.HelperClasses;
 using System.Windows.Input;
+using DataAccess;
 
 namespace NotificationProject.ViewModel
 {
@@ -36,7 +37,8 @@ namespace NotificationProject.ViewModel
         #region Method
         public void changeOption()
         {
-
+            XmlAccess.persistConfiguration();
+            System.Windows.Forms.MessageBox.Show("La configuration a bien été sauvegardée");
         }
         #endregion Method
 

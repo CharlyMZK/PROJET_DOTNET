@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 // Usings for Sockets
 using System.Net;
 using System.Net.Sockets;
+using System.Xml;
+using System.IO;
+using DataAccess.Model;
+using DataAccess;
 
 namespace BusinessLayer
 {
     public class CommunicationService
-    { 
+    {
         private IPHostEntry ipHost { get; set; }                               // -- Server host ip
         private IPAddress ipAddr { get; set; }                                 // -- Server ip adress
         private IPEndPoint ipEndPoint { get; set; }                            // -- Server ip endpoint
@@ -40,7 +44,6 @@ namespace BusinessLayer
             try
             {
 
-                
                 permission = new SocketPermission(
                 NetworkAccess.Accept,     // Allowed to accept connections 
                 TransportType.Tcp,        // Defines transport types 
@@ -48,8 +51,9 @@ namespace BusinessLayer
                 SocketPermission.AllPorts // Specifies all ports 
                 );
 
+                XmlAccess.parseConfiguration();
 
-               
+                //Console.WriteLine("Enabled : " + enabled);
                 Console.WriteLine(this.ipAddr);
                 // Sets port
                 this.port = 4510;
@@ -86,10 +90,10 @@ namespace BusinessLayer
                 // Associates a Socket with a local endpoint 
                 sListener.Bind(ipEndPoint);
 
-              
+
 
             }
-            catch (Exception exc) { Console.WriteLine("Communicationservice : "+exc); }
+            catch (Exception exc) { Console.WriteLine("Communicationservice : " + exc); }
 
 
             try
@@ -139,7 +143,7 @@ namespace BusinessLayer
                 // Using the Nagle algorithm 
                 handler.NoDelay = false;
 
-                var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];    // -- 
+                var sIp = (handler.LocalEndPoint.ToString().Split(':'))[0];    // -- 
                 IPAddress rIp = IPAddress.Parse(sIp);                           // -- Get & parse client IP
                 string clientIp = rIp.ToString();
 
@@ -165,7 +169,7 @@ namespace BusinessLayer
                 AsyncCallback aCallback = new AsyncCallback(AcceptCallback);
                 listener.BeginAccept(aCallback, listener);
 
-                if (callBackAfterConnexion != null) 
+                if (callBackAfterConnexion != null)
                 {
                     callBackAfterConnexion(clientIp, handler);                  // -- Callback if a connexion is set
                 }
@@ -174,11 +178,11 @@ namespace BusinessLayer
             catch (Exception exc) { Console.WriteLine("Acceptcallback : " + exc); }
 
 
-          
+
 
         }
 
-        private void ReceiveCallback(IAsyncResult ar) 
+        private void ReceiveCallback(IAsyncResult ar)
         {
             String str = "";
             string clientIp = "";
@@ -198,7 +202,7 @@ namespace BusinessLayer
                 string content = string.Empty;
 
                 // -- Client ip
-                var sIp = (handler.RemoteEndPoint.ToString().Split(':'))[0];    // -- 
+                var sIp = (handler.LocalEndPoint.ToString().Split(':'))[0];    // -- 
                 IPAddress rIp = IPAddress.Parse(sIp);                           // -- Get & parse client IP
                 clientIp = rIp.ToString();
 
@@ -215,7 +219,7 @@ namespace BusinessLayer
                     // -- After converting it delete the last }
                     str += "}"; // -- TODO : Better management ?
                     // Continues to asynchronously receive data
-                    byte[] buffernew = new byte[1024];
+                    byte[] buffernew = new byte[10240];
                     obj[0] = buffernew;
                     obj[1] = handler;
                     handler.BeginReceive(buffernew, 0, buffernew.Length,
@@ -226,7 +230,7 @@ namespace BusinessLayer
             }
             catch (Exception exc) { Console.WriteLine("Receivecallback : " + exc); }
 
-            Console.WriteLine("STR : " + str); 
+            Console.WriteLine("STR : " + str);
             if (callBackAfterAnalysis != null)
             {
                 callBackAfterAnalysis(clientIp, str);   // -- Launch callback 
@@ -251,5 +255,5 @@ namespace BusinessLayer
         }
         #endregion
 
-    } 
+    }
 }

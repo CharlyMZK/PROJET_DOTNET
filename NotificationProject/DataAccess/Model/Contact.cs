@@ -36,5 +36,6 @@ namespace DataAccess.Model
 
             return _contact2;
         }
+
     }
 }

@@ -17,7 +17,6 @@ namespace DataAccess.Model
         public static NotificationConfiguration getInstance()
         {
             if (instance == null)
-                //TODO lire le fichier de config
                 instance = new NotificationConfiguration(false,false,false,false);
             return instance;
         }
