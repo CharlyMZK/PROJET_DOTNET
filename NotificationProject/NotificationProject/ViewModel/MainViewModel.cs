@@ -246,7 +246,7 @@ namespace NotificationProject.ViewModel
             Boolean addMessage = true;
             Boolean notificationHandled = false;
 
-            if ((notification.Application.Equals("com.android.sms") || notification.Application.Equals("com.android.mms")))
+            if ((notification.Application.Equals("com.android.sms") || notification.Application.Equals("com.android.mms") || notification.Application.Equals("com.samsung.android.messaging")))
             {
                 if (NotificationConfiguration.getInstance().SmsEnabled)
                 {
