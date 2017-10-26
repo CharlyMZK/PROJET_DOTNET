@@ -16,6 +16,7 @@ namespace DataAccess.Model
         public String Etat { get; set; }
         public String Pourcentage { get; set; }
         public String ConnexionId { get; set; }
+        public String DeviceType { get; set; }
 
         public double PourcentageDouble
         {
@@ -28,6 +29,14 @@ namespace DataAccess.Model
             set
             {
                 Pourcentage = value.ToString();
+            }
+        }
+
+        public string PourcentageText
+        {
+            get
+            {
+                return Pourcentage + "%";
             }
         }
         public List<Notification> ListMessages { get; set; }

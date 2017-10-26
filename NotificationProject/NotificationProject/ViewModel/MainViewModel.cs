@@ -57,7 +57,7 @@ namespace NotificationProject.ViewModel
             CurrentPageViewModel = PageViewModels[0];
             _devicesController = DevicesController.getInstance();
             this.StartServer();
-            //this.DisplayNotif("Appel", "Vous avez un appel de Tony Stark sur l'appareil 'LGG4'", "appel", null, this.exempleCallbackDisplayNotif, this.exempleCallbackDisplayNotif); // Decommenter pour avoir un apercu d'une notif
+            //this.DisplayNotif("Appel", "Vous avez un appel de Tony Stark sur l'appareil 'LGG4'", "appel", null, this.exempleCallbackDisplayNotif, this.exempleCallbackDisplayNotif, null); // Decommenter pour avoir un apercu d'une notif
         }
 
         #endregion
@@ -170,6 +170,7 @@ namespace NotificationProject.ViewModel
                     notification.Application = parsedJson[1];
                     notification.Message = "demande de connexion";
                     Console.WriteLine("Successfuly connexion !");
+                    deviceWaitingToBeConnected.DeviceType = connectionReq.Appareil;
                     this.DisplayNotif("connexion", "L'appareil " + connectionReq.Appareil + " tente de se connecter", "connexion", "appel", this.callBackYesOnConnexion, this.callBackNoOnConnexion, deviceWaitingToBeConnected);
                 }
                 else
@@ -193,7 +194,8 @@ namespace NotificationProject.ViewModel
                 CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
                 communicationViewModel.OnPropertyChanged("ListDevices");
                 SmsViewModel smsViewModel = (SmsViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Sms View");
-                smsViewModel.OnPropertyChanged("ListDevices");
+                if(smsViewModel != null)
+                    smsViewModel.OnPropertyChanged("ListDevices");
 
             }
             //Reception d'un message
@@ -208,7 +210,7 @@ namespace NotificationProject.ViewModel
                     addMessage = isMessageDisplayAuthorised(notification);
                 }
 
-                notification.Message = parsedJson[2];
+                notification.Message = parsedJson[3];
 
                 if (addMessage)
                 {
@@ -306,6 +308,8 @@ namespace NotificationProject.ViewModel
         {
 
             Device device = Devices.Devices.FirstOrDefault(o => o.Name == name);
+            if (device == null)
+                return;
             if (clientMessage[1] != "")
                 device.Pourcentage = clientMessage[1];
             else
@@ -378,7 +382,7 @@ namespace NotificationProject.ViewModel
             this.DisplayNotif("Message", "La connexion a été refusée", "Notification", null, null, null, null);
         }
 
-        public void exempleCallbackDisplayNotif()
+        public void exempleCallbackDisplayNotif(Device d)
         {
             Console.WriteLine("Action car il a accepté/refusé");
         }
@@ -392,7 +396,10 @@ namespace NotificationProject.ViewModel
 
                 result.IsOriginNative = false;
                 result.SendHour = DateTime.Now;
-                result.Content = content.Split(':')[1].TrimStart();
+                if(content != null)
+                {
+                    result.Content = content.Split(':')[1].TrimStart();
+                }
 
                 var device = Devices.Devices.FirstOrDefault(o => o.Name == deviceName);
                 Contact contact = device.listContact.Where(x => x.Name == sender).FirstOrDefault();

@@ -39,7 +39,9 @@
                     Height="20" 
                     Content="Accepter" 
                     Margin="10,10,0,0"
+                    FontSize="10"
                     Command="{Binding ClickButtonYes}"
+                    Click="closeNotif"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
                 <Button 
@@ -47,7 +49,9 @@
                     Height="20" 
                     Content="Refuser"           
                     Margin="10,10,0,0"
+                    FontSize="10"
                     Command="{Binding ClickButtonNo}"
+                    Click="closeNotif"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
                  <Button 
@@ -55,7 +59,9 @@
                     Height="20" 
                     Content="Afficher" 
                     Margin="10,10,0,0"
+                    FontSize="10"
                     Command="{Binding DisplayCommand}"
+                    Click="closeNotif"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
             </TextBlock>

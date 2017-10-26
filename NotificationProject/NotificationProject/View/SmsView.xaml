@@ -189,7 +189,7 @@
                     <!--Name-->
                     <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"
                                Margin="5,0" FontWeight="SemiBold"
-                               Text="{Binding Name}" SnapsToDevicePixels="True"/>
+                               Text="{Binding DeviceType}" SnapsToDevicePixels="True"/>
 
                 </Grid>
             </Border>
