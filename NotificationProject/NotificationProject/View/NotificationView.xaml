@@ -39,6 +39,7 @@
                     Height="20" 
                     Content="Accepter" 
                     Margin="10,10,0,0"
+                    FontSize="10"
                     Command="{Binding ClickButtonYes}"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
@@ -47,6 +48,7 @@
                     Height="20" 
                     Content="Refuser"           
                     Margin="10,10,0,0"
+                    FontSize="10"
                     Command="{Binding ClickButtonNo}"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>
@@ -55,6 +57,7 @@
                     Height="20" 
                     Content="Afficher" 
                     Margin="10,10,0,0"
+                    FontSize="10"
                     Command="{Binding DisplayCommand}"
                     Visibility="{Binding  Path=AfficheBoutons, Converter={StaticResource BoolToVis}}">
                 </Button>

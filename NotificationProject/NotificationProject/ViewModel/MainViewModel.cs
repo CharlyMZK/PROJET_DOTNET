@@ -170,6 +170,7 @@ namespace NotificationProject.ViewModel
                     notification.Application = parsedJson[1];
                     notification.Message = "demande de connexion";
                     Console.WriteLine("Successfuly connexion !");
+                    deviceWaitingToBeConnected.DeviceType = connectionReq.Appareil;
                     this.DisplayNotif("connexion", "L'appareil " + connectionReq.Appareil + " tente de se connecter", "connexion", "appel", this.callBackYesOnConnexion, this.callBackNoOnConnexion, deviceWaitingToBeConnected);
                 }
                 else
@@ -209,7 +210,7 @@ namespace NotificationProject.ViewModel
                     addMessage = isMessageDisplayAuthorised(notification);
                 }
 
-                notification.Message = parsedJson[2];
+                notification.Message = parsedJson[3];
 
                 if (addMessage)
                 {

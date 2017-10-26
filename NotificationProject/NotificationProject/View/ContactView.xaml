@@ -20,6 +20,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding DeviceType}" />
                     <GridViewColumn Header="Etat" Width="120" DisplayMemberBinding="{Binding Etat}" />
                 </GridView>
             </ListView.View>
