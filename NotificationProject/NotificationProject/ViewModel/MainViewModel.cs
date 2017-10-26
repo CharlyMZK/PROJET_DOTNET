@@ -193,7 +193,8 @@ namespace NotificationProject.ViewModel
                 CommunicationViewModel communicationViewModel = (CommunicationViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Communication");
                 communicationViewModel.OnPropertyChanged("ListDevices");
                 SmsViewModel smsViewModel = (SmsViewModel)PageViewModels.FirstOrDefault(o => o.Name == "Sms View");
-                smsViewModel.OnPropertyChanged("ListDevices");
+                if(smsViewModel != null)
+                    smsViewModel.OnPropertyChanged("ListDevices");
 
             }
             //Reception d'un message
