@@ -153,6 +153,8 @@ namespace NotificationProject.ViewModel
             Boolean addMessage = false;
             //Interprétation du JSON parsé
 
+            // Je suis baptiste et je commit de la merde
+
             //Demande de connexion
             if (messageReceivedType == "connection")
             {
@@ -398,7 +400,10 @@ namespace NotificationProject.ViewModel
                 result.SendHour = DateTime.Now;
                 if(content != null)
                 {
-                    result.Content = content.Split(':')[1].TrimStart();
+                    if (content.Contains(':'))
+                        result.Content = content.Split(':')[1].TrimStart();
+                    else
+                        result.Content = content;
                 }
 
                 var device = Devices.Devices.FirstOrDefault(o => o.Name == deviceName);
